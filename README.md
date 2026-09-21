@@ -1,8 +1,8 @@
-# Adaptive-Solver
+# EvoMath Harness
 
-> 从规则化工作流 Agent，演进到可训练的 Agentic RL，再走向能够从失败中改进运行环境的 Harness Evolution。
+> A Sustainable Self-Evolving Math Agent Harness
 
-Adaptive-Solver 是一个面向数学推理的开源研究与工程项目。仓库保留了项目三代架构的演进轨迹：V1 验证复杂任务编排，V2 建立可复现的 Agentic RL 训练与评测链路，V3 在此基础上探索 Harness 的自动评估、晋升与回滚。
+EvoMath Harness 是一个面向数学推理的开源研究与工程项目。仓库保留了项目三代架构的演进轨迹：V1 验证复杂任务编排，V2 建立可复现的 Agentic RL 训练与评测链路，V3 在此基础上探索 Harness 的自动评估、晋升与回滚。
 
 项目当前以 Python 3.12 和 `uv` 管理环境。V1 原型被完整保留用于对照；活跃开发集中在 `src/adaptive_math` 下的 V2 与 V3 模块。
 
