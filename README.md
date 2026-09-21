@@ -27,48 +27,107 @@ V3 Harness Evolution
   └─ Failure Mining → Harness Patch → Regression Gate → Promote / Rollback
 ```
 
-## 整体架构与执行机制
+## V1 与 V2：架构及执行机制
 
-当前主链路以 V2 Agent Runtime 为执行核心，V3 HarnessSpec 为 Prompt、工具、预算、生成参数和奖励配置提供统一、可寻址的版本边界。产品推理与离线训练复用同一套动作协议、状态机和工具实现，但隐藏答案只存在于离线验证环境。
+V1 与 V2 解决的是同一类数学任务，但采用了两种不同的 Agent 架构。V1 用 LangGraph 显式编排节点和回退路径，适合快速验证确定性工作流；V2 则围绕可训练策略构建自研 Agent Runtime，使训练、评测和产品推理共用同一套动作与环境契约。
+
+### V1：LangGraph Workflow Agent
+
+V1 先由 Router 判断任务复杂度：简单任务直接调用模型，复杂任务进入固定的 LangGraph 状态机。工作流通过 Planner 拆解任务，Tool Caller 执行子任务，Critic 检查结果，Executor 汇总答案；Critic 拒绝结果时回到 Planner 重新规划。
+
+```mermaid
+flowchart LR
+    Input["User Query"] --> Analyzer["Complexity Analyzer"]
+    Analyzer --> Router{"Router"}
+    Router -->|"Simple"| Direct["Direct LLM"]
+    Router -->|"Complex"| Planner["Planner"]
+
+    subgraph LangGraph["LangGraph Workflow"]
+        Planner --> ToolCaller["Tool Caller"]
+        ToolCaller --> Critic{"Critic"}
+        Critic -->|"Rejected / Retry"| Planner
+        Critic -->|"Approved"| Executor["Executor"]
+    end
+
+    Direct --> Answer["Final Answer"]
+    Executor --> Answer
+```
+
+一次复杂任务的执行机制如下：
+
+```mermaid
+sequenceDiagram
+    participant U as Caller
+    participant R as Router
+    participant P as Planner
+    participant T as Tool Caller
+    participant C as Critic
+    participant E as Executor
+
+    U->>R: query
+    R->>R: analyze complexity
+    alt simple task
+        R-->>U: direct model answer
+    else complex task
+        R->>P: initialize workflow state
+        P->>T: plan + ordered subtasks
+        loop each subtask
+            T->>T: select and execute tool
+        end
+        T->>C: tool results
+        alt rejected and retry remains
+            C->>P: error context + replan
+        else approved
+            C->>E: verified intermediate results
+            E-->>U: synthesized answer
+        end
+    end
+```
+
+V1 的核心价值是流程清晰、节点职责直观、状态转移便于观察。它的限制也来自同一设计：执行路径主要由工程代码预先定义，训练数据、在线推理与工具协议没有形成统一的可验证轨迹契约。
+
+### V2：Harness-aware Agentic RL Runtime
+
+V2 不使用 LangGraph，而是采用自研的 Pydantic-based Agent Runtime。模型策略在每一轮自主选择直接提交 `<final>`，或通过 `<tool_call>` 调用工具；AgentLoop、MathEnv 和预算共同控制状态转移，而不是由固定业务节点决定下一步。
 
 ```mermaid
 flowchart TB
     Task["MathTask<br/>题目与答案类型"] --> Harness["HarnessSpec<br/>Prompt · Tools · Budget · Generation · Reward"]
-    Harness --> Loop["AgentLoop<br/>单策略多步执行循环"]
+    Harness --> Loop["AgentLoop<br/>多步策略循环"]
     Task --> Env
 
     subgraph Runtime["V2 · Agent Runtime"]
-        Loop --> Model["ModelClient<br/>生成下一步动作"]
+        Loop --> Model["ModelClient"]
         Model --> Parser["Action Parser<br/>&lt;tool_call&gt; / &lt;final&gt;"]
-        Parser --> Env["ProductMathEnv / OfflineMathEnv<br/>不可变状态 · 预算 · 终止条件"]
-        Env --> Registry["ToolRegistry<br/>schema 校验 · 调度 · 截断"]
-        Registry --> SymPy["SymPy Worker"]
-        Registry --> Python["SandboxFusion<br/>隔离 Python 执行"]
+        Parser --> Env["ProductMathEnv / OfflineMathEnv<br/>状态 · 预算 · 终止条件"]
+        Env --> Registry["ToolRegistry<br/>Schema 校验 · 调度 · 截断"]
+        Registry --> SymPy["Isolated SymPy Worker"]
+        Registry --> Python["SandboxFusion<br/>Isolated Python"]
         SymPy --> Observation["Observation"]
         Python --> Observation
         Observation --> Loop
-        Env --> Trace["Trajectory<br/>事件 · 用量 · 版本 · 内容哈希"]
+        Env --> Trace["Trajectory<br/>Events · Usage · Versions · Hash"]
     end
 
-    Env -->|"&lt;final&gt; 或预算终止"| Result["Final Answer / Termination"]
-    Trace --> Replay["Replay / Audit / Evaluation"]
+    Env -->|"Final / Budget / Error"| Result["Answer or Explicit Termination"]
+    Trace --> Replay["Replay · Audit · Evaluation"]
 
-    subgraph Offline["离线训练与评测边界"]
-        Trace --> HiddenVerifier["Hidden Verifier<br/>终局后访问 reference"]
-        HiddenVerifier --> Reward["R0–R3 Reward"]
-        Reward --> SFTGRPO["SFT / Agentic GRPO"]
+    subgraph Offline["Offline-only Boundary"]
+        Trace --> Verifier["Hidden Verifier"]
+        Verifier --> Reward["R0–R3 Reward"]
+        Reward --> Training["SFT / Agentic GRPO"]
     end
 
-    subgraph Evolution["V3 · Harness Evolution"]
-        Trace -.-> Failure["Failure Mining / Attribution"]
+    subgraph V3["V3 · Harness Evolution"]
+        Trace -.-> Failure["Failure Mining"]
         Failure -.-> Patch["Harness Patch"]
-        Patch -.-> Gate["Paired Regression Gate"]
-        Gate -.-> Promote["Promote / Rollback"]
-        Promote -.-> Harness
+        Patch -.-> Gate["Regression Gate"]
+        Gate -.-> Promotion["Promote / Rollback"]
+        Promotion -.-> Harness
     end
 ```
 
-### 单次任务如何运转
+V2 的单次执行机制如下：
 
 ```mermaid
 sequenceDiagram
@@ -81,53 +140,82 @@ sequenceDiagram
     participant V as Hidden Verifier
 
     U->>L: task + harness + generation config
-    L->>M: system prompt + public task + remaining budget
+    L->>M: public task + tool schemas + remaining budget
     M-->>L: model turn
     L->>E: record model_output event
     L->>P: parse_action(model turn)
 
     alt tool_call
         P-->>E: ToolAction
-        E->>E: check and consume budget
-        E->>T: validated tool name + arguments
+        E->>E: validate and consume budget
+        E->>T: tool name + validated arguments
         T-->>E: bounded ToolResult
         E-->>L: observation + remaining budget
         L->>M: append observation and continue
     else final
         P-->>E: FinalAction
         E->>E: record final and terminate
-        E-->>L: terminal state
     else invalid action
         P-->>E: parse failure
-        E->>E: consume one step and record error code
-        E-->>L: corrective observation or budget termination
+        E->>E: consume step + record error code
+        E-->>L: corrective observation or termination
     end
 
     L-->>U: versioned Trajectory
-    opt OfflineMathEnv only, after termination
+    opt OfflineMathEnv after termination only
         E->>V: final answer
         V-->>U: verifier status + reward signal
     end
 ```
 
-执行过程遵循以下不变量：
+V2 通过六项不变量保证训练与运行一致：
 
-1. **单一协议**：产品、评测和训练都只接受一个 `<tool_call>` 或 `<final>` 动作，减少训练—推理漂移。
-2. **先记录再转换**：每个模型输出先进入事件轨迹，再解析并推动环境状态，便于重放和故障归因。
-3. **预算驱动终止**：步数、工具调用次数、Python 时间和观察长度均受显式预算约束。
-4. **工具执行隔离**：参数先经过 schema 校验；SymPy 在受限 worker 中运行，Python 只发送到 SandboxFusion。
-5. **答案严格隔离**：ProductMathEnv 的构造和状态中不存在 reference；OfflineMathEnv 仅在轨迹终止后调用隐藏 Verifier。
-6. **配置可追溯**：轨迹记录 runtime、model 与 harness hash，确保实验能够定位到具体行为配置。
+1. **单一动作协议**：产品、评测和训练都只接受一个 `<tool_call>` 或 `<final>` 动作。
+2. **先记录再转换**：模型原始输出先进入事件轨迹，再解析并推动环境状态。
+3. **预算驱动终止**：步数、工具调用、Python 时间和观察长度均有显式上限。
+4. **工具执行隔离**：参数先经过 Schema 校验；SymPy 使用受限 Worker，Python 只发送到 SandboxFusion。
+5. **隐藏答案隔离**：ProductMathEnv 无法接触 reference；OfflineMathEnv 仅在终止后验证答案。
+6. **配置全程可追溯**：轨迹记录 Runtime、Model 和 Harness Hash，可精确定位行为配置。
+
+### V1 与 V2 对比
+
+| 维度 | V1 · LangGraph Workflow Agent | V2 · Agentic RL Runtime |
+|---|---|---|
+| 核心抽象 | 预定义 Graph、Node 和 Edge | Policy、Action、Environment 和 Trajectory |
+| 控制权 | 工作流代码决定主要执行路径 | 模型逐轮选择工具或结束 |
+| 状态管理 | LangGraph State 在节点间传递 | 不可变 AgentState 与单调事件流 |
+| 工具调用 | Tool Caller 节点内的业务逻辑 | 统一 ToolRegistry 与参数 Schema |
+| 失败恢复 | Critic 拒绝后回到 Planner | 错误观察反馈给策略，受预算约束继续决策 |
+| 终止方式 | 工作流完成或重试耗尽 | Final、预算、模型错误、基础设施错误或取消 |
+| 轨迹能力 | 面向调试的流程状态 | 内容寻址、Hash 校验、离线 Replay 和版本追踪 |
+| 答案边界 | 原型流程中未形成严格隔离契约 | 产品环境与 Hidden Verifier 在类型和序列化层隔离 |
+| 训练一致性 | 早期 RL 原型与产品工作流分离 | SFT、GRPO、评测与产品复用同一动作和环境契约 |
+| 适合场景 | 快速原型、确定性业务流程、可视化编排 | 可训练 Agent、安全工具执行、严格评测与规模化实验 |
+| 演化能力 | 修改节点或边后重新部署 | Harness 可版本化、比较、晋升和回滚 |
+
+### 为什么从 V1 演进到 V2
+
+项目没有因为 V1 “错误”而替换 LangGraph。V1 成功验证了路由、规划、工具调用、Critic 和失败重试是否能改善复杂任务执行；但当目标从“编排一个可工作的 Agent”升级为“训练并可信评测一个 Agent”时，固定工作流开始成为约束。
+
+主要架构取舍如下：
+
+- **放弃部分编排便利，换取策略自由度**：V1 的节点和边易于理解；V2 让模型在统一动作空间内自主决定何时使用工具、何时结束。
+- **增加契约设计成本，换取训练—推理一致性**：V2 需要显式定义 Action、State、Budget、Trace、Verifier 和 Reward，但同一套协议可以贯穿 SFT、GRPO、评测与产品路径。
+- **增加基础设施约束，换取安全和可审计性**：工具执行不再是普通函数调用，而是经过 Schema、预算、隔离进程或 SandboxFusion，并留下完整事件证据。
+- **减少框架依赖，换取可控的强化学习接口**：自研 Runtime 比 LangGraph 原型需要更多底层代码，但能直接表达向量化 Rollout、隐藏答案边界、奖励归因和确定性 Replay。
+- **保留 V1，而不是删除历史**：V1 继续作为独立可运行的 LangGraph 基线，用于教学、对照实验和验证固定工作流场景；V2/V3 则承担持续训练和 Harness Evolution 主线。
+
+最终取舍不是“LangGraph 与自研框架谁更好”，而是根据目标选择抽象：确定性流程优先使用 Graph，学习型策略优先使用 Environment + Trajectory + Reward。
 
 ## 当前能力
 
-### V1：Workflow Agent 原型
+### V1：LangGraph Workflow Agent
 
 V1 展示了项目最初的工程假设：先分析任务复杂度，再选择直接模型或状态机工作流；复杂任务经过 Planner、Tool Caller、Critic 和 Executor，并在工具失败时重新规划。
 
 这部分代码作为历史基线保留，便于理解项目为何从固定工作流转向可训练、可评测的 Agent Runtime。V1 不参与 V2/V3 主链路。
 
-### V2：Agentic RL 主链路
+### V2：Harness-aware Agentic RL Runtime
 
 V2 将数学 Agent 的运行、训练和评测建立在同一组契约之上：
 
