@@ -1,335 +1,346 @@
-# 自适应复杂任务求解器
+# Adaptive-Solver
 
-> 基于langgraph状态机编排与 GRPO 强化学习的智能任务求解器
+> 从规则化工作流 Agent，演进到可训练的 Agentic RL，再走向能够从失败中改进运行环境的 Harness Evolution。
 
-## AdaptiveMath-RL 2.0 开发状态
+Adaptive-Solver 是一个面向数学推理的开源研究与工程项目。仓库保留了项目三代架构的演进轨迹：V1 验证复杂任务编排，V2 建立可复现的 Agentic RL 训练与评测链路，V3 在此基础上探索 Harness 的自动评估、晋升与回滚。
 
-本仓库正在升级为 **AdaptiveMath-RL 2.0**：通过 SFT + Agentic GRPO 训练一个可自主选择直接推理 / Python / SymPy 工具的真实数学 Agent。V1 规则工作流与模拟 GRPO 代码保留在 `src/` 下作为原型基线，新功能写入 `src/adaptive_math`。
+项目当前以 Python 3.12 和 `uv` 管理环境。V1 原型被完整保留用于对照；活跃开发集中在 `src/adaptive_math` 下的 V2 与 V3 模块。
 
-实施文档：
+## 项目演进
 
-- [产品与技术设计报告](docs/superpowers/specs/2026-09-09-adaptive-math-rl-product-design.md)
-- [Master Roadmap](docs/superpowers/plans/2026-09-10-adaptive-math-rl-master.md)
-- [Foundation Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-foundation.md)
-- [Agent Runtime Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-agent-runtime.md)
-- [Training & Cloud Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-training-cloud.md)
-- [Evaluation & Product Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-evaluation-product.md)
+| 版本 | 核心问题 | 主要能力 | 代码位置 | 状态 |
+|---|---|---|---|---|
+| **V1 · Workflow Agent** | 如何按任务复杂度选择执行路径，并在失败后重新规划？ | 动态路由、LangGraph 状态机、工具调用、Critic、自我修正、早期 GRPO 原型 | `src/main.py`、`src/{config,graph,llm,rl,router}` | 原型基线，保留维护 |
+| **V2 · Agentic RL** | 如何让真实数学 Agent 在统一协议下学习直接作答或调用工具？ | Agent Runtime、Python/SymPy 工具、隐藏答案验证、轨迹回放、数据治理、SFT、GRPO、评测与云端训练入口 | `src/adaptive_math/{core,verifier,reward,tools,agent,data,training,evaluation}` | 主体已实现；真实模型训练与完整发布仍需 GPU 验证 |
+| **V3 · Agentic RL + Harness Evolution** | 除了更新模型权重，能否从失败轨迹中持续改进 Prompt、工具、预算和运行策略？ | 失败分类、HarnessSpec、候选配置、配对回归评测、质量门禁、晋升与回滚 | `src/adaptive_math/{harness,evolution}` | 核心契约已实现；失败归因、补丁生成和端到端闭环继续建设中 |
 
-### 环境与测试
+三代版本不是彼此割裂的重写，而是一条逐步扩展的路线：
 
-- Python 3.12（由 uv 管理项目环境）
-- 安装依赖：`uv sync --dev`
-- 运行测试：`uv run pytest`
-- 代码检查：`uv run ruff check src tests scripts`
-- 类型检查：`uv run mypy`
+```text
+V1 规则化编排
+  └─ 路由 + 状态机 + Critic
+       ↓ 将执行过程统一为可验证、可回放的轨迹
+V2 Agentic RL
+  └─ Agent Runtime + Tools + Verifier + SFT/GRPO
+       ↓ 从训练模型扩展到优化模型所处的运行环境
+V3 Harness Evolution
+  └─ Failure Mining → Harness Patch → Regression Gate → Promote / Rollback
+```
 
-### 数据管线
+## 整体架构与执行机制
 
-- 数据源治理：`configs/data/sources.yaml`（固定 revision + license + 用途 + 引用）
-- 构建（可复现、确定性）：
+当前主链路以 V2 Agent Runtime 为执行核心，V3 HarnessSpec 为 Prompt、工具、预算、生成参数和奖励配置提供统一、可寻址的版本边界。产品推理与离线训练复用同一套动作协议、状态机和工具实现，但隐藏答案只存在于离线验证环境。
+
+```mermaid
+flowchart TB
+    Task["MathTask<br/>题目与答案类型"] --> Harness["HarnessSpec<br/>Prompt · Tools · Budget · Generation · Reward"]
+    Harness --> Loop["AgentLoop<br/>单策略多步执行循环"]
+    Task --> Env
+
+    subgraph Runtime["V2 · Agent Runtime"]
+        Loop --> Model["ModelClient<br/>生成下一步动作"]
+        Model --> Parser["Action Parser<br/>&lt;tool_call&gt; / &lt;final&gt;"]
+        Parser --> Env["ProductMathEnv / OfflineMathEnv<br/>不可变状态 · 预算 · 终止条件"]
+        Env --> Registry["ToolRegistry<br/>schema 校验 · 调度 · 截断"]
+        Registry --> SymPy["SymPy Worker"]
+        Registry --> Python["SandboxFusion<br/>隔离 Python 执行"]
+        SymPy --> Observation["Observation"]
+        Python --> Observation
+        Observation --> Loop
+        Env --> Trace["Trajectory<br/>事件 · 用量 · 版本 · 内容哈希"]
+    end
+
+    Env -->|"&lt;final&gt; 或预算终止"| Result["Final Answer / Termination"]
+    Trace --> Replay["Replay / Audit / Evaluation"]
+
+    subgraph Offline["离线训练与评测边界"]
+        Trace --> HiddenVerifier["Hidden Verifier<br/>终局后访问 reference"]
+        HiddenVerifier --> Reward["R0–R3 Reward"]
+        Reward --> SFTGRPO["SFT / Agentic GRPO"]
+    end
+
+    subgraph Evolution["V3 · Harness Evolution"]
+        Trace -.-> Failure["Failure Mining / Attribution"]
+        Failure -.-> Patch["Harness Patch"]
+        Patch -.-> Gate["Paired Regression Gate"]
+        Gate -.-> Promote["Promote / Rollback"]
+        Promote -.-> Harness
+    end
+```
+
+### 单次任务如何运转
+
+```mermaid
+sequenceDiagram
+    participant U as Task / Caller
+    participant L as AgentLoop
+    participant M as ModelClient
+    participant P as Action Parser
+    participant E as MathEnv
+    participant T as ToolRegistry
+    participant V as Hidden Verifier
+
+    U->>L: task + harness + generation config
+    L->>M: system prompt + public task + remaining budget
+    M-->>L: model turn
+    L->>E: record model_output event
+    L->>P: parse_action(model turn)
+
+    alt tool_call
+        P-->>E: ToolAction
+        E->>E: check and consume budget
+        E->>T: validated tool name + arguments
+        T-->>E: bounded ToolResult
+        E-->>L: observation + remaining budget
+        L->>M: append observation and continue
+    else final
+        P-->>E: FinalAction
+        E->>E: record final and terminate
+        E-->>L: terminal state
+    else invalid action
+        P-->>E: parse failure
+        E->>E: consume one step and record error code
+        E-->>L: corrective observation or budget termination
+    end
+
+    L-->>U: versioned Trajectory
+    opt OfflineMathEnv only, after termination
+        E->>V: final answer
+        V-->>U: verifier status + reward signal
+    end
+```
+
+执行过程遵循以下不变量：
+
+1. **单一协议**：产品、评测和训练都只接受一个 `<tool_call>` 或 `<final>` 动作，减少训练—推理漂移。
+2. **先记录再转换**：每个模型输出先进入事件轨迹，再解析并推动环境状态，便于重放和故障归因。
+3. **预算驱动终止**：步数、工具调用次数、Python 时间和观察长度均受显式预算约束。
+4. **工具执行隔离**：参数先经过 schema 校验；SymPy 在受限 worker 中运行，Python 只发送到 SandboxFusion。
+5. **答案严格隔离**：ProductMathEnv 的构造和状态中不存在 reference；OfflineMathEnv 仅在轨迹终止后调用隐藏 Verifier。
+6. **配置可追溯**：轨迹记录 runtime、model 与 harness hash，确保实验能够定位到具体行为配置。
+
+## 当前能力
+
+### V1：Workflow Agent 原型
+
+V1 展示了项目最初的工程假设：先分析任务复杂度，再选择直接模型或状态机工作流；复杂任务经过 Planner、Tool Caller、Critic 和 Executor，并在工具失败时重新规划。
+
+这部分代码作为历史基线保留，便于理解项目为何从固定工作流转向可训练、可评测的 Agent Runtime。V1 不参与 V2/V3 主链路。
+
+### V2：Agentic RL 主链路
+
+V2 将数学 Agent 的运行、训练和评测建立在同一组契约之上：
+
+- 严格的 `<tool_call>` / `<final>` 动作协议；
+- 可选择直接回答、调用 SymPy 或通过 SandboxFusion 执行 Python；
+- 产品环境与隐藏答案验证边界隔离；
+- 轨迹内容寻址、哈希校验和离线回放；
+- 可复现的数据注册、清洗、去重、切分、审计与 manifest；
+- SFT 数据构建、教师轨迹生成、LoRA 训练入口；
+- GRPO rollout、奖励桥、上游版本钉死和云端启动入口；
+- 模型评测与 rollout 健康检查。
+
+### V3：Harness Evolution
+
+V3 把优化对象从“模型权重”扩展到 Agent 的运行 Harness，包括 Prompt、工具集合、预算和运行策略。目标闭环为：
+
+1. 从可复现轨迹中挖掘失败并归因；
+2. 构造受约束的 Harness Patch；
+3. 在冻结评测集上执行候选与 Champion 的配对回归；
+4. 通过质量门禁晋升，失败时回滚并保留审计记录。
+
+当前已具备 HarnessSpec、预设配置、质量门禁、注册表和失败分类等核心契约。自动失败挖掘、补丁生成和完整演化循环仍属于进行中的 V3 工作。
+
+## 能力边界
+
+- 本地无权重 smoke、协议解析、工具契约、验证器、轨迹回放和大部分测试可以直接运行。
+- 真实本地模型推理需要额外安装 `runtime` 依赖，并提供兼容 Hugging Face chat template 的模型。
+- Python 工具采用 fail-closed 设计，只连接 Linux SandboxFusion；不会回退到宿主机执行模型生成的代码。
+- 正式 SFT、GRPO 和冻结评测需要准备数据、模型权重与合适的 GPU 环境。
+- V3 目前是“核心契约可用、完整闭环建设中”，仓库不声称已经实现无人值守的 Harness 自动进化。
+
+## 快速开始
+
+### 1. 安装开发环境
 
 ```bash
+git clone https://github.com/cigaretter777/Adaptive-Solver.git
+cd Adaptive-Solver
+uv sync --dev
+```
+
+项目要求 Python `>=3.12,<3.13`。真实模型推理或训练所需的重量级依赖是可选项：
+
+```bash
+uv sync --dev --extra runtime
+```
+
+### 2. 运行无权重 Agent smoke
+
+下面的命令使用脚本化动作验证 V2 Agent Runtime，无需下载模型：
+
+```bash
+uv run python scripts/dev/run_agent.py \
+  --problem "Compute 17 * 19." \
+  --answer-type integer \
+  --config configs/agent/direct.yaml \
+  --scripted-action '<final>{"answer":"323"}</final>'
+```
+
+### 3. 校验并回放轨迹
+
+```bash
+uv run python scripts/dev/replay_trace.py \
+  --trace tests/fixtures/golden_traces/direct_correct.json \
+  --verify-hash \
+  --print-events
+```
+
+## 开发与测试
+
+```bash
+# 全量测试
+uv run pytest
+
+# 代码检查
+uv run ruff check src tests scripts
+
+# 严格类型检查
+uv run mypy
+```
+
+如只关注某一代架构，可以按目录运行：
+
+```bash
+# V1 原型测试
+uv run pytest tests/test_router.py tests/test_graph.py tests/test_rl.py
+
+# V2 Agent Runtime
+uv run pytest tests/unit/agent tests/integration/test_agent_loop.py tests/integration/test_trace_replay.py
+
+# V3 Harness Evolution
+uv run pytest tests/unit/harness tests/unit/evolution tests/integration/test_harness_loop.py
+```
+
+## 数据入口
+
+数据源通过 `configs/data/sources.yaml` 注册，并固定 revision、许可证、用途和引用信息。
+
+```bash
+# 构建确定性数据集
 uv run python scripts/data/build_dataset.py \
   --registry configs/data/sources.yaml \
   --output-dir data/processed/v1 \
   --manifest data/manifests/v1.json \
   --seed 20260910
+
+# 审计哈希、schema、切分泄漏、重复 task_id 和 reference 可验证性
+uv run python scripts/data/audit_dataset.py \
+  --manifest data/manifests/v1.json
 ```
 
-- 审计（hash 不匹配 / split 泄漏 / 重复 task_id / 不可验证 reference 都会非零退出）：
+下载的数据位于被忽略的 `data/raw` 或 `data/processed`；可复现 manifest 和审计文档纳入版本管理。更多说明见 [数据与 Verifier 操作手册](docs/runbooks/data-and-verifier.md)。
+
+## 训练与评测入口
+
+V2 的训练采用“先 SFT 建立协议行为，再用 Agentic GRPO 优化任务奖励”的路径。
 
 ```bash
-uv run python scripts/data/audit_dataset.py --manifest data/manifests/v1.json
+# SFT
+uv run python scripts/train/run_sft.py \
+  --config configs/sft/qwen3_1_7b_smoke.yaml
+
+# GRPO
+uv run python scripts/train/run_grpo.py \
+  --config configs/grpo/qwen3_1_7b_smoke_r0.yaml
+
+# 模型评测
+uv run python scripts/eval/run_model_eval.py --help
+
+# Rollout 健康检查
+uv run python scripts/eval/run_rollout_health.py --help
 ```
 
-- 下载数据不入库（`data/processed`、`data/raw` 被忽略）；manifest 与文档受版本管理
-- 操作手册：[docs/runbooks/data-and-verifier.md](docs/runbooks/data-and-verifier.md)
-- 门禁报告：[docs/results/foundation-validation.md](docs/results/foundation-validation.md)
+训练命令不是零配置演示：运行前需要满足配置中的数据 manifest、模型 revision、固定上游版本和运行环境门禁。云端准备与恢复流程见 [云端训练 Runbook](docs/runbooks/cloud-training.md)，基础 SFT 结果解读见 [Base SFT 评测 Runbook](docs/runbooks/base-sft-evaluation.md)。
 
-### Agent Runtime（V2）
+## 目录结构
 
-- 运行时执行严格的 `<tool_call>` / `<final>` 协议，轨迹可 hash 校验、可离线 Replay。
-- 产品路径没有参考答案；仅离线评估环境在终止后通过私有验证边界计算正确性。
-- 本地无权重 smoke（不下载模型）：
-
-```bash
-uv run python scripts/dev/run_agent.py \
-  --problem "Compute 17 * 19." --answer-type integer \
-  --config configs/agent/direct.yaml \
-  --scripted-action '<final>{"answer":"323"}</final>'
+```text
+Adaptive-Solver/
+├── src/
+│   ├── main.py                    # V1 CLI 入口
+│   ├── config/                    # V1 配置
+│   ├── router/                    # V1 动态路由
+│   ├── graph/                     # V1 LangGraph 工作流
+│   ├── llm/                       # V1 模型封装
+│   ├── rl/                        # V1 早期 GRPO 原型
+│   └── adaptive_math/
+│       ├── core/                  # V2 公共类型与内容寻址
+│       ├── verifier/              # V2 类型化隐藏答案验证
+│       ├── reward/                # V2 R0–R3 奖励函数
+│       ├── tools/                 # V2 SymPy / SandboxFusion 工具
+│       ├── agent/                 # V2 Agent Runtime 与轨迹回放
+│       ├── data/                  # V2 数据治理
+│       ├── training/              # V2 SFT / GRPO 桥接
+│       ├── evaluation/            # V2 模型评测
+│       ├── harness/               # V3 HarnessSpec、门禁与注册表
+│       └── evolution/             # V3 失败分类与演化逻辑
+├── configs/                       # Agent、数据、训练、奖励、Harness 配置
+├── scripts/                       # 数据、开发、训练、评测、云端入口
+├── tests/                         # unit / integration / contract 测试
+├── docs/                          # 架构、设计、计划、Runbook 与结果
+├── docker/                        # 训练镜像与 SandboxFusion 编排
+└── data/                          # manifest 与本地数据说明
 ```
 
-- 真实本地模型路径会使用 tokenizer 的 chat template；需要在云镜像或本机额外安装 `transformers`、`torch` 后传入 `--model`。Python 工具执行必须连接 Linux SandboxFusion，绝不会回退到宿主机执行。
-- 回放：`uv run python scripts/dev/replay_trace.py --trace tests/fixtures/golden_traces/direct_correct.json --verify-hash --print-events`
+## 路线图
 
-## 项目概述
+| 阶段 | 目标 | 当前进度 |
+|---|---|---|
+| V1 · Workflow Agent | 验证动态路由、状态机编排和失败重规划 | 已形成可运行原型，作为历史基线保留 |
+| V2 · Trusted Offline Core | 数据治理、Verifier、Reward 与安全工具边界 | 已实现并由单元/契约测试覆盖 |
+| V2 · Agent Runtime | 统一动作协议、环境、轨迹、真实模型边界与回放 | 已实现；真实权重 smoke 依赖模型与运行环境 |
+| V2 · SFT / Agentic GRPO | 数据构建、训练入口、rollout 与奖励桥 | 工程入口已实现；正式 GPU 实验仍需完成和复验 |
+| V2 · Evaluation / Productization | 冻结评测、报告与产品服务 | 评测能力已开始落地；完整产品化尚未完成 |
+| V3 · Harness Foundation | HarnessSpec、预设、门禁、注册表、失败分类 | 核心契约已实现 |
+| V3 · Evolution Loop | 失败挖掘、归因、Patch 生成、回归、晋升/回滚闭环 | 进行中 |
 
-    为解决通用大模型(如GPT-4、Qwen-3)在处理简单任务时性能过剩、在处理复杂任务时能力不足的问题,构建了一个融合动态路由、状态机编排与强化学习微调的智能 Agent 系统，旨在解决通用模型在复杂逻辑任务中成本高且准确率低的痛点。
+## 文档导航
 
-### 核心问题
+### V2 · Agentic RL
 
-1. **成本问题**：无论任务难易都使用高性能模型（如 GPT-4o、Qwen-Max），导致推理成本居高不下
-2. **能力局限**：传统 Agent 流程固定，缺乏自我修正能力，遇到工具调用失败时容易中断
-3. **领域适配**：通用模型在特定垂直领域（如数学证明、逻辑推理）表现不够优秀
+- [V2 产品与技术设计](docs/superpowers/specs/2026-09-09-adaptive-math-rl-product-design.md)
+- [V2 代码架构总览](docs/architecture.md)
+- [Master Roadmap](docs/superpowers/plans/2026-09-10-adaptive-math-rl-master.md)
+- [Foundation Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-foundation.md)
+- [Agent Runtime Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-agent-runtime.md)
+- [Training & Cloud Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-training-cloud.md)
+- [Evaluation & Product Plan](docs/superpowers/plans/2026-09-10-adaptive-math-rl-evaluation-product.md)
+- [Foundation 验证报告](docs/results/foundation-validation.md)
+- [训练 Smoke 报告](docs/results/training-smoke.md)
 
-### 解决方案
+### V3 · Harness Evolution
 
-通过三大核心技术解决上述问题：
+- [Harness Evolution 设计报告](docs/superpowers/specs/2026-09-18-harness-evolution-design.md)
+- [AdaptiveMath-Evo 对齐设计](docs/superpowers/specs/2026-09-18-adaptivemath-evo-v2-alignment-design.md)
+- [H1 · Agent Loop 接入计划](docs/superpowers/plans/2026-09-18-harness-evolution-h1-agent-loop.md)
+- [H2–H5 · Trace 与 Failure Taxonomy 计划](docs/superpowers/plans/2026-09-18-harness-evolution-h2-5-trace-taxonomy.md)
+- [AdaptiveMath-Evo 技术设计 PDF](AdaptiveMath_Evo_Technical_Design.pdf)
 
-| 技术 | 作用 
-|------|------|
-| **动态路由网关** | 实现 Context-Aware 路由策略，根据任务复杂度智能选择模型 |
-| **状态机编排** | 基于 LangGraph 构建可回退 Agent 工作流,提升复杂任务完成率|
-| **在线强化学习** | 使用 GRPO 算法进行领域特定优化 | 
----
+## 贡献
 
-## 项目结构
+欢迎围绕以下方向提交 Issue 或 Pull Request：
 
-```
-adaptive-solver/
-├── src/                           # 源代码目录
-│   ├── main.py                    # 程序主入口
-│   │
-│   ├── config/                    # 配置管理模块
-│   │   └── settings.py            # 使用 Pydantic Settings 管理配置
-│   │
-│   ├── router/                    # 动态路由模块 ⭐
-│   │   ├── complexity_analyzer.py # 任务复杂度分析器
-│   │   └── router.py              # 路由决策器
-│   │
-│   ├── graph/                     # 状态机编排模块 ⭐
-│   │   ├── state.py               # 状态定义和管理
-│   │   ├── nodes/                 # 状态节点
-│   │   │   ├── planner.py         # 规划节点
-│   │   │   ├── tool_caller.py     # 工具调用节点
-│   │   │   ├── critic.py          # 反思/检查节点
-│   │   │   └── executor.py        # 执行节点
-│   │   └── workflow.py            # 状态图定义
-│   │
-│   ├── llm/                       # LLM 模型封装
-│   │   └── providers.py            # 阿里云 Qwen 模型提供商
-│   │
-│   ├── rl/                        # 强化学习模块 ⭐
-│   │   ├── data/
-│   │   │   └── gsm8k_loader.py     # GSM8K 数据集加载器
-│   │   ├── trajectory_collector.py # 轨迹数据收集器
-│   │   ├── reward_function.py      # 多维度奖励函数
-│   │   ├── grpo_trainer.py         # GRPO 训练器
-│   │   └── training_visualizer.py  # 训练可视化工具
-│   │
-│
-├── tests/                         # 测试模块
-│   ├── test_router.py              # 路由模块测试
-│   ├── test_graph.py               # 状态机测试
-│   └── test_rl.py                  # 强化学习测试
-│
-├── examples/                      # 示例代码
-│   ├── simple_task.py             # 简单任务示例
-│   ├── complex_task.py            # 复杂任务示例
-│   ├── router_demo.py             # 路由演示
-│   └── rl_demo.py                 # 强化学习演示
-│
-├── autodl_train.py                # AutoDL 训练脚本 
-├── training_config.json            # 训练配置文件 
-└── requirements.txt                # 依赖列表
-```
+- Agent Runtime、动作协议与轨迹可复现性；
+- 数学答案提取、Verifier 安全性与 reward hacking 测试；
+- SFT / GRPO 数据与训练稳定性；
+- 评测、统计报告与实验复现；
+- Harness 失败归因、Patch 生成与回归门禁。
 
----
+社区讨论可以从最小可复现案例、设计问题或实验观察开始；工程改动应附带对应测试；研究结论应说明数据切分、基线、指标和运行条件。项目尤其欢迎能够连接研究假设与工程证据的贡献。
 
-## 示例执行流程
+提交改动前，请至少运行与改动范围对应的测试，并保持 V1 原型与 V2/V3 主链路之间的边界清晰。涉及训练结果的改动，请同时记录数据 manifest、模型 revision、配置哈希和运行环境。
 
-### 1. 简单任务执行流程
+## 项目状态说明
 
-```
-用户输入 "计算 1+1"
-    ↓
-AdaptiveSolver.solve(query)
-    ↓
-Router.route(query)
-    ↓
-ComplexityAnalyzer.analyze(query)
-    - Token 长度: 4
-    - 任务类型: CALCULATION
-    - 复杂度: SIMPLE (0.95 置信度)
-    ↓
-Router._make_decision()
-    → RouteDecision.DIRECT_TURBO
-    ↓
-AdaptiveSolver._solve_with_turbo()
-    → 调用 Qwen Turbo API
-    → 返回答案
-```
-
-### 2. 复杂任务执行流程
-
-```
-用户输入 "证明：任意两个连续整数的乘积是偶数"
-    ↓
-AdaptiveSolver.solve(query)
-    ↓
-Router.route(query)
-    ↓
-ComplexityAnalyzer.analyze(query)
-    - Token 长度: 20
-    - 任务类型: PROOF
-    - 复杂度: MEDIUM/COMPLEX
-    ↓
-Router._make_decision()
-    → RouteDecision.WORKFLOW
-    ↓
-AdaptiveSolver._solve_with_workflow()
-    ↓
-Workflow.run(query)
-    ↓
-┌─────────────────────────────────────┐
-│          状态机执行流程             │
-└─────────────────────────────────────┘
-    ↓
-State: {"status": "planning"}
-    ↓
-Planner(state)
-    - 生成计划: "1.明确命题 2.选择证明方法 3.执行证明 4.验证结论"
-    - 生成子任务: ["明确命题", "选择证明方法", "执行证明", "验证结论"]
-    - State: {"status": "executing", "subtasks": [...], "current_index": 0}
-    ↓
-State: {"status": "executing", current_index": 0}
-    ↓
-ToolCaller(state)
-    - 当前子任务: "明确命题"
-    - 选择工具: logic_checker
-    - 执行工具: "命题：两个连续整数 n, n+1，必有一个是偶数"
-    - 记录结果，current_index += 1
-    ↓
-State: {"status": "executing", current_index = 4 (全部完成)}
-    ↓
-Critic(state)
-    - 检查: 所有工具结果无错误
-    - 决策: approved
-    - State: {"status": "reviewing"}
-    ↓
-Executor(state)
-    - 整合结果: "## 证明\n\n**命题**：...\n\n**证明过程**：..."
-    - State: {"status": "completed"}
-    ↓
-返回答案
-```
-
-### 3. Self-Correction 触发流程
-
-```
-ToolCaller 执行失败
-    ↓
-Critic(state)
-    - 检查: tool_results 包含错误 "未找到可计算的数字"
-    - 判断: contains_error = True
-    - 决策: rejected
-    - 检查: error_count < max_retries
-    - State: {"status": "planning", "error_count": 1}
-    ↓
-Planner(state)
-    - 重新规划
-    - 生成新的计划
-    - State: {"status": "executing", "error_count": 0}
-    ↓
-继续执行...
-```
-
----
-
-## GRPO 训练具体过程
-
-### 训练流程图
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    GRPO 训练流程                      │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│  1. 数据准备阶段                                       │
-│  ├─ 加载 GSM8K 数据集 (7473 条)                    │
-│  ├─ 格式化为训练数据 (query + expected_answer)      │
-│  ├─ 模拟生成初始轨迹（或使用状态机生成）           │
-│  └─ 收集到训练数据集                                 │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│  2. 奖励计算阶段                                       │
-│  对每条轨迹计算多维度奖励：                           │
-│  ┌──────────────────────────────────────────────────┐ │
-│  │ • 准确性奖励 (Accuracy Reward)                   │ │
-│  │   - 检查答案是否正确                             │ │
-│  │   - 验证计算结果                                 │ │
-│  │   - 检查证明逻辑                                 │ │
-│  │                                                  │ │
-│  │ • 效率奖励 (Efficiency Reward)                   │ │
-│  │   - 执行步数（越少越好）                       │ │
-│  │   - 工具调用次数                                 │ │
-│  │                                                  │ │
-│  │ • 安全性奖励 (Safety Reward)                     │ │
-│  │   - 错误处理                                     │ │
-│  │   - 回退次数                                     │ │
-│  │   - 状态一致性                                   │ │
-│  │                                                  │ │
-│  │ • 一致性奖励 (Consistency Reward)               │ │
-│  │   - 结果与查询的关联度                           │ │
-│  │   - 关键信息匹配度                               │ │
-│  └──────────────────────────────────────────────────┘ │
-│                                                          │
-│  总奖励 = Σ(奖励_i × 权重_i)                          │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│  3. 优势值计算 (Advantage Calculation)              │
-│                                                          │
-│  使用 GAE (Generalized Advantage Estimation):          │
-│                                                          │
-│  A_t = Σₖ≥ₜ (γλ)ᵏ⁻ᵏ * (rₜ + γV(sₜ₊₁) - V(sₜ))        │
-│                                                          │
-│  其中：                                                 │
-│  • γ (gamma) = 0.99 - 折扣因子                         │
-│  • λ (lambda) = 0.95 - GAE 参数                        │
-│  • V(s) = 价值函数估计                                 │
-│  • r = 奖励                                            │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│  4. GRPO 策略更新                                     │
-│                                                          │
-│  对每个小组 (Group) 的样本：                          │
-│  ┌──────────────────────────────────────────────────┐ │
-│  │ 1. 生成多个候选答案（Group Size = 4）            │ │
-│  │                                                   │ │
-│  │ 2. 计算相对优势：                               │ │
-│  │   A_i - mean(A_group)                             │ │
-│  │                                                   │ │
-│  │ 3. 计算策略损失：                                │ │
-│  │   L_policy = -mean(advantage * log_ratio)        │ │
-│  │                                                   │ │
-│  │ 4. KL 散度惩罚：                                │ │
-│  │   L_kl = β * KL(π_old || π_new)                 │ │
-│  │                                                   │ │
-│  │ 5. 总损失：                                      │ │
-│  │   L_total = L_policy + L_kl                       │ │
-│  │                                                   │ │
-│  │ 6. 反向传播更新模型参数                          │ │
-│  └──────────────────────────────────────────────────┘ │
-│                                                          │
-│  超参数：                                               │
-│  • learning_rate = 5e-6                               │
-│  • kl_penalty = 0.1                                   │
-│  • clip_range = 0.2                                   │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│  5. 评估与可视化                                       │
-│  ┌──────────────────────────────────────────────────┐ │
-│  │ • 计算训练指标（平均奖励、成功率、步数）       │ │
-│  │ • 绘制训练曲线                                   │ │
-│  │ • 生成完成率对比图（用于简历）                 │ │
-│  │ • 保存检查点                                      │ │
-│  └──────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-                    训练完成
-```
+这是一个持续演进中的研究型仓库。README 中的“已实现”指代码和相应测试已进入仓库，不等同于所有模型、数据规模和 GPU 环境均已完成生产级验证；实验结论以 `docs/results/` 中的可复现报告为准。
