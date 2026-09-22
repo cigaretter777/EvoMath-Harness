@@ -92,6 +92,9 @@ class ProductMathEnv:
             trace_id=self._trace_id,
             task_id=state.task.task_id,
             remaining_observation_chars=state.budget.max_observation_chars,
+            remaining_python_seconds=max(
+                0.0, state.budget.max_python_seconds - state.usage.python_seconds
+            ),
         )
         result = await self._registry.execute(call.name, call.arguments, context)
         python_seconds = _python_seconds(call.name, result.metadata)

@@ -72,6 +72,38 @@ def test_final_terminates_and_offline_evaluation_is_separate() -> None:
     assert "reference" not in result.state.model_dump_json().lower()
 
 
+class ContextCapturingPythonTool:
+    name = "python"
+    description = "records the budget it was given"
+    arguments_model = EchoArguments
+
+    def __init__(self, execution_time: float) -> None:
+        self._execution_time = execution_time
+        self.contexts: list[ToolContext] = []
+
+    async def execute(self, arguments: object, context: ToolContext) -> ToolResult:
+        self.contexts.append(context)
+        return ToolResult(
+            ok=True, output="done", latency_ms=1, metadata={"execution_time": self._execution_time}
+        )
+
+
+def test_remaining_python_budget_shrinks_with_charged_sandbox_time() -> None:
+    """The tool sees what is left, not what was granted: otherwise a second slow
+    run can overrun the episode budget the reward is normalized against."""
+    budget = Budget(
+        max_steps=4, max_tool_calls=4, max_python_seconds=10.0, max_observation_chars=100
+    )
+    tool = ContextCapturingPythonTool(execution_time=3.0)
+    environment = ProductMathEnv(_task(), budget, ToolRegistry([tool]))
+    call = ToolAction(call=ToolCall(name="python", arguments={}))
+
+    asyncio.run(environment.step(call, monotonic_ms=1))
+    asyncio.run(environment.step(call, monotonic_ms=2))
+
+    assert [context.remaining_python_seconds for context in tool.contexts] == [10.0, 7.0]
+
+
 def test_tool_budget_is_reserved_and_exhaustion_still_allows_final() -> None:
     environment = ProductMathEnv(_task(), _budget(), ToolRegistry([EchoTool()]))
     first = asyncio.run(environment.step(ToolAction(call=ToolCall(name="echo", arguments={})), 1))

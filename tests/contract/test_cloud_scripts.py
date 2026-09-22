@@ -34,6 +34,32 @@ def test_training_image_requires_an_immutable_cuda_base_and_pinned_upstreams() -
     assert "flash-attn==" in lock
 
 
+def test_preflight_probes_the_sandbox_through_one_source_of_truth() -> None:
+    """SandboxFusion serves /v1/ping, not /health, and preflight.py already runs a
+    two-level probe (ping + a real execution). A second curl probe in the shell can
+    only drift from it, so the shell must stay delegated."""
+    source = (REPO_ROOT / "scripts" / "cloud" / "preflight.sh").read_text()
+
+    assert "/health" not in source
+    assert "--require-sandbox" in source
+    assert "preflight.py" in source
+
+
+def test_launch_scripts_gate_on_preflight_before_spending_gpu_time() -> None:
+    for name in ("launch_sft.sh", "launch_grpo.sh"):
+        source = (REPO_ROOT / "scripts" / "cloud" / name).read_text()
+        assert "preflight.sh" in source, f"{name} must run preflight before training"
+
+
+def test_runbook_documents_the_disk_threshold_override_for_single_gpu_hosts() -> None:
+    """The 500GB default fits the cloud H100 host; a single 24GB-GPU box has far
+    less free space, so the override must be written down or preflight blocks
+    every local run."""
+    runbook = (REPO_ROOT / "docs" / "runbooks" / "cloud-training.md").read_text()
+
+    assert "ADAPTIVE_MATH_MIN_DISK_GB" in runbook
+
+
 def test_runbook_covers_persistence_and_emergency_stop() -> None:
     runbook = (REPO_ROOT / "docs" / "runbooks" / "cloud-training.md").read_text()
 

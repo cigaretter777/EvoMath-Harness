@@ -8,8 +8,15 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+import httpx
+
 from adaptive_math.core.hashing import sha256_hex
 from adaptive_math.training.upstreams import validate_manifest
+
+# The run probe must outlast the sandbox's own 10s default run_timeout, or a
+# healthy-but-slow executor would be reported as dead.
+_PROBE_TIMEOUT_SECONDS = 5.0
+_PROBE_RUN_TIMEOUT_SECONDS = 15.0
 
 
 def _file_evidence(path: Path) -> dict[str, str]:
@@ -35,6 +42,36 @@ def _gpu_evidence(required: bool) -> dict[str, Any]:
     return {"required": True, "devices": result.stdout.splitlines()}
 
 
+def _sandbox_evidence(required: bool) -> dict[str, Any]:
+    """A configured URL is not evidence the sandbox works. Probe liveness and one
+    real execution: a dead sandbox degrades every Python tool call to UNAVAILABLE
+    for the whole run, and the reward then trains against a broken tool."""
+    if not required:
+        return {"required": False}
+    url = os.environ.get("ADAPTIVE_MATH_SANDBOX_URL")
+    if not url:
+        raise RuntimeError("ADAPTIVE_MATH_SANDBOX_URL is required when sandbox checks are enabled")
+    base = url.rstrip("/")
+    try:
+        ping = httpx.get(f"{base}/v1/ping", timeout=_PROBE_TIMEOUT_SECONDS)
+        if ping.status_code != 200 or ping.json() != "pong":
+            raise RuntimeError(f"sandbox ping at {base}/v1/ping returned {ping.status_code}")
+        run = httpx.post(
+            f"{base}/run_code",
+            json={"code": "print(6 * 7)", "language": "python"},
+            timeout=_PROBE_RUN_TIMEOUT_SECONDS,
+        )
+        payload = run.json()
+    except httpx.HTTPError as exc:
+        raise RuntimeError(f"sandbox at {base} is unreachable: {exc}") from exc
+    except ValueError as exc:
+        raise RuntimeError(f"sandbox at {base} answered with a non-JSON body") from exc
+    result = payload.get("run_result") or {}
+    if run.status_code != 200 or payload.get("status") != "Success" or result.get("stdout") != "42\n":
+        raise RuntimeError(f"sandbox execution probe failed at {base}: {str(payload)[:300]}")
+    return {"required": True, "url": url, "reachable": True, "probe": "pong+42"}
+
+
 def preflight(
     *,
     task_manifest: Path,
@@ -49,13 +86,11 @@ def preflight(
         validate_manifest(json.loads(upstream_manifest.read_text()))
     except (ValueError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"invalid upstream manifest: {exc}") from exc
-    if require_sandbox and not os.environ.get("ADAPTIVE_MATH_SANDBOX_URL"):
-        raise RuntimeError("ADAPTIVE_MATH_SANDBOX_URL is required when sandbox checks are enabled")
     return {
         "ok": True,
         "inputs": {"task_manifest": task_evidence, "upstream_manifest": upstream_evidence},
         "gpu": _gpu_evidence(require_gpu),
-        "sandbox": {"required": require_sandbox, "url_configured": bool(require_sandbox)},
+        "sandbox": _sandbox_evidence(require_sandbox),
     }
 
 
