@@ -18,10 +18,10 @@ echo "preflight task_manifest=${ADAPTIVE_MATH_TASK_MANIFEST} sandbox_url=${ADAPT
 # /dev/nvidia* character nodes. Do not add a vendor-CLI status check here: on the
 # AutoDL host that binary is 0 bytes and exits 0 under bash, and a second copy of
 # the rule can only drift from the one that actually gates the launch.
-python scripts/cloud/preflight.py --task-manifest "$ADAPTIVE_MATH_TASK_MANIFEST" --require-gpu "${sandbox_flags[@]}"
+"${PYTHON:-python}" scripts/cloud/preflight.py --task-manifest "$ADAPTIVE_MATH_TASK_MANIFEST" --require-gpu "${sandbox_flags[@]}"
 if "$dry_run"; then exit 0; fi
 [[ $(df -Pk . | awk 'NR==2 {print int($4/1024/1024)}') -ge ${ADAPTIVE_MATH_MIN_DISK_GB:-500} ]]
 [[ $(free -g | awk '/Mem:/ {print $2}') -ge ${ADAPTIVE_MATH_MIN_RAM_GB:-128} ]]
 # The sandbox probe lives in preflight.py (--require-sandbox above): ping plus a
 # real execution. Do not add a second curl here, it can only drift from it.
-python scripts/train/check_backend_contract.py --manifest third_party/manifest.json
+"${PYTHON:-python}" scripts/train/check_backend_contract.py --manifest third_party/manifest.json

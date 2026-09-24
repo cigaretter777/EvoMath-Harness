@@ -66,3 +66,13 @@ def test_runbook_covers_persistence_and_emergency_stop() -> None:
     assert "tmux" in runbook
     assert "Emergency stop" in runbook
     assert "SANDBOXFUSION_IMAGE_DIGEST" in runbook
+
+
+def test_preflight_runs_under_the_training_interpreter_when_one_is_given() -> None:
+    """The gate has to validate the interpreter that will actually run the job.
+    Bare `python` on this host is the system one, which has no pydantic at all: a
+    gate that passes there proves nothing about the run that follows it, and a gate
+    that *crashes* there blocks a box that is actually ready."""
+    source = (REPO_ROOT / "scripts" / "cloud" / "preflight.sh").read_text()
+
+    assert '"${PYTHON:-python}" scripts/cloud/preflight.py' in source
