@@ -178,3 +178,43 @@ def test_math_rollout_uses_versioned_reward_breakdown_at_terminal() -> None:
         "token_cost": 0.0,
         "tool_cost": 0.0,
     }
+
+
+def test_budget_exhaustion_does_not_outscore_an_honest_wrong_answer() -> None:
+    """The reward shape GRPO actually saw during R2: a row that burned its budget
+    on invalid actions scored 0.0, while a row that admitted a wrong answer scored
+    -0.1. Within one group that ranks giving up above trying, and it is why the
+    invalid-action penalty never reaches the trajectories that need it most."""
+    import pytest
+
+    reward = RewardConfig(
+        version="r2-test",
+        variant="r2",
+        tool_weight=0.15,
+        python_weight=0.10,
+        invalid_weight=0.10,
+        invalid_cap=3,
+        token_weight=0.0,
+        clip_min=-1.0,
+        clip_max=1.0,
+    )
+    manager = MathRolloutManager(
+        Budget(max_steps=2, max_tool_calls=1, max_python_seconds=1, max_observation_chars=100),
+        ToolRegistry([]),
+        reward_config=reward,
+    )
+    manager.reset(
+        [_task("unit:exhaust"), _task("unit:honest")], group_size=1, policy_version="p1"
+    )
+
+    asyncio.run(manager.step(["not an action", "not an action"]))
+    final = asyncio.run(
+        manager.step(["not an action", '<final>{"answer":"99"}</final>'])
+    )
+
+    exhausted, honest = final[0], final[1]
+    assert exhausted.info["termination_reason"] == "max_steps"
+    assert honest.info["termination_reason"] == "final"
+    assert exhausted.reward == pytest.approx(-0.2)
+    assert honest.reward == pytest.approx(-0.1)
+    assert exhausted.reward < honest.reward

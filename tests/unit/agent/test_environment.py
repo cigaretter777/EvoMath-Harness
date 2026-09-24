@@ -6,6 +6,7 @@ from adaptive_math.agent.state import TerminationReason
 from adaptive_math.core.types import AnswerType, Budget, LabeledMathTask, MathTask, ReferenceAnswer
 from adaptive_math.tools.base import ToolContext, ToolResult
 from adaptive_math.tools.registry import ToolRegistry
+from adaptive_math.verifier.service import VerifierStatus
 
 
 class EchoArguments:
@@ -113,3 +114,52 @@ def test_tool_budget_is_reserved_and_exhaustion_still_allows_final() -> None:
     assert first.state.usage.tool_calls == 1
     assert second.observation is not None and second.observation.kind == "action_error"
     assert final.state.termination_reason is TerminationReason.FINAL
+
+
+def _labeled() -> LabeledMathTask:
+    return LabeledMathTask(task=_task(), reference=ReferenceAnswer(value="2", answer_type=AnswerType.INTEGER))
+
+
+def _exhaust_budget(environment: OfflineMathEnv, steps: int) -> None:
+    for monotonic_ms in range(1, steps + 1):
+        asyncio.run(environment.step(None, monotonic_ms=monotonic_ms))
+
+
+def test_budget_exhaustion_without_a_final_answer_is_an_invalid_prediction() -> None:
+    """The eval loop scores "no extractable answer" as INVALID_PREDICTION. The
+    training loop scored the same fact as *no verdict at all*, which skipped
+    reward_for_trajectory entirely: budget exhaustion paid 0.0 while an honest
+    wrong answer carrying invalid actions paid -0.2, so giving up outranked
+    terminating. Both loops must judge one fact the same way."""
+    environment = OfflineMathEnv(_labeled(), _budget(), ToolRegistry([]))
+    _exhaust_budget(environment, _budget().max_steps)
+
+    verdict = environment.evaluate()
+
+    assert environment.state.termination_reason is TerminationReason.MAX_STEPS
+    assert verdict is not None
+    assert verdict.status is VerifierStatus.INVALID_PREDICTION
+    assert verdict.reward == 0.0
+    assert verdict.details["error_code"] == "no_final_answer"
+
+
+def test_an_unfinished_rollout_still_has_no_verdict() -> None:
+    """Only a terminated rollout may be scored; an in-flight one must not be
+    reported as an invalid prediction."""
+    environment = OfflineMathEnv(_labeled(), _budget(), ToolRegistry([]))
+    asyncio.run(environment.step(None, monotonic_ms=1))
+
+    assert environment.evaluate() is None
+
+
+def test_the_no_answer_verdict_carries_no_reference_text() -> None:
+    """The hidden-verifier boundary is that labels never ride out through the
+    public verdict path -- including the synthetic one."""
+    environment = OfflineMathEnv(_labeled(), _budget(), ToolRegistry([]))
+    _exhaust_budget(environment, _budget().max_steps)
+
+    verdict = environment.evaluate()
+
+    assert verdict is not None
+    assert verdict.normalized_prediction is None
+    assert "2" not in str(verdict.details)

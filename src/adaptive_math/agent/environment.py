@@ -140,8 +140,17 @@ class OfflineMathEnv(ProductMathEnv):
         self.__hidden_verifier = HiddenVerifier(labeled_task.reference, labeled_task.task.task_id)
 
     def evaluate(self) -> VerifierResult | None:
-        if self.state.termination_reason is None or self.state.final_answer is None:
+        """One verdict for every terminated rollout, none for an in-flight one.
+
+        A rollout that ran out of budget without an answer is an invalid
+        prediction, not a missing verdict: returning None here used to route the
+        caller around reward_for_trajectory, so exhausting the budget paid more
+        than terminating with a penalised wrong answer.
+        """
+        if self.state.termination_reason is None:
             return None
+        if self.state.final_answer is None:
+            return self.__hidden_verifier.no_final_answer()
         return self.__hidden_verifier.evaluate(self.state.final_answer)
 
 
