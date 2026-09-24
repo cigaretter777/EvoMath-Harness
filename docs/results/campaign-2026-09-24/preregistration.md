@@ -133,6 +133,123 @@ stored baseline) vs the stored `sft_dp_v1_omnimath_200_evalv2` arm, task by task
   is a negative finding about our own prior campaign and will be written down
   either way.
 
+## Addendum A (2026-09-24, committed before any E1 result was computed)
+
+**Correction to E1's measurement population.** E1 as pre-registered above named
+the four direct-eval arms as its population. That is wrong, and the error was
+found by reading the code rather than by looking at results:
+
+`src/adaptive_math/evaluation/model_eval.py:204` scores a generation with
+`extract(turn.text)` from `adaptive_math.verifier`. It never calls
+`parse_action`. The envelope parser (`src/adaptive_math/agent/parser.py`) is
+used only on the **agent path**: `agent/loop.py:40`, `training/verl_environment.py:136`
+(GRPO rollouts), `training/sft_records.py`, `training/solution_traces.py`.
+
+Consequences, all pre-committed here:
+
+1. E1's population is the **agent-path raws only**: P1's 40 trajectories
+   (R2 adapter), the 2026-09-15 smoke's 40 (SFT, pre-RL), and the 4-record
+   dead-tools arm. The eval arms are excluded, and any E1 number quoted against
+   them would be structurally zero and therefore meaningless.
+2. Architectural finding for the Harness design: **the agent protocol parser and
+   the eval extractor are two independent code paths.** A parser patch changes
+   training rewards and agent rollouts (inner loop); an extractor patch changes
+   eval labels (outer loop). Patch eligibility must be stated per loop, and the
+   HarnessSpec must record which of the two a patch touches.
+3. Disclosure: the E1 mechanism was observed on a 4-trajectory subsample of P1
+   *before* this addendum (5 of 14 model_outputs opened `<think>` without closing
+   it; one sample re-emitted an identical rejected string 6 times and hit
+   `max_steps` while holding the correct answer). The rescue rate on agent-path
+   turns is therefore **not** an uninformative prediction — the subsample already
+   suggests it is large. What remains pre-committed and untouched is the
+   promotion gate: rescue must gain ≥1 correct verdict, must demote zero, and
+   the McNemar p-value is reported whatever it says.
+4. Additional endpoint added, not replaced: for each rescued trajectory, report
+   termination reason before/after (`max_steps` → `final`) and reward
+   before/after, because on the agent path this patch changes **reward**, i.e.
+   it changes what GRPO would have been trained on — a training-relevant patch,
+   not a cosmetic label fix.
+
+## Addendum B (2026-09-24 ~19:00Z, committed before H3 ran and before any E2 result)
+
+### B.1 E1 outcome — both rules REJECTED on gate 1
+
+Measured by `scripts/campaign-20260924/eval_parser_rescue.py` on the agent-path
+population (P1 live run 40 trajectories, 2026-09-15 smoke 40, dead-tools arm 4):
+
+| rule | turns rescued to `ok` | identifiable trajectories | correct gained | correct demoted | verdict |
+|---|---|---|---|---|---|
+| A unclosed think | 4 of 72 (plus 6 advanced to a different error) | 1 | 0 | 0 | **REJECT** |
+| B bare final scalar | 6 of 72 | 2 | 0 | 0 | **REJECT** |
+
+Every answer recovered by either rule was judged `incorrect` by the production
+verifier (`\frac{3}{2}`, `3024`, `1004`), so gate 1 fails and gate 2 is
+trivially satisfied. The pre-registered claim that the rescued sample was
+"holding the correct answer" is **withdrawn**: the reference for that task is
+`120` and the model answered `130^{\circ}`. On the 2026-09-15 smoke run
+(pre-RL SFT) rule A found 1 malformed turn in 40; on the R2 run it found 21
+malformed turns in 72 — protocol degradation is a property of the RL arm, not of
+the SFT checkpoint.
+
+### B.2 Finding F3 — reward inversion for budget-exhausted trajectories
+
+Verified in code and in data, not inferred:
+
+- `agent/environment.py:142-145` — `evaluate()` returns `None` when
+  `final_answer is None`.
+- `training/verl_environment.py:139,151` — when the verdict is `None`, reward
+  stays `0.0` and `reward_for_trajectory` is never called, so the configured
+  invalid-action penalty is skipped entirely.
+- `scripts/eval/run_rollout_health.py` — same shape (`if verdict is not None`).
+- `evaluation/model_eval.py:209` — the eval loop scores the identical situation
+  as an explicit `INVALID_PREDICTION`. The two loops disagree.
+
+Measured on P1 (`analyze_reward_inversion.py`): 6 of 40 trajectories terminated
+at `max_steps` with `invalid_actions=6` and `verdict=None`, each scored `0.0`.
+Aligning the agent path with the eval path moves reward_sum 16.8 → 15.0
+(exactly 6 × −0.3 = invalid_weight 0.1 × cap 3) and **flips 2 samples in group
+4 from advantage +0.5773 to −0.8165**: under the shipped plumbing, GRPO was
+reinforcing the two protocol-failing samples in that group relative to their
+peers. `effective_group_rate` is unchanged (0.6 → 0.6); the defect changes the
+*direction* of the signal, not its availability. Control: the 2026-09-15 smoke
+run (R0, `invalid_weight=0`) has 0 no-verdict trajectories and 0 flips, so the
+inversion requires an invalid penalty and protocol failure together.
+
+**Not recoverable, stated as a gap:** the R2 training run stored no per-step
+group rewards (wandb disabled; only checkpoints and `resolved_config.yaml`), so
+the incidence of this inversion *during* the 12 training steps cannot be
+measured. Any claim about its training-time magnitude would be invented.
+Process fix required: log per-step group reward distributions, as §6.1 of the
+design already asks for.
+
+**Proposed fix (inner loop, not run tonight):** when a trajectory terminates
+without a final answer, score it with an `INVALID_PREDICTION` verdict and still
+apply the reward config, so the agent path and the eval path agree. Requires a
+failing test first, in a branch that does not touch the E2 checkout.
+
+### B.3 H3 — parser-tolerance diagnostic (registered as a diagnostic, not a candidate)
+
+Rules A and B are rejected for promotion by B.1. H3 is therefore **not** a
+promotion attempt; it is the only way to answer the remaining step-2 question,
+which the rejected patch happens to unblock: *when the protocol accepts the
+output shapes this policy actually emits, does it call tools at all, and does it
+use what the tool returns?*
+
+- Design: same 10 tasks, same selection seed 42, same group size 4, same R2
+  adapter, same reward config, same live sandbox, same generation config as P1.
+  The only difference is a parser that applies rules A and B.
+- Isolation: H3 runs from a separate git worktree so the E2 arms keep executing
+  against the pinned checkout; the E2 manifests' source hashes cannot change.
+- Endpoints, pre-specified: count of `tool_call` events (>0 or ==0); for each
+  executed tool call, whether the following model turn references the returned
+  observation; termination mix; invalid-action count; reward distribution.
+- Decision rule: if `tool_call` events remain 0 with a tolerant parser, the
+  zero-tool-use result is a **policy/prior** property (SFT demonstrated no tool
+  call, and no reward term points at one) and the behaviour-prior branch of
+  step 2 is triggered. If tool calls appear, the zero count in training was a
+  **protocol** artifact, and the inner-loop conclusion recorded on 2026-09-19
+  must be rewritten.
+
 ## What this campaign will NOT claim
 
 - That GRPO improved mathematical ability (the four-way paired result was null).

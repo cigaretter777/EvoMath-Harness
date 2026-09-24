@@ -3,6 +3,16 @@
 - Tasks: 200 (OmniMath `frozen_eval`, task_ids_sha256 `1fc257f2…`)
 - Prompt version: `agent-v1`
 - Verifier/extractor/prompt/parquet hashes identical across all arms (checked against eval manifests), so per-task verdicts are directly comparable.
+  - **Correction, 2026-09-24:** the hash check above is correct but incomplete.
+    The SFT baseline arm was generated at `batch_size=8` and the R0/R2 arms at
+    `batch_size=1`. Reproducing the baseline's model identity at batch 1 shows
+    greedy decoding is not batch invariant on this stack: raw outputs are
+    byte-identical on only 3/200 tasks, verifier labels agree on 130/200, and
+    correct/incorrect agrees on 185/200 — i.e. batching alone moves 15 tasks,
+    which is larger than every delta reported in the table below (−5, −1/+1, +3
+    improved-vs-regressed). The null conclusions stand; any directional reading
+    of a few-task difference between the batch-8 baseline and the batch-1 RL
+    arms does not. See `docs/results/campaign-2026-09-24/report.md` §3.
 
 | Arm | Correct | Invalid prediction | Valid-answer rate |
 | --- | ---: | ---: | ---: |
