@@ -33,7 +33,11 @@ while :; do
         echo "$(date -u +%H:%M:%SZ) watchdog: COMPLETE marker found, exiting" >> "$LOG"
         exit 0
     fi
-    if ! nvidia-smi >/dev/null 2>&1; then
+    # The vendor CLI under /usr/bin is 0 bytes on this host and exits 0 under bash,
+    # so the bare status check this replaces reported a card that is not attached.
+    gpu_json="$(bash "$REPO/scripts/cloud/gpu_probe.sh" 2>/dev/null)" && gpu_ok=yes || gpu_ok=no
+    if [ "$gpu_ok" != yes ]; then
+        echo "$(date -u +%H:%M:%SZ) watchdog: no usable GPU ($gpu_json)" >> "$LOG"
         sleep 120
         continue
     fi

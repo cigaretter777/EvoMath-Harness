@@ -25,6 +25,10 @@ POLL=${ADAPTIVE_MATH_MONITOR_POLL:-60}
 
 MERGED=$MAIN/artifacts/models/qwen3_1_7b_sft_dp_v1_merged
 R2_ADAPTER=$MAIN/artifacts/runs/grpo_qwen3_1_7b_r2/r2_adapter
+# The vendor CLI at /usr/bin is 0 bytes here and exits 0 under bash, so the status
+# check this replaces reported "GPU up" in a cardless container. The probe decides
+# on /dev/nvidia* instead and prints why.
+GPU_PROBE=$MAIN/scripts/cloud/gpu_probe.sh
 
 export HF_ENDPOINT=https://hf-mirror.com
 export ADAPTIVE_MATH_SANDBOX_URL=$SANDBOX_URL
@@ -84,9 +88,10 @@ while :; do
     fi
 
     if [ "$running" -eq 0 ]; then
-        if ! nvidia-smi >/dev/null 2>&1; then
+        gpu_json="$(bash "$GPU_PROBE" 2>/dev/null)" && gpu_ok=yes || gpu_ok=no
+        if [ "$gpu_ok" != yes ]; then
             status waiting_gpu none "$sandbox_ok"
-            log "no GPU; waiting"
+            log "no GPU; waiting ($gpu_json)"
         elif [ "$p2_done" = no ]; then
             # move a partial run aside instead of relaunching into it (the
             # 2026-09-19 watchdog spun for four days doing exactly that)

@@ -14,10 +14,12 @@ else
   sandbox_flags=()
 fi
 echo "preflight task_manifest=${ADAPTIVE_MATH_TASK_MANIFEST} sandbox_url=${ADAPTIVE_MATH_SANDBOX_URL:-<not required>} dry_run=${dry_run}"
+# The GPU check lives in preflight.py (--require-gpu above) and decides on the
+# /dev/nvidia* character nodes. Do not add a vendor-CLI status check here: on the
+# AutoDL host that binary is 0 bytes and exits 0 under bash, and a second copy of
+# the rule can only drift from the one that actually gates the launch.
 python scripts/cloud/preflight.py --task-manifest "$ADAPTIVE_MATH_TASK_MANIFEST" --require-gpu "${sandbox_flags[@]}"
 if "$dry_run"; then exit 0; fi
-nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
-[[ $(nvidia-smi -L | wc -l | tr -d ' ') -ge ${ADAPTIVE_MATH_MIN_GPU_COUNT:-1} ]]
 [[ $(df -Pk . | awk 'NR==2 {print int($4/1024/1024)}') -ge ${ADAPTIVE_MATH_MIN_DISK_GB:-500} ]]
 [[ $(free -g | awk '/Mem:/ {print $2}') -ge ${ADAPTIVE_MATH_MIN_RAM_GB:-128} ]]
 # The sandbox probe lives in preflight.py (--require-sandbox above): ping plus a
