@@ -15,4 +15,12 @@ echo "run_id=${run_id} config=${ADAPTIVE_MATH_GRPO_CONFIG} output=${run_dir} dry
 if "$dry_run"; then scripts/cloud/preflight.sh --dry-run; exit 0; fi
 scripts/cloud/preflight.sh
 mkdir -p "$run_dir"; git rev-parse HEAD >"$run_dir/git_sha"
-torchrun --nproc_per_node="${ADAPTIVE_MATH_NPROC_PER_NODE:-1}" scripts/train/run_grpo.py --config "$ADAPTIVE_MATH_GRPO_CONFIG" --output-dir "$run_dir" 2>&1 | tee "$run_dir/console.log"
+# Engine choice. torchrun hangs this container at the register-center handshake, so
+# the default is the in-process launcher that both completed GRPO runs actually used;
+# ADAPTIVE_MATH_USE_TORCHRUN=1 keeps the multi-process path for the cloud image.
+if [[ "${ADAPTIVE_MATH_USE_TORCHRUN:-0}" == "1" ]]; then
+    engine=(torchrun --nproc_per_node="${ADAPTIVE_MATH_NPROC_PER_NODE:-1}" scripts/train/run_grpo.py)
+else
+    engine=("${PYTHON:-python}" scripts/train/run_grpo_direct.py)
+fi
+"${engine[@]}" --config "$ADAPTIVE_MATH_GRPO_CONFIG" --output-dir "$run_dir" 2>&1 | tee "$run_dir/console.log"
