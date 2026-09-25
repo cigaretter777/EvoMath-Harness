@@ -18,6 +18,7 @@ import yaml
 from adaptive_math.agent.environment import OfflineMathEnv
 from adaptive_math.agent.loop import AgentLoop
 from adaptive_math.agent.model_client import GenerationConfig
+from adaptive_math.agent.parser import TOLERANCE_RULES
 from adaptive_math.agent.transformers_client import TransformersModelClient
 from adaptive_math.core.types import Budget
 from adaptive_math.reward import RewardConfig
@@ -35,6 +36,16 @@ from adaptive_math.training.rollout_health import (
     select_task_rows,
     summarize_group_rewards,
 )
+
+
+def _parse_tolerance_rules(value: str) -> tuple[str, ...]:
+    rules = tuple(rule for rule in value.split(",") if rule)
+    unknown = sorted(set(rules) - set(TOLERANCE_RULES))
+    if unknown:
+        raise argparse.ArgumentTypeError(
+            f"unknown parser-tolerance rule(s) {unknown}; valid: {TOLERANCE_RULES}"
+        )
+    return rules
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -100,6 +111,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-dir",
         default=None,
+    )
+    parser.add_argument(
+        "--parser-tolerance",
+        type=_parse_tolerance_rules,
+        default=None,
+        metavar="RULES",
+        help="comma-separated parser tolerance rules to enable "
+        "(unclosed_think,bare_final_scalar); default: strict parser",
     )
 
     return parser
@@ -207,6 +226,7 @@ async def run(args: argparse.Namespace) -> Path:
             "ADAPTIVE_MATH_SANDBOX_URL",
             "http://127.0.0.1:8080",
         ),
+        "parser_tolerance": list(args.parser_tolerance or []),
     }
     _write_json(manifest_path, manifest)
 
@@ -264,7 +284,7 @@ async def run(args: argparse.Namespace) -> Path:
             ]
         )
 
-        agent = AgentLoop()
+        agent = AgentLoop(parser_tolerance=args.parser_tolerance or ())
 
         all_rewards: list[float] = []
         reward_groups: list[list[float]] = []

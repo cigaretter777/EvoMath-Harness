@@ -74,12 +74,23 @@ def compare_expressions(prediction: str, reference: str, task_id: str) -> dict[s
             normalized_reference=ref_norm,
             details={"method": "word", "reason": "word_vs_value"},
         )
-    if _OPEN_ENDED.search(pred_norm) or _OPEN_ENDED.search(ref_norm):
-        # An ellipsis is a claim about an unfinished sum or an unbounded product;
-        # no honest comparison to a closed form exists. It stays invalid, but under
-        # its own reason -- "malformed expression" filed these with garbage output
-        # and hid the fact that the model was writing a real (if useless) format.
+    pred_open = _OPEN_ENDED.search(pred_norm) is not None
+    ref_open = _OPEN_ENDED.search(ref_norm) is not None
+    if pred_open and ref_open:
+        # Two unfinished claims: no honest comparison exists.
         return _verdict("invalid_prediction", reason="open_ended_series")
+    if pred_open:
+        # A trailing \cdots cannot equal a closed form: a wrong answer, not an
+        # unreadable one. Reward is 0.0 either way, so this cannot false-accept.
+        return _verdict(
+            "incorrect",
+            normalized_prediction=pred_norm,
+            normalized_reference=ref_norm,
+            details={"method": "open_series", "reason": "open_ended_series"},
+        )
+    if ref_open:
+        # An open-ended reference against a clean prediction is a broken reference.
+        return _verdict("invalid_reference", reason="open_ended_series")
     pred_sym = _parse_to_sympy(pred_norm)
     if pred_sym is None:
         return _verdict("invalid_prediction", reason="malformed expression")

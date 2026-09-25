@@ -20,6 +20,8 @@ def test_default_worker_budget_supports_the_symbolic_runtime() -> None:
     config = WorkerConfig()
 
     assert config.memory_mb == 4096
+    assert config.timeout_seconds == 8.0
+    assert config.cpu_seconds == 8
 
 
 def _selective_sleeping(prediction: str, reference: str, task_id: str) -> dict[str, object]:

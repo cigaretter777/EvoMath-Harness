@@ -112,12 +112,27 @@ def test_factorial_power_syntax_used_correctly_earns_credit() -> None:
 # --- F. open-ended series: label honestly, do not guess -------------------------
 
 
-def test_an_ellipsis_series_is_reported_as_unverifiable_not_malformed() -> None:
-    """omni_math:02f104ee. There is no honest way to decide whether a trailing
-    `\\cdots` equals a closed form, so this stays invalid_prediction -- but it must
-    say *why*, or the failure miner keeps filing it under malformed output."""
+def test_an_open_ended_prediction_against_a_closed_reference_is_incorrect() -> None:
+    """omni_math:02f104ee. A trailing ``\\cdots`` claims an unfinished series;
+    against a closed form it cannot be equal, so it is a wrong answer, not an
+    unreadable one."""
     prediction = r"\frac{1}{\sqrt{5}} + \frac{2}{5} + \frac{3}{25} + \cdots"
     verdict = compare(prediction, r"(2i-1)/4")
+
+    assert verdict["status"] == "incorrect"
+    assert verdict["details"]["method"] == "open_series"
+    assert verdict["details"]["reason"] == "open_ended_series"
+
+
+def test_a_closed_prediction_against_an_open_ended_reference_is_an_invalid_reference() -> None:
+    verdict = compare(r"1/2", r"\sum_{k=1}^{n} k + \cdots")
+
+    assert verdict["status"] == "invalid_reference"
+    assert verdict["details"]["reason"] == "open_ended_series"
+
+
+def test_two_open_ended_expressions_stay_unverifiable() -> None:
+    verdict = compare(r"1 + 2 + \cdots", r"3 + \cdots")
 
     assert verdict["status"] == "invalid_prediction"
     assert verdict["details"]["reason"] == "open_ended_series"

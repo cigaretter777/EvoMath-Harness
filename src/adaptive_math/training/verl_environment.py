@@ -10,7 +10,7 @@ from numpy import typing as npt
 from adaptive_math.agent.actions import ToolAction
 from adaptive_math.agent.environment import OfflineMathEnv
 from adaptive_math.agent.model_client import ChatMessage
-from adaptive_math.agent.parser import parse_action
+from adaptive_math.agent.parser import TOLERANCE_RULES, parse_action
 from adaptive_math.agent.prompts import render_initial_messages, render_observation
 from adaptive_math.agent.trace import Trajectory
 from adaptive_math.core.types import Budget, JSONValue, LabeledMathTask
@@ -133,7 +133,7 @@ class MathRolloutManager:
                 )
             environment.record_model_output(text, generated_tokens=0, monotonic_ms=self._step_index)
             self._conversations[env_id].append(ChatMessage(role="assistant", content=text))
-            parsed = parse_action(text)
+            parsed = parse_action(text, tolerate=TOLERANCE_RULES)
             result = await environment.step(parsed.action, self._step_index)
             evaluation = environment.evaluate() if result.terminated else None
             reward = evaluation.reward if evaluation is not None else 0.0

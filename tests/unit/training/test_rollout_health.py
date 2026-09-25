@@ -1,7 +1,23 @@
+import importlib.util
+from pathlib import Path
+
+import pytest
+
 from adaptive_math.training.rollout_health import (
     row_to_labeled_task,
     summarize_group_rewards,
 )
+
+
+def _load_rollout_health_script():
+    repo_root = Path(__file__).parents[3]
+    spec = importlib.util.spec_from_file_location(
+        "run_rollout_health", repo_root / "scripts" / "eval" / "run_rollout_health.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_row_to_labeled_task_builds_hidden_reference() -> None:
@@ -59,6 +75,29 @@ def test_select_task_rows_is_deterministic_without_replacement() -> None:
     assert first_ids == second_ids
     assert len(first_ids) == 10
     assert len(set(first_ids)) == 10
+
+
+def test_parser_tolerance_flag_parses_to_rules_tuple() -> None:
+    script = _load_rollout_health_script()
+
+    args = script.build_parser().parse_args(
+        ["--parser-tolerance", "unclosed_think,bare_final_scalar"]
+    )
+
+    assert args.parser_tolerance == ("unclosed_think", "bare_final_scalar")
+
+
+def test_parser_tolerance_defaults_to_strict() -> None:
+    script = _load_rollout_health_script()
+
+    assert script.build_parser().parse_args([]).parser_tolerance is None
+
+
+def test_parser_tolerance_rejects_unknown_rule() -> None:
+    script = _load_rollout_health_script()
+
+    with pytest.raises(SystemExit):
+        script.build_parser().parse_args(["--parser-tolerance", "nope"])
 
 
 def test_normalize_acceptable_forms_accepts_numpy_arrays() -> None:

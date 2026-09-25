@@ -14,6 +14,9 @@ RUNTIME_VERSION = "runtime-v1"
 
 
 class AgentLoop:
+    def __init__(self, *, parser_tolerance: tuple[str, ...] = ()) -> None:
+        self._parser_tolerance = parser_tolerance
+
     async def run(
         self,
         environment: ProductMathEnv | OfflineMathEnv,
@@ -37,7 +40,7 @@ class AgentLoop:
             monotonic_ms = round((time.monotonic() - started) * 1000)
             environment.record_model_output(turn.text, turn.generated_tokens, monotonic_ms)
             messages.append(ChatMessage(role="assistant", content=turn.text))
-            parsed = parse_action(turn.text)
+            parsed = parse_action(turn.text, tolerate=self._parser_tolerance)
             result = await environment.step(parsed.action, monotonic_ms)
             if result.observation is not None and not result.terminated:
                 messages.append(render_observation(result.observation.content))

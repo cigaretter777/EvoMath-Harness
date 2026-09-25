@@ -51,6 +51,27 @@ def test_verl_manager_uses_production_env_for_terminal_reward() -> None:
     )["success_rate"].tolist() == [1.0]
 
 
+def test_verl_manager_parses_tolerated_tool_call_as_valid() -> None:
+    config = SimpleNamespace(env=SimpleNamespace(rollout=SimpleNamespace(n=1)))
+    manager = VerlMathEnvironmentManager(
+        [_task()],
+        Budget(max_steps=2, max_tool_calls=1, max_python_seconds=0, max_observation_chars=100),
+        ToolRegistry([]),
+        config,
+        policy_version="p1",
+    )
+
+    _, _ = manager.reset({})
+    text = (
+        "<think>b - 168 = 0 so b = 168\n"
+        '<tool_call>{"name":"sympy","arguments":{"operation":"solve","expression":"b-168"}}</tool_call>'
+    )
+    _, _, _, step_infos = manager.step([text])
+
+    assert step_infos[0]["is_action_valid"] is True
+    assert step_infos[0]["tool_calling"] == 1.0
+
+
 def test_verl_manager_rejects_non_grouped_config() -> None:
     config = SimpleNamespace(env=SimpleNamespace(rollout=SimpleNamespace(n=0)))
     try:
