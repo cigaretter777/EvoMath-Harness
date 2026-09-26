@@ -41,8 +41,20 @@ class TraceEnvelope(BaseModel):
 
 
 def trajectory_hash(trajectory: Trajectory) -> str:
-    """Hash canonical JSON without non-deterministic envelope metadata."""
-    encoded = orjson.dumps(trajectory.model_dump(mode="json"), option=orjson.OPT_SORT_KEYS)
+    """Hash canonical JSON without non-deterministic envelope metadata.
+
+    ``harness_spec_hash`` is dropped when None so that trajectories recorded
+    before the harness field existed keep their original content hash.
+    """
+    payload = trajectory.model_dump(mode="json")
+    if payload["harness_spec_hash"] is None:
+        del payload["harness_spec_hash"]
+    if payload["model_version"] is None:
+        del payload["model_version"]
+    for event in payload["events"]:
+        if event["error_code"] is None:
+            del event["error_code"]
+    encoded = orjson.dumps(payload, option=orjson.OPT_SORT_KEYS)
     return hashlib.sha256(encoded).hexdigest()
 
 

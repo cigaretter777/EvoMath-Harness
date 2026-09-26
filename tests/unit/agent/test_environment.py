@@ -2,7 +2,7 @@ import asyncio
 
 from adaptive_math.agent.actions import FinalAction, ToolAction, ToolCall
 from adaptive_math.agent.environment import OfflineMathEnv, ProductMathEnv
-from adaptive_math.agent.state import TerminationReason
+from adaptive_math.agent.state import EventKind, StepErrorCode, TerminationReason
 from adaptive_math.core.types import AnswerType, Budget, LabeledMathTask, MathTask, ReferenceAnswer
 from adaptive_math.tools.base import ToolContext, ToolResult
 from adaptive_math.tools.registry import ToolRegistry
@@ -81,3 +81,38 @@ def test_tool_budget_is_reserved_and_exhaustion_still_allows_final() -> None:
     assert first.state.usage.tool_calls == 1
     assert second.observation is not None and second.observation.kind == "action_error"
     assert final.state.termination_reason is TerminationReason.FINAL
+
+
+def test_parse_failure_marks_event_with_action_parse_error() -> None:
+    environment = ProductMathEnv(_task(), _budget(), ToolRegistry([EchoTool()]))
+
+    result = asyncio.run(environment.step(None, monotonic_ms=1))
+
+    event = result.state.events[-1]
+    assert event.kind is EventKind.INVALID_ACTION
+    assert event.error_code is StepErrorCode.ACTION_PARSE_ERROR
+
+
+def test_tool_call_budget_exhaustion_marks_event_with_machine_code() -> None:
+    environment = ProductMathEnv(_task(), _budget(), ToolRegistry([EchoTool()]))
+    asyncio.run(environment.step(ToolAction(call=ToolCall(name="echo", arguments={})), 1))
+
+    result = asyncio.run(environment.step(ToolAction(call=ToolCall(name="echo", arguments={})), 2))
+
+    event = result.state.events[-1]
+    assert event.kind is EventKind.INVALID_ACTION
+    assert event.error_code is StepErrorCode.TOOL_CALL_BUDGET_EXHAUSTED
+
+
+def test_python_time_budget_exhaustion_marks_event_with_machine_code() -> None:
+    class PythonTool(EchoTool):
+        name = "python"
+
+    budget = Budget(max_steps=3, max_tool_calls=2, max_python_seconds=0.0, max_observation_chars=100)
+    environment = ProductMathEnv(_task(), budget, ToolRegistry([PythonTool()]))
+
+    result = asyncio.run(environment.step(ToolAction(call=ToolCall(name="python", arguments={})), 1))
+
+    event = result.state.events[-1]
+    assert event.kind is EventKind.INVALID_ACTION
+    assert event.error_code is StepErrorCode.PYTHON_TIME_BUDGET_EXHAUSTED

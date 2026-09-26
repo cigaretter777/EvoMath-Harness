@@ -26,6 +26,15 @@ class EventKind(StrEnum):
     TERMINATION = "termination"
 
 
+class StepErrorCode(StrEnum):
+    """Machine-readable cause of a failed step; tool-level failures keep their
+    own ``ToolErrorCode`` inside the TOOL_RESULT payload instead."""
+
+    ACTION_PARSE_ERROR = "action_parse_error"
+    TOOL_CALL_BUDGET_EXHAUSTED = "tool_call_budget_exhausted"
+    PYTHON_TIME_BUDGET_EXHAUSTED = "python_time_budget_exhausted"
+
+
 class Usage(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -43,6 +52,10 @@ class TraceEvent(BaseModel):
     kind: EventKind
     monotonic_ms: int = Field(ge=0)
     payload: dict[str, JSONValue] = Field(default_factory=dict)
+    # Machine-readable failure cause; None for successful or legacy events.
+    # Excluded from the canonical trajectory hash when None so pre-existing
+    # content hashes never change.
+    error_code: StepErrorCode | None = None
 
 
 class AgentState(BaseModel):
@@ -58,13 +71,22 @@ class AgentState(BaseModel):
     termination_reason: TerminationReason | None = None
 
     def append_event(
-        self, kind: EventKind, payload: dict[str, JSONValue], monotonic_ms: int
+        self,
+        kind: EventKind,
+        payload: dict[str, JSONValue],
+        monotonic_ms: int,
+        *,
+        error_code: StepErrorCode | None = None,
     ) -> "AgentState":
         self._ensure_active()
         if self.events and monotonic_ms < self.events[-1].monotonic_ms:
             raise ValueError("event time must be monotonic")
         event = TraceEvent(
-            sequence=len(self.events), kind=kind, monotonic_ms=monotonic_ms, payload=payload
+            sequence=len(self.events),
+            kind=kind,
+            monotonic_ms=monotonic_ms,
+            payload=payload,
+            error_code=error_code,
         )
         return self.model_copy(update={"events": (*self.events, event)})
 
