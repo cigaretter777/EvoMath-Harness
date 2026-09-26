@@ -126,7 +126,14 @@ def run_training(config: GRPOConfig, manifest_path: Path) -> None:
     config_dir = Path(inspect.getfile(backend)).parent / "config"
     if not config_dir.is_dir():
         raise ConfigError(f"pinned verl-agent config directory is missing: {config_dir}")
-    overrides = list(config.upstream_overrides) + [
+    # The upstream hgpo_trainer config declares a relative searchpath
+    # (file://verl/trainer/config) that only resolves when Hydra runs from the
+    # verl-agent repo root. Absolutize it here: Hydra resolves file://
+    # searchpath entries against the process CWD, not the config dir.
+    verl_trainer_config = config_dir.parents[2] / "verl" / "trainer" / "config"
+    overrides = [
+        f"hydra.searchpath=[file://{verl_trainer_config}]",
+    ] + list(config.upstream_overrides) + [
         "env.env_name=adaptive_math",
         f"+env.task_pool_path={config.task_pool_path.resolve()}",
         f"+env.budget_path={config.budget_path.resolve()}",

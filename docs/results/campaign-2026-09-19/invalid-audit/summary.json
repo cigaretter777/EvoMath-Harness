@@ -1,0 +1,26 @@
+{
+  "per_arm_category_counts": {
+    "sft": {
+      "truncated_at_cap": 67,
+      "verifier_rejected_parseable": 4
+    },
+    "r0": {
+      "truncated_at_cap": 51,
+      "verifier_rejected_parseable": 4
+    },
+    "r2": {
+      "truncated_at_cap": 68,
+      "verifier_rejected_parseable": 1
+    }
+  },
+  "per_arm_invalid_total": {
+    "sft": 71,
+    "r0": 55,
+    "r2": 69
+  },
+  "invalid_in_n_arms": {
+    "1": 33,
+    "2": 36,
+    "3": 30
+  }
+}

@@ -52,7 +52,18 @@ def test_verification_is_deterministic_for_the_same_task() -> None:
 
 
 def test_numeric_cross_check_records_method_and_points() -> None:
-    verdict = compare("x^2 + 1", "x^2 + 2")
+    """Retargeted 2026-09-25: it used x^2+1 vs x^2+2, whose difference reduces to
+    the constant -1, and such pairs are now decided exactly -- a proved non-zero
+    difference is better evidence than five sampled points. x^2 vs x^3 still has to
+    go through sampling, so the requirement this test guards is still guarded."""
+    verdict = compare("x^2", "x^3")
     assert verdict["status"] == "incorrect"
     assert "numeric" in str(verdict["details"].get("method"))
     assert "points" in verdict["details"]
+
+
+def test_a_constant_difference_is_decided_without_sampling() -> None:
+    verdict = compare("x^2 + 1", "x^2 + 2")
+
+    assert verdict["status"] == "incorrect"
+    assert verdict["details"]["method"] == "exact"

@@ -14,9 +14,13 @@ MAX_EXPR_CHARS = 8192
 MAX_NESTING = 64
 MAX_POWER = 10000
 # Child-process deadline.  Spawn must re-import sympy from scratch; on a
-# loaded shared host that can take several seconds, so keep this generous
-# enough that a correct calculation is never misreported as a timeout.
-WORKER_TIMEOUT_SECONDS = 10.0
+# loaded shared host that can take several seconds, and rollout steps spawn
+# several workers concurrently (one per batch row), so cold imports contend
+# and 10s misreported correct calculations as timeouts (observed on the
+# 2026-09-24 contract run: 4/4 concurrent cold spawns tripped the deadline).
+# 30s keeps generous headroom; the join returns as soon as the child exits,
+# so the deadline only bounds genuinely hung calculations.
+WORKER_TIMEOUT_SECONDS = 30.0
 _OPERATIONS = Literal["simplify", "factor", "expand", "solve", "diff", "integrate", "numeric"]
 _IDENTIFIER = re.compile(r"\b[A-Za-z_]\w*\b")
 _POWER = re.compile(r"\^\s*(\d+)")

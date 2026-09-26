@@ -1,0 +1,26 @@
+{
+  "mcnemar_pvalue": null,
+  "paired": null,
+  "paired_bootstrap_ci95": null,
+  "prompt_version": "agent-v1",
+  "sft": {
+    "correct": 25,
+    "generation_elapsed_seconds": 5812.695518308086,
+    "incorrect": 106,
+    "internal_error": 0,
+    "invalid_prediction": 69,
+    "invalid_reference": 0,
+    "mean_output_tokens": 690.015,
+    "median_output_tokens": 712.0,
+    "p50_generation_latency_ms": 29457.59262550564,
+    "p95_generation_latency_ms": 45320.60908424537,
+    "peak_gpu_memory_bytes": 3680820736,
+    "timeout": 0,
+    "tokens_per_second": 23.741653001664336,
+    "total": 200,
+    "valid_answer_rate": 0.655,
+    "verifier_accuracy": 0.125
+  },
+  "task_count": 200,
+  "task_ids_sha256": "1fc257f26fbf80ab877223c6bef8b9eda3e8cbfb47bd38b68f4ba6ccddddaee2"
+}

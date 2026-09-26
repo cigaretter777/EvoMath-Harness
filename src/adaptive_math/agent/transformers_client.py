@@ -26,7 +26,7 @@ class TransformersModelClient:
 
     @classmethod
     def from_pretrained(
-        cls, model_id: str, *, device: str = "auto", dtype: str = "auto"
+        cls, model_id: str, *, device: str = "auto", dtype: str = "auto", adapter: str | None = None
     ) -> "TransformersModelClient":
         try:
             from transformers import (  # type: ignore[import-not-found, unused-ignore]
@@ -39,6 +39,10 @@ class TransformersModelClient:
             ) from exc
         tokenizer = AutoTokenizer.from_pretrained(model_id)  # type: ignore[no-untyped-call, unused-ignore]
         model = AutoModelForCausalLM.from_pretrained(model_id, device_map=device, torch_dtype=dtype)
+        if adapter is not None:
+            from peft import PeftModel  # type: ignore[import-not-found, unused-ignore]
+
+            model = PeftModel.from_pretrained(model, adapter)
         return cls(tokenizer, model, model_id=model_id)
 
     async def generate(

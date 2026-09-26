@@ -119,6 +119,7 @@ def evaluate_pair(
     batch_size: int = 1,
     initial_predictions: dict[str, list[dict[str, object]]] | None = None,
     on_prediction: Callable[[str, dict[str, object]], None] | None = None,
+    arms: tuple[str, ...] = ("base", "sft"),
 ) -> EvalResult:
     """Evaluate both arms on the exact same ordered tasks and public prompts."""
     if batch_size <= 0:
@@ -139,7 +140,7 @@ def evaluate_pair(
     initial_predictions = initial_predictions or {"base": [], "sft": []}
     predictions: dict[str, list[dict[str, object]]] = {}
     arm_summaries: dict[str, dict[str, object]] = {}
-    for arm in ("base", "sft"):
+    for arm in arms:
         if isinstance(generate, ResourceReportingGenerator):
             generate.start_arm(arm)
         existing = initial_predictions.get(arm, [])
@@ -169,27 +170,31 @@ def evaluate_pair(
         if isinstance(generate, ResourceReportingGenerator):
             arm_summaries[arm].update(generate.resource_metrics())
     comparison = []
-    for base, sft in zip(predictions["base"], predictions["sft"], strict=True):
-        base_correct = base["verifier_status"] == VerifierStatus.CORRECT.value
-        sft_correct = sft["verifier_status"] == VerifierStatus.CORRECT.value
-        outcome = "improved" if sft_correct and not base_correct else (
-            "regressed" if base_correct and not sft_correct else "unchanged"
-        )
-        comparison.append({"task_id": base["task_id"], "base_correct": base_correct,
-                           "sft_correct": sft_correct, "outcome": outcome})
-    paired_statistics = _paired_statistics(comparison)
+    if "base" in arms and "sft" in arms:
+        for base, sft in zip(predictions["base"], predictions["sft"], strict=True):
+            base_correct = base["verifier_status"] == VerifierStatus.CORRECT.value
+            sft_correct = sft["verifier_status"] == VerifierStatus.CORRECT.value
+            outcome = "improved" if sft_correct and not base_correct else (
+                "regressed" if base_correct and not sft_correct else "unchanged"
+            )
+            comparison.append({"task_id": base["task_id"], "base_correct": base_correct,
+                               "sft_correct": sft_correct, "outcome": outcome})
+    paired_statistics = _paired_statistics(comparison) if comparison else {}
+    summary: dict[str, object] = {
+        "task_count": len(ids), "task_ids_sha256": sha256_hex("\n".join(ids).encode()),
+        "prompt_version": PROMPT_VERSION,
+    }
+    for arm in arms:
+        summary[arm] = arm_summaries[arm]
+    if comparison:
+        summary.update({"paired": dict(Counter(row["outcome"] for row in comparison)), **paired_statistics})
+    else:
+        summary.update({"paired": None, "paired_bootstrap_ci95": None, "mcnemar_pvalue": None})
     return {
-        "base_predictions": predictions["base"],
-        "sft_predictions": predictions["sft"],
+        "base_predictions": predictions.get("base", []),
+        "sft_predictions": predictions.get("sft", []),
         "comparison": comparison,
-        "summary": {
-            "task_count": len(ids), "task_ids_sha256": sha256_hex("\n".join(ids).encode()),
-            "prompt_version": PROMPT_VERSION,
-            "base": arm_summaries["base"],
-            "sft": arm_summaries["sft"],
-            "paired": dict(Counter(row["outcome"] for row in comparison)),
-            **paired_statistics,
-        },
+        "summary": summary,
     }
 
 
@@ -316,6 +321,23 @@ def write_artifacts(output_dir: Path, result: EvalResult, manifest: dict[str, ob
 
 def _render_evaluation_report(summary: dict[str, object]) -> str:
     """Render a small human-readable companion to the machine-readable summary."""
+    if "base" not in summary or "sft" not in summary:
+        # Adapter-only mode: report the evaluated arm without paired statistics.
+        lines = [
+            "# Adapter-only Evaluation",
+            "",
+            f"- Tasks: {summary['task_count']}",
+            f"- Prompt version: `{summary['prompt_version']}`",
+            "",
+            "| Arm | Correct | Valid-answer rate | Verifier accuracy | p50 latency (ms) | p95 latency (ms) | Tokens/s | Peak GPU memory |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        ]
+        for arm in ("base", "sft"):
+            if isinstance(summary.get(arm), dict):
+                lines.append(_report_arm_row(arm.title(), cast(dict[str, object], summary[arm])))
+        lines.append("")
+        lines.append("_Paired statistics are computed offline against the frozen Base/SFT predictions._")
+        return "\n".join(lines)
     base = cast(dict[str, object], summary["base"])
     sft = cast(dict[str, object], summary["sft"])
     paired = cast(dict[str, object], summary["paired"])

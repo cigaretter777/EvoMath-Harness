@@ -34,20 +34,25 @@ for _thread_env in (
     os.environ.setdefault(_thread_env, "1")
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
-from adaptive_math.verifier.symbolic import compare_expressions
+from adaptive_math.verifier.symbolic import _parse_to_sympy, compare_expressions
 
 Comparator = Callable[[str, str, str], dict[str, object]]
 
 
 @dataclass(frozen=True)
 class WorkerConfig:
-    timeout_seconds: float = 2.0
+    # A relation-vs-value comparison measures 2.5-2.6s CPU on this host
+    # (campaign-20260925 probe; ~3.9s end-to-end with worker spawn), and the
+    # wall clock inflates under load, so 2.0/2 tripped the deadline on an
+    # answer whose logic was already correct. 8.0/8 keeps ~3x headroom while
+    # the CPU timer still bounds a runaway comparison.
+    timeout_seconds: float = 8.0
     startup_timeout_seconds: float = 30.0
     # SciPy/SymPy's virtual-memory footprint exceeds 512 MiB during normal
     # expression parsing.  Keep an explicit ceiling, but give an isolated
     # verifier enough room to complete real OpenR1 examples.
     memory_mb: int = 4096
-    cpu_seconds: int = 2
+    cpu_seconds: int = 8
 
 
 class _CpuLimitExceeded(Exception):
@@ -81,6 +86,14 @@ def _worker_main(
     config: WorkerConfig,
 ) -> None:
     _apply_limits(config)
+    # Prime the LaTeX parser before signaling ready: its lazy initialization
+    # otherwise lands inside the first request's CPU budget and can trip the
+    # limit under load. Startup is bounded separately by the handshake deadline
+    # and is not charged to per-request timing.
+    try:
+        _parse_to_sympy(r"x^2 + 1")
+    except Exception:  # pragma: no cover - warm-up must never block readiness
+        pass
     ready_sender.send(True)
     while True:
         item = task_receiver.recv()

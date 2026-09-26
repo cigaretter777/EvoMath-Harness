@@ -109,8 +109,14 @@ def preflight(
     tokenizer_revision: str, max_new_tokens: int,
     batch_size: int = 1,
     expected_adapter_sha256: str | None = None,
+    rl_adapter: bool = False,
 ) -> tuple[list[LabeledMathTask], set[str], dict[str, object]]:
-    """Validate immutable inputs and leakage before importing the GPU stack."""
+    """Validate immutable inputs and leakage before importing the GPU stack.
+
+    ``rl_adapter=True`` evaluates a GRPO-trained adapter: instead of the SFT
+    manifest binding it requires an ``rl_provenance.json`` written by the
+    checkpoint export tool (verl checkpoint path + SHA-256).
+    """
     if limit <= 0 or max_new_tokens <= 0 or batch_size <= 0:
         raise ValueError("limit, max_new_tokens and batch_size must be positive")
     imported_package = Path(adaptive_math.__file__).resolve().parent
@@ -155,7 +161,14 @@ def preflight(
     complete_path = adapter / "COMPLETE"
     if not complete_path.is_file():
         raise ValueError("adapter COMPLETE marker is missing")
-    _validate_training_config(adapter, complete_path, sft_manifest_hash)
+    rl_provenance_hash: str | None = None
+    if rl_adapter:
+        provenance_path = adapter / "rl_provenance.json"
+        if not provenance_path.is_file():
+            raise ValueError("rl adapter requires rl_provenance.json (run the export tool)")
+        rl_provenance_hash = sha256_hex(provenance_path.read_bytes())
+    else:
+        _validate_training_config(adapter, complete_path, sft_manifest_hash)
     peft_meta = json.loads(adapter_config.read_text())
     adapter_base = peft_meta.get("base_model_name_or_path")
 
@@ -166,7 +179,10 @@ def preflight(
             namespace, repo = encoded.split("--", 1)
             selected_model = f"{namespace}/{repo}"
 
-    if adapter_base != selected_model:
+    if adapter_base != selected_model and not rl_adapter:
+        # RL adapters record their true training base (the GRPO actor model
+        # path) in rl_provenance.json; the hub-id base in adapter_config is
+        # only a fallback for standalone loading.
         raise ValueError(
             f"adapter base model does not match selected model: "
             f"{adapter_base!r} != {selected_model!r}"
@@ -185,6 +201,8 @@ def preflight(
         "base_model": model_id, "model_revision": model_revision,
         "tokenizer_revision": tokenizer_revision, "adapter_path": str(adapter.resolve()),
         "adapter_sha256": adapter_hash,
+        "adapter_kind": "rl" if rl_adapter else "sft",
+        "rl_provenance_sha256": rl_provenance_hash,
         "adapter_config_sha256": sha256_hex(adapter_config.read_bytes()),
         "eval_dataset": "omni_math", "eval_split": "frozen_eval",
         "eval_parquet_sha256": eval_hash,
@@ -261,7 +279,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--limit", type=int, choices=(200, 500), required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--rl-adapter", action="store_true",
+                        help="adapter comes from GRPO training; require rl_provenance.json instead of an SFT manifest binding")
+    parser.add_argument("--adapter-only", action="store_true",
+                        help="evaluate only the adapter arm; write predictions for offline pairing")
     args = parser.parse_args(argv)
+    arms: tuple[str, ...] = ("sft",) if args.adapter_only else ("base", "sft")
     tasks, sft_ids, manifest = preflight(
         eval_parquet=args.eval_parquet, data_manifest=args.data_manifest,
         sft_parquet=args.sft_parquet, sft_manifest=args.sft_manifest,
@@ -269,6 +292,7 @@ def main(argv: list[str] | None = None) -> int:
         model_revision=args.model_revision, tokenizer_revision=args.tokenizer_revision,
         max_new_tokens=args.max_new_tokens, batch_size=args.batch_size,
         expected_adapter_sha256=args.expected_adapter_sha256,
+        rl_adapter=args.rl_adapter,
     )
     if args.dry_run:
         print(json.dumps({"ok": True, "task_count": len(tasks), "manifest": manifest}, sort_keys=True))
@@ -278,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     journal = EvaluationJournal(
         args.output_dir.with_name(args.output_dir.name + ".in_progress"), manifest
     )
-    initial_predictions = {arm: journal.rows(arm) for arm in ("base", "sft")}
+    initial_predictions = {arm: journal.rows(arm) for arm in arms}
     manifest["started_at"] = datetime.now(UTC).isoformat()
     generate = make_generator(args.model_id, args.model_revision, args.tokenizer_revision,
                               args.adapter, args.max_new_tokens)
@@ -286,7 +310,7 @@ def main(argv: list[str] | None = None) -> int:
 
     bars = {
         arm: tqdm(total=len(tasks), initial=len(initial_predictions[arm]), desc=f"eval:{arm}")
-        for arm in ("base", "sft")
+        for arm in arms
     }
 
     def checkpoint(arm: str, row: dict[str, object]) -> None:
@@ -302,6 +326,7 @@ def main(argv: list[str] | None = None) -> int:
             batch_size=args.batch_size,
             initial_predictions=initial_predictions,
             on_prediction=checkpoint,
+            arms=arms,
         )
         manifest["completed_at"] = datetime.now(UTC).isoformat()
         write_artifacts(args.output_dir, result, manifest)
