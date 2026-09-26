@@ -162,6 +162,18 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="print the routing table and exit without touching the GPU",
     )
+    parser.add_argument(
+        "--shard-id",
+        type=int,
+        default=None,
+        help="process only tasks whose pool index mod shard-count equals shard-id "
+        "(both must be given together); shards run concurrently, one process each",
+    )
+    parser.add_argument(
+        "--shard-count",
+        type=int,
+        default=None,
+    )
     return parser
 
 
@@ -227,6 +239,15 @@ async def run(args: argparse.Namespace) -> None:
         )
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if (args.shard_id is None) != (args.shard_count is None):
+        raise ValueError("--shard-id and --shard-count must be given together")
+    if args.shard_count is not None and (
+        args.shard_count <= 0 or not 0 <= args.shard_id < args.shard_count
+    ):
+        raise ValueError(
+            f"invalid shard: id={args.shard_id} count={args.shard_count}"
+        )
+
     budget = Budget.model_validate(yaml.safe_load(agent_config_path.read_text()))
     reward_config = RewardConfig.model_validate(
         yaml.safe_load(reward_config_path.read_text())
@@ -289,6 +310,8 @@ async def run(args: argparse.Namespace) -> None:
             "git_sha": git_sha(),
             "router_source_sha256": router_source_sha256(),
             "routing_distribution": dict(sorted(distribution.items())),
+            "shard_id": args.shard_id,
+            "shard_count": args.shard_count,
         },
     )
 
@@ -313,6 +336,11 @@ async def run(args: argparse.Namespace) -> None:
     for task_index, task in enumerate(tasks, start=1):
         task_id = task.task.task_id
         channel = routing[task_id] if args.mode == "rule" else "both"
+
+        if args.shard_count is not None and (task_index - 1) % args.shard_count != args.shard_id:
+            # Another shard owns this task. Direct-channel tasks are still
+            # recorded in routing.jsonl (written above), just not rolled out.
+            continue
 
         if args.mode == "rule" and channel == "direct":
             # Reuses the stored base-direct arm; nothing to generate.
@@ -351,11 +379,18 @@ async def run(args: argparse.Namespace) -> None:
             flush=True,
         )
 
+    direct_reused = 0
+    for task_index, task in enumerate(tasks, start=1):
+        if args.shard_count is not None and (task_index - 1) % args.shard_count != args.shard_id:
+            continue
+        if args.mode == "rule" and routing[task.task.task_id] == "direct":
+            direct_reused += 1
+
     summary = {
         "mode": args.mode,
         "task_count": len(tasks),
         "rolled_out": rolled_out,
-        "direct_reused": len(tasks) - rolled_out,
+        "direct_reused": direct_reused,
         "correct_count": correct_count,
         "tool_calls_total": tool_calls_total,
         "invalid_actions_total": invalid_actions_total,

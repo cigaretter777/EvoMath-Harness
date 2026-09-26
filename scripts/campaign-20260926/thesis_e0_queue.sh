@@ -152,8 +152,13 @@ run_eval_slot() {
 # Slots 2-3: rule_baseline agent rollouts. No resume: a partial dir is moved
 # aside and the slot reruns fresh (the 2026-09-19 watchdog lesson). Completion
 # is the COMPLETE marker.
+#
+# shard_count > 0 runs that many concurrent processes over disjoint task
+# shards (out.shard0..N), then merges them into $out. The per-task generation
+# path is unchanged; only scheduling differs, so sharded and unsharded runs
+# produce the same trajectories.
 run_rule_slot() {
-    local name=$1 out=$2 mode=$3 attempt=1
+    local name=$1 out=$2 mode=$3 shards=${4:-0} attempt=1
 
     while :; do
         if [ -f "$out/COMPLETE" ]; then
@@ -172,37 +177,79 @@ run_rule_slot() {
             mv "$out" "$aside"
             log "$name: moved partial dir aside -> $aside"
         fi
+        local i
+        for i in $(seq 0 $((shards - 1))); do
+            if [ -d "$out.shard$i" ] && [ -n "$(ls -A "$out.shard$i" 2>/dev/null)" ]; then
+                local aside="$out.shard$i.partial-$(date -u +%Y%m%dT%H%M%SZ)"
+                mv "$out.shard$i" "$aside"
+                log "$name: moved partial shard $i aside -> $aside"
+            fi
+        done
 
-        log "$name: attempt $attempt/$MAX_ATTEMPTS mode=$mode out=$out"
-        status "$name" running "attempt=$attempt mode=$mode"
+        log "$name: attempt $attempt/$MAX_ATTEMPTS mode=$mode shards=$shards out=$out"
+        status "$name" running "attempt=$attempt mode=$mode shards=$shards"
 
-        "$PY" "$REPO/scripts/campaign-20260926/rule_baseline.py" \
-            --mode "$mode" \
-            --output-dir "$out" \
-            --temperature 0 \
-            --max-new-tokens 1024 >> "$QLOG" 2>&1 &
-        local child=$!
-
-        local last_growth
+        local child="" dirs="" i last_growth
         last_growth=$(date +%s)
+        if [ "$shards" -eq 0 ]; then
+            dirs="$out"
+            "$PY" "$REPO/scripts/campaign-20260926/rule_baseline.py" \
+                --mode "$mode" \
+                --output-dir "$out" \
+                --temperature 0 \
+                --max-new-tokens 1024 >> "$QLOG" 2>&1 &
+            child="$!"
+        else
+            for i in $(seq 0 $((shards - 1))); do
+                dirs="$dirs $out.shard$i"
+                "$PY" "$REPO/scripts/campaign-20260926/rule_baseline.py" \
+                    --mode "$mode" \
+                    --output-dir "$out.shard$i" \
+                    --shard-id "$i" \
+                    --shard-count "$shards" \
+                    --temperature 0 \
+                    --max-new-tokens 1024 >> "$QLOG" 2>&1 &
+                child="$child $!"
+            done
+        fi
+        child="${child# }"; dirs="${dirs# }"
+
         while :; do
             sleep "$POLL_SECONDS"
-            if ! kill -0 "$child" 2>/dev/null; then
-                wait "$child"; local rc=$?
-                if [ -f "$out/COMPLETE" ]; then
-                    log "$name: child exited rc=$rc with COMPLETE"
-                    break
+            local all_dead=yes
+            for pid in $child; do
+                if kill -0 "$pid" 2>/dev/null; then all_dead=no; fi
+            done
+            if [ "$all_dead" = yes ]; then
+                local rc=0
+                wait $child 2>/dev/null || rc=$?
+                local all_complete=yes
+                for d in $dirs; do
+                    [ -f "$d/COMPLETE" ] || all_complete=no
+                done
+                if [ "$all_complete" = yes ]; then
+                    log "$name: children exited rc=$rc with COMPLETE"
+                    if [ "$shards" -gt 0 ]; then
+                        # shellcheck disable=SC2086
+                        "$PY" "$REPO/scripts/campaign-20260926/merge_rule_shards.py" \
+                            --output-dir "$out" --shards $dirs >> "$QLOG" 2>&1
+                    fi
+                    if [ -f "$out/COMPLETE" ]; then
+                        log "$name: complete"
+                        break
+                    fi
                 fi
-                log "$name: child exited rc=$rc without COMPLETE"
+                log "$name: children exited rc=$rc without all COMPLETE"
                 attempt=$((attempt + 1))
                 break
             fi
             local newest
-            newest=$(find "$out" -name 'trajectories.jsonl' -newermt "-${STALL_SECONDS} seconds" 2>/dev/null | head -1)
+            # shellcheck disable=SC2086
+            newest=$(find $dirs -name 'trajectories.jsonl' -newermt "-${STALL_SECONDS} seconds" 2>/dev/null | head -1)
             if [ -z "$newest" ] && [ "$last_growth" -lt "$(($(date +%s) - STALL_SECONDS))" ]; then
-                log "$name: no journal growth in ${STALL_SECONDS}s, killing $child"
-                kill -TERM "$child" 2>/dev/null; sleep 10; kill -KILL "$child" 2>/dev/null
-                wait "$child" 2>/dev/null
+                log "$name: no journal growth in ${STALL_SECONDS}s, killing children ($child)"
+                kill -TERM $child 2>/dev/null; sleep 10; kill -KILL $child 2>/dev/null
+                wait $child 2>/dev/null
                 attempt=$((attempt + 1))
                 break
             fi
@@ -217,8 +264,8 @@ log "queue start (thesis E0 baselines)"
 status init starting "three slots: base_direct, base_tool, rule_strategy"
 
 run_eval_slot
-run_rule_slot base_tool "$BASE_TOOL_OUT" all-tools
-run_rule_slot rule_strategy "$RULE_OUT" rule
+run_rule_slot base_tool "$BASE_TOOL_OUT" all-tools 0
+run_rule_slot rule_strategy "$RULE_OUT" rule 3
 
 log "queue done: all three slots complete"
 status all done "base_direct + base_tool + rule_strategy complete"
