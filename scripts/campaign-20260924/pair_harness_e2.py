@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from adaptive_math.evaluation.model_eval import _paired_statistics  # noqa: E402
+from adaptive_math.evaluation.model_eval import _paired_statistics
 
 
 def _rows(path: Path) -> dict[str, dict]:

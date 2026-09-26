@@ -39,7 +39,7 @@ def main() -> int:
             ".lora_B.default.weight", ".lora_B.weight"
         ): sd[key]
         for key in sd
-        if key.endswith(LORA_A) or key.endswith(LORA_B)
+        if key.endswith((LORA_A, LORA_B))
     }
     if not lora_weights:
         raise SystemExit("no lora_A/lora_B weights found in checkpoint")

@@ -192,14 +192,14 @@ def main() -> int:
         summarize_agent("E0b base+tool", base_tool),
         summarize_agent("E0c fixed-rule (rolled out)", rule),
     ]
-    rule_full = dict(
-        rule_correct=sum(rule_full_correct.values()),
-        rule_n=len(rule_full_correct),
-        rule_rolled_out_correct=sum(rule_correct.values()),
-        rule_direct_reused=sum(
+    rule_full = {
+        "rule_correct": sum(rule_full_correct.values()),
+        "rule_n": len(rule_full_correct),
+        "rule_rolled_out_correct": sum(rule_correct.values()),
+        "rule_direct_reused": sum(
             1 for c in routing.values() if c == "direct"
         ),
-    )
+    }
 
     pairings = [
         paired("E0b base+tool vs E0a base-direct", tool_correct, direct_base_correct),

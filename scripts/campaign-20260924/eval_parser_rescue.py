@@ -33,12 +33,11 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from adaptive_math.agent.parser import parse_action  # noqa: E402
-from adaptive_math.core.types import Budget, LabeledMathTask, ReferenceAnswer  # noqa: E402
-from adaptive_math.reward import RewardConfig, compute_reward  # noqa: E402
-from adaptive_math.reward.types import RewardContext  # noqa: E402
-from adaptive_math.training.rollout_health import row_to_labeled_task, select_task_rows  # noqa: E402
-from adaptive_math.verifier import verify_answer  # noqa: E402
+from adaptive_math.agent.parser import parse_action
+from adaptive_math.core.types import Budget, LabeledMathTask, ReferenceAnswer
+from adaptive_math.reward import RewardConfig, compute_reward
+from adaptive_math.reward.types import RewardContext
+from adaptive_math.verifier import verify_answer
 
 THINK_OPEN = "<" + "think>"
 THINK_CLOSE = "</" + "think>"

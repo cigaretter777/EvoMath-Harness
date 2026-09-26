@@ -105,6 +105,10 @@ def test_preflight_rejects_gpu_required_without_nvidia_smi(tmp_path: Path, monke
             upstream_manifest=REPO_ROOT / "third_party" / "manifest.json",
             require_gpu=True,
             require_sandbox=False,
+            # The gate reads device nodes under /dev; point it at an empty dir
+            # so the test holds on machines that do have a GPU (a real
+            # /dev/nvidia* would legitimately satisfy the gate).
+            dev_dir=tmp_path / "dev",
         )
 
 

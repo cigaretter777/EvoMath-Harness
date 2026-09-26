@@ -4,6 +4,7 @@ import hashlib
 import re
 from collections.abc import Sequence
 from enum import StrEnum
+from typing import cast
 
 import orjson
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
@@ -103,7 +104,7 @@ def parse_action(raw: str, *, tolerate: Sequence[str] = ()) -> ParseResult:
         action=action,
         error=None,
         raw_hash=raw_hash,
-        details={"tolerance_applied": applied} if applied else {},
+        details={"tolerance_applied": cast(list[JSONValue], applied)} if applied else {},
     )
 
 

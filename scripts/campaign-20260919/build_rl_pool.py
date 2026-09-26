@@ -7,7 +7,6 @@ SFT training set, then writes:
   - verl-format parquet: one row per task, env_kwargs.task_ids = group repeats
 """
 import argparse
-import hashlib
 import json
 from pathlib import Path
 

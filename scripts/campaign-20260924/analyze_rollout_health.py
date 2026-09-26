@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from adaptive_math.agent.parser import parse_action  # noqa: E402
+from adaptive_math.agent.parser import parse_action
 
 
 def _read_jsonl(path: Path) -> list[dict]:
