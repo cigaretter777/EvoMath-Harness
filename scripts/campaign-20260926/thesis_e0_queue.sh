@@ -32,6 +32,8 @@ SFT_MANIFEST=$REPO/data/manifests/sft_dp_v1_split.json
 DIRECT_OUT=$REPO/artifacts/eval/thesis_e0_base_direct_b1
 BASE_TOOL_OUT=$REPO/artifacts/rollout_health/thesis_e0_base_tool
 RULE_OUT=$REPO/artifacts/rollout_health/thesis_e0_rule_strategy
+EVAL_TASK_IDS=$DIRECT_OUT/task_ids.txt
+EVAL_PARQUET=$REPO/data/processed/v1/frozen_eval.parquet
 
 SANDBOX_URL=${ADAPTIVE_MATH_SANDBOX_URL:-http://127.0.0.1:8080}
 POLL_SECONDS=${ADAPTIVE_MATH_QUEUE_POLL:-60}
@@ -196,6 +198,8 @@ run_rule_slot() {
             "$PY" "$REPO/scripts/campaign-20260926/rule_baseline.py" \
                 --mode "$mode" \
                 --output-dir "$out" \
+                --data "$EVAL_PARQUET" \
+                --task-ids-file "$EVAL_TASK_IDS" \
                 --temperature 0 \
                 --max-new-tokens 1024 >> "$QLOG" 2>&1 &
             child="$!"
@@ -205,6 +209,8 @@ run_rule_slot() {
                 "$PY" "$REPO/scripts/campaign-20260926/rule_baseline.py" \
                     --mode "$mode" \
                     --output-dir "$out.shard$i" \
+                    --data "$EVAL_PARQUET" \
+                    --task-ids-file "$EVAL_TASK_IDS" \
                     --shard-id "$i" \
                     --shard-count "$shards" \
                     --temperature 0 \
@@ -264,7 +270,24 @@ log "queue start (thesis E0 baselines)"
 status init starting "three slots: base_direct, base_tool, rule_strategy"
 
 run_eval_slot
-run_rule_slot base_tool "$BASE_TOOL_OUT" all-tools 0
+
+# The agent arms must run on exactly the tasks the direct arms evaluated:
+# frozen_eval.parquet rows selected by the stored predictions' task_ids, in
+# the stored order.
+if [ ! -f "$EVAL_TASK_IDS" ]; then
+    "$PY" -c "
+import json, sys
+ids = []
+with open('$DIRECT_OUT/base_predictions.jsonl') as handle:
+    for line in handle:
+        ids.append(json.loads(line)['task_id'])
+with open('$EVAL_TASK_IDS', 'w') as out:
+    out.write('\n'.join(ids) + '\n')
+print(f'wrote {len(ids)} task_ids to $EVAL_TASK_IDS')
+" >> "$QLOG" 2>&1
+fi
+
+run_rule_slot base_tool "$BASE_TOOL_OUT" all-tools 3
 run_rule_slot rule_strategy "$RULE_OUT" rule 3
 
 log "queue done: all three slots complete"

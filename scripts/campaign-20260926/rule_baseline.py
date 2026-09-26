@@ -54,6 +54,7 @@ from adaptive_math.tools.registry import ToolRegistry
 from adaptive_math.tools.sandboxfusion import SandboxFusionClient
 from adaptive_math.tools.sympy_tool import SympyTool
 from adaptive_math.training.reward_bridge import reward_for_trajectory
+from adaptive_math.training.rollout_health import row_to_labeled_task
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -124,6 +125,40 @@ def load_pool(path: Path) -> list[LabeledMathTask]:
     return tasks
 
 
+def load_tasks(args: argparse.Namespace) -> list[LabeledMathTask]:
+    """Either the pool jsonl, or a parquet table filtered by a task-ids file.
+
+    The parquet path exists so the agent arms can run on exactly the same
+    tasks as the direct eval arms: frozen_eval.parquet rows selected by the
+    task_ids of a stored predictions file.
+    """
+    if args.data is None:
+        return load_pool(Path(args.pool))
+
+    if args.task_ids_file is None:
+        raise ValueError("--data requires --task-ids-file")
+
+    import pandas as pd
+
+    ids = [
+        line.strip()
+        for line in Path(args.task_ids_file).read_text().splitlines()
+        if line.strip()
+    ]
+    frame = pd.read_parquet(args.data)
+    frame = frame[frame["task_id"].isin(ids)]
+    by_id = {
+        row["task_id"]: row_to_labeled_task(dict(row))
+        for row in frame.to_dict(orient="records")
+    }
+    missing = [task_id for task_id in ids if task_id not in by_id]
+    if missing:
+        raise ValueError(
+            f"{len(missing)} task_ids not found in {args.data}, e.g. {missing[:3]}"
+        )
+    return [by_id[task_id] for task_id in ids]
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -135,6 +170,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--pool",
         type=Path,
         default=REPO / "artifacts/task_pools/rl_r0_200.jsonl",
+    )
+    parser.add_argument(
+        "--data",
+        type=Path,
+        default=None,
+        help="parquet task table to load instead of --pool (e.g. frozen_eval.parquet); "
+        "requires --task-ids-file",
+    )
+    parser.add_argument(
+        "--task-ids-file",
+        type=Path,
+        default=None,
+        help="one task_id per line; selects and orders the rows taken from --data",
     )
     parser.add_argument(
         "--model",
@@ -226,8 +274,13 @@ async def run(args: argparse.Namespace) -> None:
     reward_config_path = Path(args.reward_config)
     output_dir = Path(args.output_dir)
 
-    if not pool_path.is_file():
+    if args.data is None and not pool_path.is_file():
         raise FileNotFoundError(pool_path)
+    if args.data is not None:
+        if not Path(args.data).is_file():
+            raise FileNotFoundError(args.data)
+        if args.task_ids_file is None or not Path(args.task_ids_file).is_file():
+            raise FileNotFoundError(args.task_ids_file)
     if not agent_config_path.is_file():
         raise FileNotFoundError(agent_config_path)
     if not reward_config_path.is_file():
@@ -253,7 +306,7 @@ async def run(args: argparse.Namespace) -> None:
         yaml.safe_load(reward_config_path.read_text())
     )
 
-    tasks = load_pool(pool_path)
+    tasks = load_tasks(args)
     routing = {task.task.task_id: route(task.task) for task in tasks}
     distribution = Counter(routing.values())
 
@@ -296,6 +349,10 @@ async def run(args: argparse.Namespace) -> None:
             "status": "running",
             "mode": args.mode,
             "pool": str(pool_path),
+            "data": str(args.data) if args.data is not None else None,
+            "task_ids_file": (
+                str(args.task_ids_file) if args.task_ids_file is not None else None
+            ),
             "model": str(args.model),
             "agent_config": str(agent_config_path),
             "reward_config": str(reward_config_path),

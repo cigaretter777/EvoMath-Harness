@@ -78,6 +78,33 @@ publishing baseline numbers. Labels may differ: the verifier/extractor were
 fixed after 2026-09-24 (relabel audit 2026-09-25: 4 labels per arm moved
 invalid→incorrect, zero correct counts changed).
 
+## Addendum A (2026-09-26 ~13:00 CST, committed before the corrected arms ran)
+
+**Pool misalignment found during analysis.** The direct arms (E0a/E1) evaluate
+`frozen_eval.parquet` rows whose task_ids are `omni_math:<hash>`; the agent
+arms (E0b/E0c) first ran against `artifacts/task_pools/rl_r0_200.jsonl` whose
+task_ids are `openr1_math_220k:<hash>`. The two sets share **zero** task_ids
+(and zero source_hashes and zero problem texts): they are different 200-task
+sets, so the first agent-arm runs cannot be paired with the direct arms. The
+"same pool" claim in this document was written without verifying task_ids and
+is **withdrawn**.
+
+**Correction.** E0b and E0c are re-run on `frozen_eval.parquet` rows selected
+by the stored base-direct arm's task_ids (order preserved). Only the task
+source changes; model identity, decoding, budget, tools and reward config are
+unchanged. Consequences:
+
+1. The first agent-arm runs are archived as `*_openr1_pool` and are **not**
+   part of the paired campaign. They remain useful as training-pool
+   diagnostics (the RL pool is drawn from openr1_math_220k).
+2. The router's `problem_type` rule is **dormant on Omni-MATH**: the parquet's
+   metadata column is empty (`{}` for all 200 rows). Only the text rules fire;
+   the routing table below is still deterministic and pre-committed.
+3. The dry-run routing distribution over the corrected set replaces the
+   distribution quoted above and is recorded in each arm's manifest.
+
+Everything else in this document is unchanged.
+
 ## What this campaign will NOT claim
 
 - Anything about RL (no RL arm runs here).
