@@ -6,7 +6,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from adaptive_math.agent.actions import FinalAction, ToolAction
-from adaptive_math.agent.state import AgentState, EventKind, TerminationReason
+from adaptive_math.agent.state import AgentState, EventKind, StepErrorCode, TerminationReason
 from adaptive_math.core.types import Budget, LabeledMathTask, MathTask
 from adaptive_math.tools.base import ToolContext
 from adaptive_math.tools.registry import ToolRegistry
@@ -76,12 +76,24 @@ class ProductMathEnv:
             state = state.with_usage(steps=1).terminate(TerminationReason.FINAL, action.answer)
             return self._store(state, None)
         if not isinstance(action, ToolAction):
-            return self._invalid("Use exactly one <tool_call> or <final> action.", monotonic_ms)
+            return self._invalid(
+                "Use exactly one <tool_call> or <final> action.",
+                monotonic_ms,
+                error_code=StepErrorCode.ACTION_PARSE_ERROR,
+            )
         call = action.call
         if self._state.usage.tool_calls >= self._state.budget.max_tool_calls:
-            return self._invalid("Tool-call budget exhausted; submit a final answer.", monotonic_ms)
+            return self._invalid(
+                "Tool-call budget exhausted; submit a final answer.",
+                monotonic_ms,
+                error_code=StepErrorCode.TOOL_CALL_BUDGET_EXHAUSTED,
+            )
         if call.name == "python" and self._state.usage.python_seconds >= self._state.budget.max_python_seconds:
-            return self._invalid("Python-time budget exhausted; use another tool or submit a final answer.", monotonic_ms)
+            return self._invalid(
+                "Python-time budget exhausted; use another tool or submit a final answer.",
+                monotonic_ms,
+                error_code=StepErrorCode.PYTHON_TIME_BUDGET_EXHAUSTED,
+            )
 
         state = self._state.append_event(
             EventKind.TOOL_CALL,
@@ -107,8 +119,12 @@ class ProductMathEnv:
         state = self._terminate_if_exhausted(state)
         return self._store(state, observation)
 
-    def _invalid(self, content: str, monotonic_ms: int) -> StepResult:
-        state = self._state.append_event(EventKind.INVALID_ACTION, {"message": content}, monotonic_ms)
+    def _invalid(
+        self, content: str, monotonic_ms: int, *, error_code: StepErrorCode
+    ) -> StepResult:
+        state = self._state.append_event(
+            EventKind.INVALID_ACTION, {"message": content}, monotonic_ms, error_code=error_code
+        )
         state = state.with_usage(steps=1, invalid_actions=1)
         observation = self._observation("action_error", content, state)
         return self._store(self._terminate_if_exhausted(state), observation)

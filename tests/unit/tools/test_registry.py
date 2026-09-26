@@ -56,6 +56,11 @@ def test_registry_exposes_the_same_json_schema_used_for_validation() -> None:
     ]
 
 
+def test_registry_exposes_sorted_tool_names() -> None:
+    assert ToolRegistry([EchoTool()]).names == ("echo",)
+    assert ToolRegistry([]).names == ()
+
+
 def test_registry_maps_declared_operational_failures_without_swallowing_programming_errors() -> None:
     class FailingTool(EchoTool):
         async def execute(self, arguments: EchoArguments, context: ToolContext) -> ToolResult:

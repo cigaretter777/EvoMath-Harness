@@ -41,6 +41,11 @@ class ToolRegistry:
             return _error(ToolErrorCode.EXECUTION_ERROR)
         return _truncate(result, context.remaining_observation_chars)
 
+    @property
+    def names(self) -> tuple[str, ...]:
+        """Registered tool names, sorted — the environment's enabled tool set."""
+        return tuple(sorted(self._tools))
+
     def descriptions(self) -> list[dict[str, object]]:
         return [
             {

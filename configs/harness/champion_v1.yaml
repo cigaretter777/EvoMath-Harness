@@ -1,0 +1,25 @@
+harness_version: h-v1
+prompt_version: agent-v1
+runtime_version: runtime-v1
+tools:
+  - python
+  - sympy
+budget:
+  max_steps: 6
+  max_tool_calls: 4
+  max_python_seconds: 12.0
+  max_observation_chars: 8000
+generation:
+  max_new_tokens: 1024
+  temperature: 0.0
+  seed: null
+reward:
+  version: r2-v1
+  variant: r2
+  tool_weight: 0.15
+  python_weight: 0.10
+  invalid_weight: 0.10
+  invalid_cap: 3
+  token_weight: 0.0
+  clip_min: -1.0
+  clip_max: 1.0

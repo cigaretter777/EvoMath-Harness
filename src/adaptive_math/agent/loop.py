@@ -9,12 +9,25 @@ from adaptive_math.agent.parser import parse_action
 from adaptive_math.agent.prompts import PROMPT_VERSION, render_initial_messages, render_observation
 from adaptive_math.agent.state import TerminationReason
 from adaptive_math.agent.trace import Trajectory
+from adaptive_math.harness.spec import HarnessSpec
 
 RUNTIME_VERSION = "runtime-v1"
 
 
 class AgentLoop:
-    def __init__(self, *, parser_tolerance: tuple[str, ...] = ()) -> None:
+    """Runs one episode; when built with a HarnessSpec, stamps the trajectory
+    with the spec's runtime tag and content hash, and refuses to run with
+    runtime parameters that contradict the spec (no hidden drift)."""
+
+    def __init__(
+        self,
+        harness: HarnessSpec | None = None,
+        *,
+        model_version: str | None = None,
+        parser_tolerance: tuple[str, ...] = (),
+    ) -> None:
+        self._harness = harness
+        self._model_version = model_version
         self._parser_tolerance = parser_tolerance
 
     async def run(
@@ -24,6 +37,14 @@ class AgentLoop:
         generation: GenerationConfig,
         cancellation: asyncio.Event | None = None,
     ) -> Trajectory:
+        harness = self._harness
+        if harness is not None:
+            if generation != harness.generation:
+                raise ValueError("generation config does not match the harness spec")
+            if environment.state.budget != harness.budget:
+                raise ValueError("environment budget does not match the harness spec")
+            if environment.registry.names != harness.tools:
+                raise ValueError("environment tool set does not match the harness spec")
         messages: list[ChatMessage] = list(
             render_initial_messages(environment.state.task, environment.state.budget, environment.registry)
         )
@@ -53,5 +74,9 @@ class AgentLoop:
             final_answer=state.final_answer,
             termination_reason=state.termination_reason,
             usage=state.usage,
-            runtime_version=f"{RUNTIME_VERSION}+{PROMPT_VERSION}",
+            runtime_version=(
+                harness.runtime_tag() if harness is not None else f"{RUNTIME_VERSION}+{PROMPT_VERSION}"
+            ),
+            harness_spec_hash=harness.spec_hash() if harness is not None else None,
+            model_version=self._model_version,
         )
