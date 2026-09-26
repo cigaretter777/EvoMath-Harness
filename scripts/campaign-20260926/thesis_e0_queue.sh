@@ -271,6 +271,14 @@ status init starting "three slots: base_direct, base_tool, rule_strategy"
 
 run_eval_slot
 
+# Hard gate before any agent-slot GPU minute: the agent arms' task set must
+# be identical to the stored direct arm's (the 2026-09-26 pool-misalignment
+# lesson). CPU-only, fails the queue if the pairing could not exist.
+if ! bash "$REPO/scripts/campaign-20260926/verify_eval_alignment.sh" \
+    "$EVAL_TASK_IDS" "$DIRECT_OUT/base_predictions.jsonl" "$EVAL_PARQUET" >> "$QLOG" 2>&1; then
+    fail "verify_eval_alignment GATE FAIL"
+fi
+
 # The agent arms must run on exactly the tasks the direct arms evaluated:
 # frozen_eval.parquet rows selected by the stored predictions' task_ids, in
 # the stored order.
