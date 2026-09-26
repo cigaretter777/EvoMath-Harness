@@ -17,6 +17,8 @@ import stat
 import subprocess
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).parents[2]
 PROBE = REPO_ROOT / "scripts" / "cloud" / "gpu_probe.sh"
 
@@ -32,14 +34,23 @@ def _run_probe(devdir: Path, extra_path: Path | None = None) -> subprocess.Compl
 
 
 def _fake_card(devdir: Path, gpu_count: int = 1) -> None:
+    """Create the real character device nodes the probe looks for.
+
+    ``mknod`` needs root or CAP_MKNOD; the GitHub Actions runner has neither,
+    so these cases skip there. The AutoDL host (root) still exercises them —
+    that is where the false-positive this file guards against was observed.
+    """
     devdir.mkdir(parents=True, exist_ok=True)
-    ctl = devdir / "nvidiactl"
-    if not ctl.exists():
-        os.mknod(str(ctl), stat.S_IFCHR | 0o666, os.makedev(195, 255))
-    for index in range(gpu_count):
-        node = devdir / f"nvidia{index}"
-        if not node.exists():
-            os.mknod(str(node), stat.S_IFCHR | 0o666, os.makedev(195, index))
+    try:
+        ctl = devdir / "nvidiactl"
+        if not ctl.exists():
+            os.mknod(str(ctl), stat.S_IFCHR | 0o666, os.makedev(195, 255))
+        for index in range(gpu_count):
+            node = devdir / f"nvidia{index}"
+            if not node.exists():
+                os.mknod(str(node), stat.S_IFCHR | 0o666, os.makedev(195, index))
+    except PermissionError as e:
+        pytest.skip(f"creating char device nodes needs root/CAP_MKNOD: {e}")
 
 
 def _zero_byte_nvidia_smi(bindir: Path) -> Path:
