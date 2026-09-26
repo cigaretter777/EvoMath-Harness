@@ -16,7 +16,9 @@ class PythonArguments(BaseModel):
 
 
 class SandboxExecutor(Protocol):
-    async def run_code(self, code: str) -> ToolResult: ...
+    async def run_code(
+        self, code: str, timeout_seconds: float | None = None
+    ) -> ToolResult: ...
 
 
 class PythonTool:
@@ -30,8 +32,18 @@ class PythonTool:
         self._sandbox = sandbox
 
     async def execute(self, arguments: PythonArguments, context: ToolContext) -> ToolResult:
-        result = await self._sandbox.run_code(arguments.code)
+        result = await self._sandbox.run_code(
+            arguments.code, timeout_seconds=_remote_timeout(context)
+        )
         return _truncate(result, context.remaining_observation_chars)
+
+
+def _remote_timeout(context: ToolContext) -> float | None:
+    """The environment still owns budget enforcement; this only bounds how long
+    the sandbox may keep computing after the agent has moved on. A non-positive
+    remainder is treated as "no bound reported"."""
+    remaining = context.remaining_python_seconds
+    return remaining if remaining is not None and remaining > 0 else None
 
 
 def _truncate(result: ToolResult, limit: int) -> ToolResult:

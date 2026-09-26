@@ -272,6 +272,24 @@ def _invalid_prediction(error_code: str | None, normalized_reference: str | None
     )
 
 
+def no_final_answer_verdict() -> VerifierResult:
+    """Verdict for a rollout that terminated without ever producing an answer.
+
+    The eval loop already reports this fact as INVALID_PREDICTION when the
+    extractor finds nothing (model_eval._prediction_row). The training loop must
+    represent it the same way, because "no verdict" is what makes a terminal state
+    skip reward_for_trajectory -- and a skipped reward config pays 0.0, which beats
+    an honest wrong answer charged its invalid-action penalty.
+    """
+    return VerifierResult(
+        status=VerifierStatus.INVALID_PREDICTION,
+        reward=0.0,
+        normalized_prediction=None,
+        normalized_reference=None,
+        details={"error_code": "no_final_answer"},
+    )
+
+
 def _invalid_reference(error_code: str | None) -> VerifierResult:
     return VerifierResult(
         status=VerifierStatus.INVALID_REFERENCE,

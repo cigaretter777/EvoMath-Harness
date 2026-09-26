@@ -92,6 +92,9 @@ class ProductMathEnv:
             trace_id=self._trace_id,
             task_id=state.task.task_id,
             remaining_observation_chars=state.budget.max_observation_chars,
+            remaining_python_seconds=max(
+                0.0, state.budget.max_python_seconds - state.usage.python_seconds
+            ),
         )
         result = await self._registry.execute(call.name, call.arguments, context)
         python_seconds = _python_seconds(call.name, result.metadata)
@@ -137,8 +140,17 @@ class OfflineMathEnv(ProductMathEnv):
         self.__hidden_verifier = HiddenVerifier(labeled_task.reference, labeled_task.task.task_id)
 
     def evaluate(self) -> VerifierResult | None:
-        if self.state.termination_reason is None or self.state.final_answer is None:
+        """One verdict for every terminated rollout, none for an in-flight one.
+
+        A rollout that ran out of budget without an answer is an invalid
+        prediction, not a missing verdict: returning None here used to route the
+        caller around reward_for_trajectory, so exhausting the budget paid more
+        than terminating with a penalised wrong answer.
+        """
+        if self.state.termination_reason is None:
             return None
+        if self.state.final_answer is None:
+            return self.__hidden_verifier.no_final_answer()
         return self.__hidden_verifier.evaluate(self.state.final_answer)
 
 

@@ -211,6 +211,11 @@ def run_training(config: SFTConfig, data_path: Path) -> None:
         target_modules=list(config.lora_targets),
     )
     model = get_peft_model(model, lora)
+    if config.gradient_checkpointing:
+        # Frozen base embeddings + checkpointed blocks: the first checkpointed
+        # backward needs input grads or step 1 dies with
+        # "element 0 of tensors does not require grad and does not have a grad_fn".
+        model.enable_input_require_grads()
     model.print_trainable_parameters()
 
     class _MetricsCallback(TrainerCallback):

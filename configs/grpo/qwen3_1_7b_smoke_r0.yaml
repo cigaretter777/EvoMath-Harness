@@ -8,6 +8,10 @@ upstream_config_name: hgpo_trainer
 upstream_overrides:
   - actor_rollout_ref.model.path=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged
   - actor_rollout_ref.model.enable_gradient_checkpointing=True
+  # Low-cost route (decision 0001): train a LoRA adapter, not full params.
+  # Upstream default lora_rank=0 means full-param Adam states (~27GB) — OOM on 24GB.
+  - actor_rollout_ref.model.lora_rank=16
+  - actor_rollout_ref.model.lora_alpha=32
   - actor_rollout_ref.rollout.n=1
   - actor_rollout_ref.rollout.tensor_model_parallel_size=1
   - actor_rollout_ref.actor.ppo_mini_batch_size=8
@@ -19,10 +23,14 @@ upstream_overrides:
   - data.val_files=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/task_pools/rl_smoke_10x4_seed42.parquet
   - data.train_batch_size=8
   - data.return_raw_chat=true
-  - data.max_prompt_length=2048
+  - data.max_prompt_length=4096
   - trainer.total_training_steps=2
   - trainer.n_gpus_per_node=1
   - trainer.nnodes=1
+  # Upstream warns ray_init.num_cpus=null (auto-detect) can hang on
+  # restricted hosts; pin it. Fail fast on the register-center handshake.
+  - ray_init.num_cpus=8
+  - trainer.ray_wait_register_center_timeout=120
   - trainer.project_name=adaptive_math_grpo_smoke
   - trainer.experiment_name=qwen3_1_7b_smoke_r0
   - trainer.default_local_dir=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/runs/grpo_qwen3_1_7b_smoke_r0/checkpoints

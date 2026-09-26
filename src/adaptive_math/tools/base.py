@@ -41,6 +41,7 @@ class ToolContext(BaseModel):
     trace_id: str
     task_id: str
     remaining_observation_chars: int = Field(gt=0)
+    remaining_python_seconds: float | None = None
     cancellation: asyncio.Event | None = None
 
 

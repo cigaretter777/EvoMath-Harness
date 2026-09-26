@@ -1,0 +1,41 @@
+schema_version: adaptive-math-grpo-v1
+# R2 short run (2026-09-19): answer + tool/python/invalid rewards from the
+# same SFT base as R0 (ablation semantics, decision 0001 "R0 full + R2 short").
+# Sandbox URL must be reachable (ADAPTIVE_MATH_SANDBOX_URL).
+task_pool_path: artifacts/task_pools/rl_r0_200.jsonl
+task_pool_sha256: f6e08504f65d97accc3e1c03969ab1773e8987277230630a5da291281c79f8d7
+budget_path: configs/agent/default.yaml
+reward_path: configs/reward/r2.yaml
+output_dir: artifacts/runs/grpo_qwen3_1_7b_r2
+upstream_config_name: hgpo_trainer
+upstream_overrides:
+  - actor_rollout_ref.model.path=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged
+  - actor_rollout_ref.model.enable_gradient_checkpointing=True
+  - actor_rollout_ref.model.lora_rank=16
+  - actor_rollout_ref.model.lora_alpha=32
+  - actor_rollout_ref.rollout.n=1
+  - actor_rollout_ref.rollout.tensor_model_parallel_size=1
+  - actor_rollout_ref.actor.ppo_mini_batch_size=8
+  - actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1
+  - actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1
+  - env.rollout.n=4
+  - env.max_steps=6
+  - data.train_files=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/task_pools/rl_r0_200_4x_seed20260919.parquet
+  - data.val_files=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/task_pools/rl_r0_200_4x_seed20260919.parquet
+  - data.train_batch_size=8
+  - data.return_raw_chat=true
+  - data.max_prompt_length=4096
+  - trainer.total_training_steps=12
+  - trainer.n_gpus_per_node=1
+  - trainer.nnodes=1
+  - ray_init.num_cpus=8
+  - trainer.ray_wait_register_center_timeout=120
+  - trainer.project_name=adaptive_math_grpo
+  - trainer.experiment_name=qwen3_1_7b_r2
+  - trainer.default_local_dir=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/runs/grpo_qwen3_1_7b_r2/checkpoints
+  - trainer.save_freq=6
+  - trainer.test_freq=-1
+  - trainer.val_before_train=false
+  - algorithm.adv_estimator=grpo
+  - algorithm.use_kl_in_reward=false
+  - actor_rollout_ref.actor.use_kl_loss=false

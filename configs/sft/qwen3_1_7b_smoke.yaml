@@ -1,5 +1,9 @@
 # GPU-gated 200-record overfit smoke (tests/integration/test_sft_overfit.py).
 # Expectation: loss decreases, adapter reloads, >=98% protocol-valid terminals.
+# Calibrated 2026-09-19 on AutoDL 4090: 2 epochs (50 steps) leaves loss at ~2.8 and
+# 0/50 prompts emit the <final> envelope; 12 epochs (300 steps) collapses loss to
+# ~0.0003 and yields exact parseable terminals. Chat template wraps assistant
+# turns in <think> blocks, so the envelope needs the extra steps to be memorized.
 model_id: Qwen/Qwen3-1.7B
 model_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
 tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
@@ -7,7 +11,7 @@ data_manifest_sha256: "000000000000000000000000000000000000000000000000000000000
 output_dir: artifacts/sft/qwen3_1_7b_smoke
 precision: bf16
 max_length: 4096
-epochs: 2
+epochs: 12
 learning_rate: 2.0e-5
 warmup_ratio: 0.0
 weight_decay: 0.0
