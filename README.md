@@ -349,7 +349,7 @@ uv run python scripts/eval/run_model_eval.py --help
 uv run python scripts/eval/run_rollout_health.py --help
 ```
 
-训练命令不是零配置演示：运行前需要满足配置中的数据 manifest、模型 revision、固定上游版本和运行环境门禁。云端准备与恢复流程见 [云端训练 Runbook](docs/runbooks/cloud-training.md)，基础 SFT 结果解读见 [Base SFT 评测 Runbook](docs/runbooks/base-sft-evaluation.md)。
+训练命令不是零配置演示：运行前需要满足配置中的数据 manifest、模型 revision、固定上游版本和运行环境门禁。云端准备与恢复流程见 [云端训练 Runbook](docs/runbooks/cloud-training.md)，基础 SFT 结果解读见 [Base SFT 评测 Runbook](docs/runbooks/base-sft-evaluation.md)。实验代码落在哪条分支、为什么必须提交后才能开卡、结果如何晋升，见 [实验工作流 Runbook](docs/runbooks/experiment-workflow.md)。
 
 ## 目录结构
 
