@@ -31,6 +31,7 @@ artifacts/
 # local tooling
 .worktrees/
 .superpowers/
+.ipynb_checkpoints/
 
 # OS
 .DS_Store
