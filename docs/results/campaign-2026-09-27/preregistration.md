@@ -232,7 +232,7 @@ returns to the user rather than to a GPU.
 | P0 | frozen task set, 200 ids, sha `1fc257f2…`; 324/324 stored trajectories replay clean | **done**, §0/§3 |
 | P1 | emit each new arm's identity on CPU in the shape the gate compares: `scripts/eval/emit_arm_identity.py`, which imports the runner's own loader and hashes rather than restating them | **done**, §8 |
 | P2 | `verify_arm_identity.py --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json --candidate <identity.json> --justify docs/results/campaign-2026-09-27/source-drift-justification.md` exits **0** for each new arm | **done** for `all-tools` shard 0 on base and SFT weights, §8; re-run after the campaign against each real manifest |
-| P3 | sandbox reachable at `127.0.0.1:8080` and answering, probed immediately before the run | **open** |
+| P3 | sandbox reachable and *answering* (a ping is not evidence; the probe runs code), re-probed immediately before the run | **passed 2026-09-29**, both endpoint spellings, `pong+42`; expires — re-probe at launch |
 | P4 | the weights actually loaded match those fixed in §3 — the gate reports the weights difference but cannot judge it | **open**: the merged-model path is the only one available (§3), and the run's manifest is what records it |
 | P5 | the runner is still the frozen blob (`git hash-object` equals the stored arm's `router_source_sha256`) | **guarded by test**, §8 |
 
@@ -251,6 +251,29 @@ So the gate covers the pool, the configs, the generation parameters, the sandbox
 and the source drift, and it *reports* the weights. The weights themselves rest
 on the declaration in §3 plus the manifest the run writes; P4 is that check,
 and it is a human one by construction.
+
+**P3's probe, and why it is not a curl.** The canonical probe already exists in
+`scripts/cloud/preflight.py` (`_sandbox_evidence`), which ping plus a **real
+execution**, and the launch wrapper says in as many words not to add a second
+one because it could only drift from the first. Re-run it as:
+
+```
+$ .venv/bin/python -c "
+import importlib.util, os, sys
+spec = importlib.util.spec_from_file_location('preflight', 'scripts/cloud/preflight.py')
+m = importlib.util.module_from_spec(spec); sys.modules['preflight'] = m
+spec.loader.exec_module(m)
+os.environ['ADAPTIVE_MATH_SANDBOX_URL'] = 'http://localhost:8080'
+print(m._sandbox_evidence(True))"
+```
+
+Result on 2026-09-29: `{'required': True, 'url': …, 'reachable': True, 'probe':
+'pong+42'}` — the ping answered and an execution returned 42 — for both
+`localhost:8080` and `127.0.0.1:8080`, so the two spellings the gate compares as
+strings are in fact the same live sandbox. A liveness result is only evidence
+about the moment it was taken, which is why the row above expires: a dead
+sandbox degrades every Python tool call to `UNAVAILABLE` and would be recorded
+in the run as a property of the model.
 
 ## 8. Amendment 1 (2026-09-29, before any GPU minute)
 
