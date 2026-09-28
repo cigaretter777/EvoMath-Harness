@@ -30,10 +30,24 @@ def load_gate():
 
 
 def _baseline(**overrides: object) -> dict[str, object]:
+    """A manifest shaped like the stored arm's, not a minimal one.
+
+    Every field the gate treats as harness identity is present, because a
+    missing key turns a comparison into a "candidate records extra" advisory and
+    a test that meant to exercise the blocking path would silently exercise the
+    other one instead.
+    """
     base: dict[str, object] = {
         "mode": "all-tools",
         "model": "/models/qwen3-1.7b/snapshots/70d244cc",
         "generation": {"max_new_tokens": 1024, "temperature": 0.0},
+        "agent_config": "/repo/configs/agent/default.yaml",
+        "reward_config": "/repo/configs/reward/r0.yaml",
+        "pool": "/repo/artifacts/task_pools/rl_r0_200.jsonl",
+        "data": "/repo/data/processed/v1/frozen_eval.parquet",
+        "task_ids_file": "/repo/artifacts/eval/base/task_ids.txt",
+        "sandbox_url": "http://localhost:8080",
+        "router_source_sha256": "e" * 64,
         "task_count": 200,
         "shard_id": 0,
     }
@@ -48,9 +62,40 @@ def test_identical_identity_is_aligned() -> None:
     assert advisory == []
 
 
-def test_differing_identity_field_blocks() -> None:
+def test_differing_harness_field_blocks() -> None:
     gate = load_gate()
-    blocking, _ = gate.compare_identities(_baseline(), _baseline(model="/models/other"))
+    blocking, _ = gate.compare_identities(
+        _baseline(), _baseline(agent_config="/configs/agent/other.yaml")
+    )
+    assert any("agent_config" in problem for problem in blocking)
+
+
+def test_differing_weights_are_reported_not_blocking() -> None:
+    """Two paired arms differ in their weights by construction -- the stored arm
+    runs the base snapshot, the arms it is paired against run an adapter or a
+    merged checkpoint. Blocking on that would make the gate unable to pass the
+    pair it exists for. Reported, though: which weights an arm ran is the first
+    thing a reader of a paired result needs, and a wrong adapter must not be
+    invisible just because it is not fatal."""
+    gate = load_gate()
+    blocking, advisory = gate.compare_identities(
+        _baseline(),
+        _baseline(model="/models/merged-sft", adapter_sha256="c" * 64),
+    )
+    assert blocking == []
+    assert len(advisory) == 2
+    assert all("(weights:" in note for note in advisory)
+    assert {note.split(":")[0] for note in advisory} == {"model", "adapter_sha256"}
+
+
+def test_a_weights_field_the_baseline_recorded_is_still_required() -> None:
+    """Exempting a field from *comparison* is not exempting it from *existing*:
+    a candidate that drops a field the baseline recorded has regressed the
+    evidence, and that blocks for weights exactly as it does for anything else."""
+    gate = load_gate()
+    candidate = _baseline()
+    del candidate["model"]
+    blocking, _ = gate.compare_identities(_baseline(), candidate)
     assert any("model" in problem for problem in blocking)
 
 
@@ -73,18 +118,10 @@ def test_candidate_recording_extra_fields_is_advisory_not_blocking() -> None:
     assert len(advisory) == 2
 
 
-def test_candidate_omitting_a_baseline_field_blocks() -> None:
-    """The reverse direction is a regression in the evidence, so it blocks."""
-    gate = load_gate()
-    candidate = _baseline()
-    del candidate["model"]
-    blocking, _ = gate.compare_identities(_baseline(), candidate)
-    assert any("model" in problem for problem in blocking)
-
-
 def test_bookkeeping_fields_are_allowed_to_differ() -> None:
+    """Names and counts: skipped entirely, not even worth a note."""
     gate = load_gate()
-    candidate = _baseline(shard_id=2, task_count=200, adapter_sha256="c" * 64)
+    candidate = _baseline(shard_id=2, task_count=200, status="complete", run_id="r-2")
     blocking, advisory = gate.compare_identities(_baseline(), candidate)
     assert blocking == []
     assert advisory == []

@@ -10,11 +10,18 @@ assumption nobody verified. ``verify_eval_alignment.sh`` covers the task-set
 half of that; this covers the rest of the identity, which the same incident
 showed cannot be left to good intentions:
 
-* the same base model snapshot,
 * the same decoding configuration,
-* the same tool set and routing/reward configs,
+* the same tool set and agent/reward configs,
+* the same task set,
 * the same evaluation source, or a drift from the baseline's commit that has
   been argued for explicitly.
+
+The one thing that is *not* required to match is the arm's weights. Two paired
+arms differ there by construction -- the stored ``base+tool`` arm runs the base
+snapshot, the arms it is paired against run an adapter or a merged checkpoint --
+so ``WEIGHTS_FIELDS`` are reported in the gate's output rather than blocking.
+The gate cannot know which adapter was intended; it can make sure the
+difference is never silent.
 
 The last one is not a formality. Between the commit that produced the stored
 ``base+tool`` arm (``fdf9276``) and this branch's HEAD, eleven files under the
@@ -31,12 +38,24 @@ Usage
                            --candidate <identity.json> \
                            [--repo <path>] [--justify <drift-justification.md>]
 
-Both inputs are JSON objects describing the same arm. ``--baseline`` is the
-stored arm's per-shard ``manifest.json`` (the merged manifest drops the fields
-this gate needs -- see the merged ``manifest.json`` for ``base_tool``, which
-keeps only ``git_sha`` and counts). ``--candidate`` is what the new arm will
-actually run with; the evaluation runner emits it under ``--dry-run`` so the
-gate and the runner cannot disagree about what "the same configuration" means.
+``--baseline`` is the stored arm's per-shard ``manifest.json`` (the merged
+manifest drops the fields this gate needs -- see the merged ``manifest.json``
+for ``base_tool``, which keeps only ``git_sha`` and counts). ``--candidate`` is
+what the new arm will run with, emitted on CPU by
+``scripts/eval/emit_arm_identity.py`` from the runner's own loaders and hashes.
+Run it again after the run against the arm's real ``manifest.json``: the
+pre-flight prediction is what makes the gate fail on CPU rather than after two
+GPU hours, and the post-run pass is the authoritative one.
+
+One operational consequence worth knowing before editing anything. The agent
+runner ``scripts/campaign-20260926/rule_baseline.py`` writes ``git hash-object``
+of *its own committed file* into every manifest as ``router_source_sha256``,
+which is a blocking field. While that file stays byte-identical to the blob the
+stored arm pinned (``e591c886…``), the stored arm is pairable; edit it -- even
+to add a flag -- and every new agent arm records a different hash and the gate
+blocks the pair. The runner is immutable by contract, and
+``tests/unit/eval/test_emit_arm_identity.py`` is what notices if someone
+changes it.
 
 Exit codes: 0 aligned, 1 not aligned, 2 usage/setup error.
 """
@@ -54,9 +73,6 @@ from pathlib import Path
 ALLOWED_TO_DIFFER = frozenset(
     {
         "arm",
-        "adapter",
-        "adapter_path",
-        "adapter_sha256",
         "run_id",
         # The candidate runs at a later commit than the baseline by
         # construction; source drift is checked separately, and more strictly,
@@ -81,6 +97,16 @@ ALLOWED_TO_DIFFER = frozenset(
     }
 )
 
+# The arm's weights. Two arms being paired differ in these *by construction* --
+# comparing adapters is the entire point of having two arms -- so a difference
+# must not block, or the gate could never pass a pair it was written for.
+#
+# They are reported rather than silently skipped, because "which weights is this
+# arm" is the first question asked of a paired result. A wrong adapter is still
+# not fatal here (the gate cannot know which adapter was intended), but it is
+# printed in the gate's output instead of being invisible.
+WEIGHTS_FIELDS = frozenset({"model", "adapter", "adapter_path", "adapter_sha256", "adapter_kind"})
+
 # Source trees whose behaviour determines what a trajectory means. A drift here
 # is what makes two arms unpairable.
 EVAL_PATH = (
@@ -101,15 +127,25 @@ def compare_identities(
     candidate: dict[str, object],
     *,
     allowed: frozenset[str] = ALLOWED_TO_DIFFER,
+    weights: frozenset[str] = WEIGHTS_FIELDS,
 ) -> tuple[list[str], list[str]]:
     """Return ``(blocking, advisory)`` differences; blocking empty == aligned.
 
     Keys are compared over the union of both objects, because a field one arm
     records and the other silently drops is a weaker gate, not a passing one.
-    The asymmetry matters: a candidate that records *more* than the baseline
-    (the new arm adds source hashes the 09-26 arm never wrote down) is
-    strengthening the gate and is only worth a note, whereas a candidate that
-    *omits* a field the baseline recorded has regressed and blocks.
+    Three categories, and the reason each is where it is:
+
+    * **blocking** -- the harness identity: the task set, the decoding, the
+      configs, the prompt/verifier/router sources. A difference here means the
+      two arms are not measuring the same thing.
+    * **advisory** -- the weights (reported, not fatal: they are the variable
+      under study), and any field the candidate records that the baseline never
+      wrote down. The second is the asymmetry that matters: a candidate
+      recording *more* than the 09-26 arm is strengthening the gate and only
+      deserves a note, whereas a candidate that *omits* a field the baseline
+      recorded has regressed the evidence and blocks -- which is why omission
+      stays blocking for every field, weights included.
+    * **skipped** -- names and bookkeeping, listed in ``allowed``.
     """
     blocking: list[str] = []
     advisory: list[str] = []
@@ -117,11 +153,18 @@ def compare_identities(
         if key in allowed:
             continue
         if key not in baseline:
-            advisory.append(f"{key}: candidate records {candidate[key]!r}, baseline does not")
+            note = f"{key}: candidate records {candidate[key]!r}, baseline does not"
+            if key in weights:
+                note += " (weights: the baseline arm recorded none)"
+            advisory.append(note)
         elif key not in candidate:
             blocking.append(f"{key}: baseline has {baseline[key]!r}, candidate omits it")
         elif baseline[key] != candidate[key]:
-            blocking.append(f"{key}: baseline {baseline[key]!r} != candidate {candidate[key]!r}")
+            problem = f"{key}: baseline {baseline[key]!r} != candidate {candidate[key]!r}"
+            if key in weights:
+                advisory.append(f"{problem} (weights: expected to differ between arms)")
+            else:
+                blocking.append(problem)
     return blocking, advisory
 
 
@@ -210,10 +253,8 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print(f"GATE OK: evaluation source byte-identical to baseline commit {baseline_sha[:8]}")
 
-    print(
-        f"GATE OK: candidate aligned with baseline on {len(set(baseline) - ALLOWED_TO_DIFFER)} "
-        f"identity fields"
-    )
+    matched = set(baseline) - ALLOWED_TO_DIFFER - WEIGHTS_FIELDS
+    print(f"GATE OK: candidate aligned with baseline on {len(matched)} identity fields")
     return 0
 
 

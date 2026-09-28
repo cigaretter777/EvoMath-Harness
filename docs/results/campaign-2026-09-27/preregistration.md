@@ -132,11 +132,19 @@ that `r0_direct` and `r2_direct` recorded, and the model r0's adapter was
 trained from. Declared consequence: `sft_direct` was evaluated as
 snapshot + adapter (`adapter_sha256 2868f83e…`), so the `sft_direct` ↔
 `sft_agent` contrast carries a merge-rounding confound. It is bounded (the same
-weights up to merge arithmetic) and it is disclosed rather than papered over;
-the alternative — adding an `--adapter` flag to the agent runner to load the
-adapter path exactly as the direct arm did — is a CPU-only ~10-line change and
-is listed as prerequisite P1 so that the option stays open until the GPU is
-booked.
+weights up to merge arithmetic) and it is disclosed rather than papered over.
+
+The alternative — an `--adapter` flag on the agent runner — is **not
+available**, and the reason is worth stating because it constrains more than
+this paragraph: `scripts/campaign-20260926/rule_baseline.py` writes
+`git hash-object` of *its own committed file* into every manifest it produces
+(`router_source_sha256`), a field the identity gate treats as blocking. The
+stored arm pinned that blob (`e591c886…`), so the runner is **immutable by
+contract**: adding a flag to it would change the hash every future agent arm
+records and break the pair with the arm this campaign is built on. Loading the
+adapter path would mean a second runner, which is a worse trade than a disclosed
+merge-rounding confound. The merged model is therefore the only path, and the
+frozen runner's blob is guarded by a test. See the amendment in §8.
 
 ## 4. The four metrics, with definitions and denominators
 
@@ -222,22 +230,89 @@ returns to the user rather than to a GPU.
 | # | precondition | state |
 |---|---|---|
 | P0 | frozen task set, 200 ids, sha `1fc257f2…`; 324/324 stored trajectories replay clean | **done**, §0/§3 |
-| P1 | agent runner (`scripts/campaign-20260926/rule_baseline.py`) can record the arm's own identity under `--dry-run` in the shape `verify_arm_identity.py` compares against the stored shard manifest; optionally the `--adapter` flag of §3 | **open** |
-| P2 | `verify_arm_identity.py --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json --candidate <identity.json> --justify docs/results/campaign-2026-09-27/source-drift-justification.md` exits **0** for each new arm | **open** |
+| P1 | emit each new arm's identity on CPU in the shape the gate compares: `scripts/eval/emit_arm_identity.py`, which imports the runner's own loader and hashes rather than restating them | **done**, §8 |
+| P2 | `verify_arm_identity.py --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json --candidate <identity.json> --justify docs/results/campaign-2026-09-27/source-drift-justification.md` exits **0** for each new arm | **done** for `all-tools` shard 0 on base and SFT weights, §8; re-run after the campaign against each real manifest |
 | P3 | sandbox reachable at `127.0.0.1:8080` and answering, probed immediately before the run | **open** |
-| P4 | the arm's `--adapter`/`--model` resolves to the weights fixed in §3, with the adapter sha recorded where the direct manifest records it | **open** |
+| P4 | the weights actually loaded match those fixed in §3 — the gate reports the weights difference but cannot judge it | **open**: the merged-model path is the only one available (§3), and the run's manifest is what records it |
+| P5 | the runner is still the frozen blob (`git hash-object` equals the stored arm's `router_source_sha256`) | **guarded by test**, §8 |
 
-P2 is the gate and it is not a formality. Note one honest limit found while
-writing this: the stored agent manifest records `model` but **not**
-`adapter_path`/`adapter_sha256`/`adapter_kind`, while the direct manifests
-record all three. For the agent arms the gate therefore cannot by itself catch
-a wrong adapter — it would see the candidate's extra keys as advisory, not
-blocking. That is why §3 fixes the weights in prose **and** P4 requires the sha
-to be written down: the gate covers the model, the pool, the configs, the
-generation parameters, the sandbox and the source drift; the adapter identity
-rests on the declaration plus the recorded sha.
+P2 is the gate and it is not a formality. Two honest limits, both found while
+writing this and both now written into the gate's behaviour (§8):
 
-## 8. What this campaign will NOT claim
+* The stored agent manifest records `model` but **not**
+  `adapter_path`/`adapter_sha256`/`adapter_kind`, while the direct manifests
+  record all three. For the agent arms the gate cannot by itself catch a wrong
+  adapter.
+* The weights are the one field the gate must not block on (§8 A2), so it
+  reports them instead. A wrong checkpoint is visible in the output but is not
+  fatal.
+
+So the gate covers the pool, the configs, the generation parameters, the sandbox
+and the source drift, and it *reports* the weights. The weights themselves rest
+on the declaration in §3 plus the manifest the run writes; P4 is that check,
+and it is a human one by construction.
+
+## 8. Amendment 1 (2026-09-29, before any GPU minute)
+
+Recorded rather than silently edited, because two of the statements above were
+wrong when they were committed and one of them changed a plan.
+
+**A1. The agent runner cannot be edited.** §3 originally offered an `--adapter`
+flag as "a CPU-only ~10-line change", and §7 P1 carried the same option. It is
+not available: `rule_baseline.py` hashes its own blob into every manifest as
+`router_source_sha256`, a blocking field, so any edit unpairs every future agent
+arm from the stored one. The consequence is wider than the adapter question —
+**the stored `base+tool` arm stays pairable only while that file is
+byte-identical** to the blob it recorded (`e591c886…`, still true as of this
+commit), and nothing in the repository would have noticed if it stopped being
+true. `tests/unit/eval/test_emit_arm_identity.py::test_the_agent_runner_is_still_the_frozen_blob`
+is now that alarm. The merged-model path of §3 stands as the only option.
+
+**A2. The identity gate could not have passed this campaign's pairs.** `model`
+was a blocking field, and the three arms of §2 differ in precisely that field,
+so gating `SFT+agent` against the stored `base+agent` would have failed on the
+one difference the pairing exists to measure. `model` and the adapter fields are
+now `WEIGHTS_FIELDS`: reported in the gate's output, never blocking. Exempting
+them from comparison does **not** exempt them from existing — a candidate that
+omits a field the baseline recorded still blocks, weights included.
+
+**A3. The pre-flight is implemented, and both arms pass it on CPU.** The
+emitter is `scripts/eval/emit_arm_identity.py`. It refuses what the gate would
+have refused later and less legibly: a task list that is not the frozen 200 once
+each, a recorded path that is not absolute (the gate compares strings; the
+stored arm recorded absolute paths), a sandbox URL spelled differently from the
+stored one, and a `--shard-id` without `--shard-count`. It loads no weights and
+opens no sandbox, and a test proves that by replacing both with raising stubs.
+
+```
+$ ADAPTIVE_MATH_SANDBOX_URL=http://localhost:8080 python scripts/eval/emit_arm_identity.py \
+    --mode all-tools --shard-id 0 --shard-count 3 \
+    --data <repo>/data/processed/v1/frozen_eval.parquet \
+    --task-ids-file <repo>/artifacts/eval/thesis_e0_base_direct_b1/task_ids.txt \
+    --model <base snapshot | merged SFT> \
+    --agent-config <repo>/configs/agent/default.yaml \
+    --reward-config <repo>/configs/reward/r0.yaml \
+    --output-dir <the run's output dir> --out identity.json
+
+$ python scripts/eval/verify_arm_identity.py \
+    --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json \
+    --candidate identity.json \
+    --justify docs/results/campaign-2026-09-27/source-drift-justification.md
+```
+
+Both invocations exit **0** with 9 identity fields aligned. The base-weights run
+reproduces `router_source_sha256 e591c886…` and the routing distribution
+`{direct 76, python 66, sympy 58}` exactly; the SFT-weights run adds one note —
+`model: baseline '<base snapshot>' != candidate '<merged SFT>' (weights: expected
+to differ between arms)` — which is the weights disclosure of §3 made visible in
+the gate's own output instead of living only in this document.
+
+**What the amendment does not change.** §4's metrics, §5's strict-first protocol,
+§6's hypotheses and stop rules, and §9's list of things this campaign may not
+claim are untouched. Nothing here was written after seeing a result: no arm of
+§2 has been rolled out.
+
+## 9. What this campaign will NOT claim
 
 * **That GRPO beats SFT.** r0 and r2 never significantly exceeded SFT in the
   direct rows, and r0 vs base under the lenient ruler is p=0.21 (15 up, 8 down).
