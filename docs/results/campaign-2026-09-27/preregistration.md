@@ -61,6 +61,10 @@ rolled out through the loop.
 | B | SFT + agent | `artifacts/models/qwen3_1_7b_sft_dp_v1_merged` | agent loop, both tools | **new this run** |
 | C | SFT+GRPO(r0) + agent | `artifacts/models/qwen3_1_7b_sft_dp_v1_merged` | agent loop, both tools | **new this run** |
 
+*Amended — see §8b: B and C do not load a merged checkpoint. B loads the base
+snapshot plus the SFT adapter, C loads merged SFT plus the r0 adapter, so that
+each arm's weights are the ones its direct row was measured with.*
+
 Reference rows, already measured, not re-run: `base_direct` 0/200,
 `sft_direct` 27/200, `r0_direct` 22/200, `r2_direct` 25/200, `rule_strategy`
 10/200 (composed: 76 routed-direct rows reused verbatim + 124 rolled out).
@@ -133,6 +137,12 @@ trained from. Declared consequence: `sft_direct` was evaluated as
 snapshot + adapter (`adapter_sha256 2868f83e…`), so the `sft_direct` ↔
 `sft_agent` contrast carries a merge-rounding confound. It is bounded (the same
 weights up to merge arithmetic) and it is disclosed rather than papered over.
+
+*Amended — see §8b: this paragraph is superseded. Both arms load adapters
+through a wrapper that drives the frozen runner, so the confound above is
+removed rather than disclosed, and arm C becomes runnable at all. The paragraph
+that follows about the runner's immutability stands as written; only its closing
+conclusion was wrong.*
 
 The alternative — an `--adapter` flag on the agent runner — is **not
 available**, and the reason is worth stating because it constrains more than
@@ -230,10 +240,10 @@ returns to the user rather than to a GPU.
 | # | precondition | state |
 |---|---|---|
 | P0 | frozen task set, 200 ids, sha `1fc257f2…`; 324/324 stored trajectories replay clean | **done**, §0/§3 |
-| P1 | emit each new arm's identity on CPU in the shape the gate compares: `scripts/eval/emit_arm_identity.py`, which imports the runner's own loader and hashes rather than restating them | **done**, §8 |
-| P2 | `verify_arm_identity.py --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json --candidate <identity.json> --justify docs/results/campaign-2026-09-27/source-drift-justification.md` exits **0** for each new arm | **done** for `all-tools` shard 0 on base and SFT weights, §8; re-run after the campaign against each real manifest |
+| P1 | emit each new arm's identity on CPU in the shape the gate compares: `scripts/eval/emit_arm_identity.py`, which imports the runner's own loader and hashes rather than restating them | **done**, §8; for the arms of §8b it is called through `run_arm_with_adapter.py`, which writes the same bytes to `<output-dir>.identity.json` |
+| P2 | `verify_arm_identity.py --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json --candidate <identity.json> --justify docs/results/campaign-2026-09-27/source-drift-justification.md` exits **0** for each new arm | **done** for `all-tools` shard 0 on base and SFT weights, §8; **done** for both §8b arms (base+SFT adapter, merged SFT+r0 adapter); re-run after the campaign against each real manifest |
 | P3 | sandbox reachable and *answering* (a ping is not evidence; the probe runs code), re-probed immediately before the run | **passed 2026-09-29**, both endpoint spellings, `pong+42`; expires — re-probe at launch |
-| P4 | the weights actually loaded match those fixed in §3 — the gate reports the weights difference but cannot judge it | **open**: the merged-model path is the only one available (§3), and the run's manifest is what records it |
+| P4 | the weights actually loaded match those fixed in §3 — the gate reports the weights difference but cannot judge it | **split by §8b**: the *loading path* is closed by test (the adapter is asserted on the call the loader receives, and its sha256 is compared against the direct arm's), the *loaded weights* are checked after the run by the first-turn divergence rule in §8b |
 | P5 | the runner is still the frozen blob (`git hash-object` equals the stored arm's `router_source_sha256`) | **guarded by test**, §8 |
 
 P2 is the gate and it is not a formality. Two honest limits, both found while
@@ -251,6 +261,10 @@ So the gate covers the pool, the configs, the generation parameters, the sandbox
 and the source drift, and it *reports* the weights. The weights themselves rest
 on the declaration in §3 plus the manifest the run writes; P4 is that check,
 and it is a human one by construction.
+
+*Amended — see §8b: the declaration in §3 is superseded by the adapter plan, and
+P4 is no longer only human. The weights are pinned to the direct rows by hash on
+the loading path, and the loaded weights get a deterministic post-run check.*
 
 **P3's probe, and why it is not a curl.** The canonical probe already exists in
 `scripts/cloud/preflight.py` (`_sandbox_evidence`), which ping plus a **real
@@ -334,6 +348,113 @@ the gate's own output instead of living only in this document.
 §6's hypotheses and stop rules, and §9's list of things this campaign may not
 claim are untouched. Nothing here was written after seeing a result: no arm of
 §2 has been rolled out.
+
+## 8b. Amendment 2 (2026-09-29, same day, still before any GPU minute)
+
+**A4. The two new arms load adapters through a wrapper, not merged checkpoints.**
+§2's table and §3's "the two new arms' weights are fixed here" are superseded by
+this, and one sentence of A1 with them.
+
+A1 was right that the runner cannot be **edited** and wrong to conclude that the
+adapter path was therefore closed. The runner can be **driven**.
+`scripts/campaign-20260927/run_arm_with_adapter.py` (commit `3010662`) parses the
+run's argv with the emitter's parser — the runner's own parser plus
+`--adapter`/`--adapter-kind` — patches exactly one call inside the runner
+(`TransformersModelClient.from_pretrained`, to pass `adapter=`), and hands the
+namespace to the runner's own `run()`. The manifest is still written by the
+unmodified runner, `router_source_sha256` is still `e591c886…`, and A1's blob
+guard still applies.
+
+| id | arm | weights | channel | status |
+|---|---|---|---|---|
+| A | base + agent | Qwen3-1.7B `70d244cc` | agent loop, both tools | **stored**, reused (§3) |
+| B | SFT + agent | base snapshot `70d244cc` + `artifacts/sft/qwen3_1_7b_sft_dp_v1/adapter` (`adapter_sha256 2868f83e…`, kind `sft`) | agent loop, both tools | **new this run** |
+| C | SFT+GRPO(r0) + agent | `artifacts/models/qwen3_1_7b_sft_dp_v1_merged` + `artifacts/runs/grpo_qwen3_1_7b_r0/r0_adapter` (`adapter_sha256 21a3f4aa…`, kind `rl`) | agent loop, both tools | **new this run** |
+
+Three consequences, each an improvement on what §3 declared:
+
+1. **Arm B is `sft_direct`'s weights, loaded `sft_direct`'s way.** The
+   merge-rounding confound is not bounded, it is absent — there is no merge in
+   arm B's path. Arm B's `model` field is byte-identical to stored arm A's, so in
+   the gate's own output the only difference between A and B is the adapter, which
+   is precisely the difference H2 exists to measure.
+2. **Arm C becomes runnable.** Under §3 it could not be: r0 exists only as an
+   adapter, and the runner had no way to load one.
+3. **The weights are pinned to the direct rows by hash.** The agent arm's adapter
+   and the direct arm's adapter are the same bytes — `2868f83e…` (sft) and
+   `21a3f4aa…` (rl) — asserted by test against the values `run_model_eval.py`
+   recorded in `artifacts/eval/thesis_e0_base_direct_b1/eval_manifest.json` and
+   `artifacts/eval/r0_omnimath_200/eval_manifest.json`. **P4 closes mechanically**,
+   on the loading path, instead of resting on a declaration.
+
+**Both arms pass the pre-flight on CPU**, against the same stored shard-0
+manifest, gated exactly as §7 P2 prescribes:
+
+```
+$ ADAPTIVE_MATH_SANDBOX_URL=http://localhost:8080 \
+  python scripts/campaign-20260927/run_arm_with_adapter.py \
+    --mode all-tools --shard-id 0 --shard-count 3 \
+    --data <repo>/data/processed/v1/frozen_eval.parquet \
+    --task-ids-file <repo>/artifacts/eval/thesis_e0_base_direct_b1/task_ids.txt \
+    --model <base snapshot> \
+    --adapter <repo>/artifacts/sft/qwen3_1_7b_sft_dp_v1/adapter --adapter-kind sft \
+    --agent-config <repo>/configs/agent/default.yaml \
+    --reward-config <repo>/configs/reward/r0.yaml \
+    --output-dir <repo>/artifacts/rollout_health/thesis_e0_sft_tool.shard0 --dry-run
+
+$ python scripts/eval/verify_arm_identity.py \
+    --baseline artifacts/rollout_health/thesis_e0_base_tool.shard0/manifest.json \
+    --candidate artifacts/rollout_health/thesis_e0_sft_tool.shard0.identity.json \
+    --justify docs/results/campaign-2026-09-27/source-drift-justification.md
+```
+
+Arm B: `GATE OK — 9 identity fields`, four notes, all of them weights
+(`adapter`, `adapter_path`, `adapter_sha256`, `adapter_kind`) and no `model` note,
+because its model is the baseline's. Arm C: the same four plus the `model` note,
+because its base is the merged checkpoint. **Neither arm has a blocking
+difference.** Both candidates reproduce `router_source_sha256 e591c886…` and the
+routing distribution `{direct 76, python 66, sympy 58}` — from the unmodified
+runner's own functions. The sidecars are CPU evidence and they expire at the
+launch; the authoritative identity is the manifest each run writes, and the gate
+is re-run against it afterwards.
+
+| sidecar (read by the gate) | sha256 |
+|---|---|
+| `artifacts/rollout_health/thesis_e0_sft_tool.shard0.identity.json` | `f4dc77797f275e7d…` |
+| `artifacts/rollout_health/thesis_e0_r0_tool.shard0.identity.json` | `8782ff8846b80abf…` |
+
+**The failure mode this opens, and the check that closes it.** An adapter arm that
+silently runs without its adapter would produce a base arm wearing an SFT label,
+and *no artifact of the run would show it*: the frozen manifest has no adapter
+field, and the sidecar records what the wrapper intended, not what the loader
+received. Two tests cover the wrapper on CPU — the adapter is asserted on the call
+the loader receives (not on the flag the wrapper parsed), and the class is
+restored by identity afterwards — but a test cannot see the run. So the run's
+first-turn model outputs are compared against the arm they must differ from, in
+the same channel, same prompts, greedy decoding:
+
+| comparison | alarm | reading |
+|---|---|---|
+| arm B vs stored arm A, first `model_output` of each shared task | ≥ 50% byte-identical | the sft adapter did not load |
+| arm C vs arm B, same | ≥ 50% byte-identical | the r0 adapter did not load |
+
+The threshold is set against measured poles. On these 200 tasks under this
+decoding, two genuinely different weight sets agree byte-for-byte on **0/200**
+(base vs sft) and **12/200** (sft vs r0) of their direct generations
+(`thesis_e0_base_direct_b1/`, `r0_omnimath_200/`), while identical weights and
+configuration reproduce **200/200** (§0). 50% is more than eight times the worst
+observed different-weights rate, and the check reads only artifacts already on
+disk. It joins §6's stop rules: an arm that trips it is **void** and is
+reported as void. Re-running a void arm is a harness fix and never a config
+change — §6(b) still forbids the latter — and the void run is reported beside the
+result.
+
+**What the amendment does not change.** §4's metrics, §5's strict-first protocol,
+§6's hypotheses and stop rules, and §9's list of things this campaign may not
+claim. §7's P0, P3 and P5 are untouched; P1 and P2 are the same commands with two
+more flags; P4 is closed on the loading path and remains open on the loaded
+weights, which is what the first-turn check above is for. Nothing here was written
+after seeing a result: no arm of §2 has been rolled out.
 
 ## 9. What this campaign will NOT claim
 
