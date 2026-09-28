@@ -172,6 +172,34 @@ def recorded_path(value: object, label: str) -> str:
     return text
 
 
+ADAPTER_KINDS = ("sft", "rl")
+
+
+def adapter_identity(adapter: Path, kind: str) -> dict[str, str]:
+    """The adapter's own identity, hashed the way the direct eval hashes it.
+
+    Same files, same checks, same algorithm as ``run_model_eval.py``, which is
+    the point: the agent arm's adapter has to be the *same bytes* as the direct
+    arm's adapter for the two rows to be two views of one model, and a sha256 of
+    ``adapter_model.safetensors`` is the only thing that can say so. The rl
+    branch requires the provenance file for the same reason the direct path
+    does -- an RL adapter without training provenance is not evidence.
+    """
+    if kind not in ADAPTER_KINDS:
+        raise ValueError(f"--adapter-kind must be one of {ADAPTER_KINDS}, got {kind!r}")
+    weights = adapter / "adapter_model.safetensors"
+    for name in ("COMPLETE", "adapter_config.json", "adapter_model.safetensors"):
+        require_file(adapter / name, "--adapter")
+    if kind == "rl":
+        require_file(adapter / "rl_provenance.json", "--adapter (rl)")
+    return {
+        "adapter": recorded_path(adapter, "--adapter"),
+        "adapter_path": str(adapter.resolve()),
+        "adapter_sha256": sha256_hex(weights.read_bytes()),
+        "adapter_kind": kind,
+    }
+
+
 def emit(args: argparse.Namespace) -> dict[str, Any]:
     """Build the identity dict, mirroring the runner's manifest key for key."""
     pool_path = Path(args.pool)
@@ -215,7 +243,7 @@ def emit(args: argparse.Namespace) -> dict[str, Any]:
     # is emitted so the two artifacts stay the same shape.
     distribution = Counter(route(task.task) for task in tasks)
 
-    return {
+    payload: dict[str, Any] = {
         # "dry-run" rather than "running": this is a prediction, and a reader
         # comparing it with a real manifest should not have to guess which is
         # which. ``status`` is bookkeeping and never blocks.
@@ -242,9 +270,30 @@ def emit(args: argparse.Namespace) -> dict[str, Any]:
         "shard_count": args.shard_count,
     }
 
+    # The runner's manifest has no adapter field, so these are the only record of
+    # which weights the arm ran -- which is why the gate reports weights instead
+    # of comparing them, and why the adapter is pinned here rather than assumed.
+    # Absent rather than null when there is no adapter: a null would read as a
+    # claim about the arm, and the base arm's manifest makes no such claim.
+    adapter = getattr(args, "adapter", None)
+    if adapter is not None:
+        kind = getattr(args, "adapter_kind", None)
+        if kind is None:
+            raise ValueError("--adapter requires --adapter-kind (one of 'sft', 'rl')")
+        payload.update(adapter_identity(Path(adapter), kind))
+    return payload
+
 
 def build_parser() -> argparse.ArgumentParser:
-    """The runner's parser, so a flag cannot mean two different things."""
+    """The runner's parser, so a flag cannot mean two different things.
+
+    The runner cannot be given a ``--adapter`` flag (see the module docstring),
+    so the two flags that describe an arm's weights are added here, and
+    ``scripts/campaign-20260927/run_arm_with_adapter.py`` parses its argv with
+    *this* parser: the arm that is gated and the arm that runs are then the same
+    argv through the same code, which is the only reason a pre-flight is worth
+    running.
+    """
     parser = runner.build_parser()
     parser.description = (__doc__ or "").splitlines()[0]
     parser.add_argument(
@@ -253,11 +302,33 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="write the identity JSON here as well as to stdout",
     )
+    parser.add_argument(
+        "--adapter",
+        type=Path,
+        default=None,
+        help="PEFT adapter directory the run will load; recorded, and its weights hashed",
+    )
+    parser.add_argument(
+        "--adapter-kind",
+        choices=ADAPTER_KINDS,
+        default=None,
+        help="'sft' or 'rl'; required with --adapter (an rl adapter must carry provenance)",
+    )
     parser.epilog = (
-        "--dry-run is accepted and ignored: this emitter never touches the GPU, "
+        "--dry-run is accepted and ignored by the emitter: it never touches the GPU, "
         "and --output-dir is parsed for parity with the run and not created."
     )
     return parser
+
+
+def dumps(identity: dict[str, Any]) -> str:
+    """The identity as it is written, in one place.
+
+    ``run_arm_with_adapter.py`` writes the same bytes to a sidecar path before it
+    starts a run, so the file the gate sees and the file the emitter's own CLI
+    writes cannot drift into two spellings of the same identity.
+    """
+    return json.dumps(identity, ensure_ascii=False, indent=2) + "\n"
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -267,7 +338,7 @@ def main(argv: list[str] | None = None) -> int:
     except (ValueError, FileNotFoundError) as exc:
         print(f"EMIT FAIL: {exc}", file=sys.stderr)
         return 1
-    payload = json.dumps(identity, ensure_ascii=False, indent=2) + "\n"
+    payload = dumps(identity)
     if args.out is not None:
         args.out.write_text(payload)
     sys.stdout.write(payload)

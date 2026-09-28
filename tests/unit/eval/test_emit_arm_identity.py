@@ -46,6 +46,13 @@ BASE_SNAPSHOT = Path(
     "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
 )
 MERGED_SFT = ROOT / "artifacts" / "models" / "qwen3_1_7b_sft_dp_v1_merged"
+SFT_ADAPTER = ROOT / "artifacts" / "sft" / "qwen3_1_7b_sft_dp_v1" / "adapter"
+R0_ADAPTER = ROOT / "artifacts" / "runs" / "grpo_qwen3_1_7b_r0" / "r0_adapter"
+# The direct arms the agent arms must be two views of: same weights, same bytes.
+SFT_DIRECT_MANIFEST = (
+    ROOT / "artifacts" / "eval" / "thesis_e0_base_direct_b1" / "eval_manifest.json"
+)
+R0_DIRECT_MANIFEST = ROOT / "artifacts" / "eval" / "r0_omnimath_200" / "eval_manifest.json"
 STORED_MANIFEST = (
     ROOT / "artifacts" / "rollout_health" / "thesis_e0_base_tool.shard0" / "manifest.json"
 )
@@ -59,6 +66,10 @@ skip_without_frozen_set = pytest.mark.skipif(
 skip_without_stored_arm = pytest.mark.skipif(
     not (STORED_MANIFEST.is_file() and HAVE_FROZEN_SET),
     reason="the stored base+tool arm is a local rollout artifact, not tracked",
+)
+skip_without_adapters = pytest.mark.skipif(
+    not (SFT_ADAPTER.is_dir() and R0_ADAPTER.is_dir() and HAVE_FROZEN_SET),
+    reason="the SFT and r0 adapters are local training artifacts, not tracked",
 )
 
 
@@ -100,9 +111,16 @@ def gate():
     return load_script(GATE, "verify_arm_identity_for_emitter_tests")
 
 
-def run_argv(model: Path, out: Path, tmp_path: Path) -> list[str]:
+def run_argv(
+    model: Path,
+    out: Path,
+    tmp_path: Path,
+    *,
+    adapter: Path | None = None,
+    kind: str | None = None,
+) -> list[str]:
     """The run's argv, with absolute paths, as the emitter requires."""
-    return [
+    argv = [
         "--mode", "all-tools",
         "--shard-id", "0",
         "--shard-count", "3",
@@ -114,6 +132,15 @@ def run_argv(model: Path, out: Path, tmp_path: Path) -> list[str]:
         "--output-dir", str(tmp_path / "run"),
         "--out", str(out),
     ]
+    if adapter is not None:
+        argv += ["--adapter", str(adapter), "--adapter-kind", str(kind)]
+    return argv
+
+
+def weights_notes(advisory: list[str]) -> list[str]:
+    """Advice about weights, which is how the gate marks a field that is expected
+    to differ between a pair rather than a mismatch."""
+    return [note for note in advisory if "(weights:" in note]
 
 
 @skip_without_stored_arm
@@ -248,21 +275,101 @@ def test_the_emitter_never_reaches_the_model_or_the_sandbox(emitted) -> None:
     assert reached == []
 
 
-@skip_without_frozen_set
+@skip_without_adapters
 def test_the_sft_arm_gates_clean_and_names_its_weights(emitter, gate, tmp_path: Path) -> None:
-    """Arms that differ in their weights are the point of a pair, so the weights
-    must not block -- and must be reported, not silently skipped."""
-    if not MERGED_SFT.is_dir() or not STORED_MANIFEST.is_file():
-        pytest.skip("the merged SFT checkpoint is a local artifact, not tracked")
+    """Arm B: the base snapshot plus the SFT adapter, which is the pair for the
+    stored base+tool arm.
+
+    The ``model`` line is identical to the stored arm's, so the *only* thing that
+    separates this arm from it is the adapter -- the merge the direct ``sft_direct``
+    arm never had is absent from the build path here too, and the contrast carries
+    the channel and nothing else. The adapter must still be reported: weights are
+    exempt from comparison, never from being stated.
+    """
     out = tmp_path / "sft.json"
     with sandbox_url(SANDBOX_URL):
-        assert emitter.main(run_argv(MERGED_SFT, out, tmp_path)) == 0
+        rc = emitter.main(run_argv(BASE_SNAPSHOT, out, tmp_path, adapter=SFT_ADAPTER, kind="sft"))
+    assert rc == 0
     candidate = json.loads(out.read_text())
     stored = json.loads(STORED_MANIFEST.read_text())
 
     blocking, advisory = gate.compare_identities(stored, candidate)
     assert blocking == []
-    weights = [note for note in advisory if "(weights:" in note]
-    assert len(weights) == 1
-    assert "model" in weights[0]
+    assert candidate["model"] == str(BASE_SNAPSHOT)
+    notes = weights_notes(advisory)
+    assert len(notes) == len(advisory) == 4
+    assert {note.split(":")[0] for note in notes} == {
+        "adapter",
+        "adapter_path",
+        "adapter_sha256",
+        "adapter_kind",
+    }
+    assert any(candidate["adapter_sha256"] in note for note in notes)
+
+
+@skip_without_adapters
+def test_the_r0_arm_gates_clean_against_the_same_stored_arm(emitter, gate, tmp_path: Path) -> None:
+    """Arm C: merged SFT plus the r0 adapter, the pair for ``r0_direct``.
+
+    One weights note more than arm B -- ``model`` differs, because this arm's base
+    is the merged checkpoint the r0 adapter was trained on. All five are weights
+    notes, which is the whole reason the gate reports those fields instead of
+    comparing them: this arm could not otherwise be paired with the stored one.
+    """
+    out = tmp_path / "r0.json"
+    with sandbox_url(SANDBOX_URL):
+        rc = emitter.main(
+            run_argv(MERGED_SFT, out, tmp_path, adapter=R0_ADAPTER, kind="rl")
+        )
+    assert rc == 0
+    candidate = json.loads(out.read_text())
+    stored = json.loads(STORED_MANIFEST.read_text())
+
+    blocking, advisory = gate.compare_identities(stored, candidate)
+    assert blocking == []
     assert candidate["model"] == str(MERGED_SFT)
+    notes = weights_notes(advisory)
+    assert len(notes) == 5
+    assert len([note for note in notes if note.startswith("model:")]) == 1
+    assert len(advisory) == 5
+
+
+@skip_without_adapters
+def test_the_recorded_adapter_is_the_one_the_direct_arm_ran(emitter) -> None:
+    """P4, mechanically: the agent arm's adapter and the direct arm's adapter must
+    be the same bytes, or the pair measures a different model than it claims.
+
+    The hash comes from the emitter's own code path -- the one the run's identity
+    is built with -- and is compared against what ``run_model_eval.py`` recorded
+    for the direct arms. Nothing else in the repository connects the two, and a
+    re-trained adapter at either path would otherwise pass every other test here.
+    """
+    sft = emitter.adapter_identity(SFT_ADAPTER, "sft")
+    r0 = emitter.adapter_identity(R0_ADAPTER, "rl")
+    assert sft["adapter_sha256"] == json.loads(SFT_DIRECT_MANIFEST.read_text())["adapter_sha256"]
+    assert r0["adapter_sha256"] == json.loads(R0_DIRECT_MANIFEST.read_text())["adapter_sha256"]
+    assert sft["adapter_kind"] == "sft"
+    assert r0["adapter_kind"] == "rl"
+    assert r0["adapter_sha256"] != sft["adapter_sha256"]
+
+
+def test_a_relative_adapter_path_is_refused(emitter) -> None:
+    """Same trap as the other recorded paths, with a sharper consequence: this
+    one names the weights, so a relative spelling is a weak claim about what ran."""
+    with pytest.raises(ValueError, match="must be absolute"):
+        emitter.adapter_identity(Path("artifacts/sft/qwen3_1_7b_sft_dp_v1/adapter"), "sft")
+
+
+def test_an_rl_adapter_without_provenance_is_refused(emitter, tmp_path: Path) -> None:
+    """The direct path requires it, so this must too: an RL adapter whose training
+    provenance is missing is not evidence, and the agent arm is where it would go
+    unnoticed -- the run itself never reads that file."""
+    fake = tmp_path / "adapter"
+    fake.mkdir()
+    for name in ("COMPLETE", "adapter_config.json", "adapter_model.safetensors"):
+        (fake / name).write_text("")
+    emitter.adapter_identity(fake, "sft")  # fine for sft
+    with pytest.raises(FileNotFoundError, match="rl_provenance.json"):
+        emitter.adapter_identity(fake, "rl")
+    with pytest.raises(ValueError, match="adapter-kind"):
+        emitter.adapter_identity(fake, "grpo")
