@@ -49,6 +49,7 @@ def _trajectory(
                 "final_answer": final,
             },
             "final_answer": final,
+            "termination_reason": "final" if final else "max_steps",
         },
     }
 
@@ -97,6 +98,8 @@ def test_agent_arm_metrics_come_from_the_usage_blocks(metrics, tmp_path):
     assert arm["tool_calls_per_task"] == 1.0
     assert arm["steps_mean"] == 5.0
     assert arm["invalid_actions_per_task"] == 3.5
+    # How the loop stopped, which the step count alone cannot say.
+    assert arm["termination_reasons"] == {"final": 1, "max_steps": 1}
 
 
 def test_direct_arm_has_no_tool_channel_to_measure(metrics, tmp_path):

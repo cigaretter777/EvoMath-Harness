@@ -48,6 +48,7 @@ Usage:
 
 import argparse
 import json
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -231,6 +232,7 @@ def compute_arm(spec: ArmSpec) -> dict[str, Any]:
     steps: list[float] = []
     rolled_out = 0
 
+    terminations: Counter[str] = Counter()
     if spec.trajectories is not None:
         for record in _read_jsonl(spec.trajectories):
             rolled_out += 1
@@ -242,6 +244,7 @@ def compute_arm(spec: ArmSpec) -> dict[str, Any]:
             invalid_actions += int(usage["invalid_actions"])
             generated_tokens += int(usage["generated_tokens"])
             final_actions += int(bool(record["trajectory"]["final_answer"]))
+            terminations[str(record["trajectory"]["termination_reason"])] += 1
             steps.append(float(usage["steps"]))
 
     reused = _reused_rows(spec) if spec.direct_pool is not None else []
@@ -292,6 +295,9 @@ def compute_arm(spec: ArmSpec) -> dict[str, Any]:
         # A direct arm has no action channel to violate, so this is None rather
         # than 0: absence of measurement, not a measured absence.
         "invalid_actions_per_task": invalid_actions / n if spec.mode == "agent" else None,
+        # Why the loop stopped, which is what separates "answered" from "ran out
+        # of steps": the step count alone cannot tell those apart.
+        "termination_reasons": dict(sorted(terminations.items())) or None,
     }
 
 
