@@ -116,6 +116,19 @@ class RecordingClient:
         return "client"
 
 
+@pytest.fixture
+def runtime_deps(wrapper, monkeypatch: pytest.MonkeyPatch) -> list[str]:
+    """Stub the wrapper's dependency import, recording what it asked for.
+
+    These tests run in the CPU environment, which has neither torch nor peft, so
+    the real check would stop every run-path test here -- correctly, and for a
+    reason that has nothing to do with what those tests are about.
+    """
+    seen: list[str] = []
+    monkeypatch.setattr(wrapper, "import_module", lambda name: seen.append(name))
+    return seen
+
+
 @skip_without_local_artifacts
 def test_a_run_without_an_adapter_is_a_usage_error(wrapper, tmp_path: Path) -> None:
     """The base arm is the plain runner's job. Accepting it here would create a
@@ -165,7 +178,7 @@ def test_a_dry_run_writes_the_sidecar_and_starts_nothing(
 
 @skip_without_local_artifacts
 def test_the_adapter_reaches_the_loader_and_the_loader_is_restored(
-    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, runtime_deps: list[str]
 ) -> None:
     """The failure this file exists for, and its most expensive cousin.
 
@@ -188,11 +201,12 @@ def test_the_adapter_reaches_the_loader_and_the_loader_is_restored(
 
     assert RecordingClient.calls == [(str(BASE_SNAPSHOT), str(SFT_ADAPTER))]
     assert RecordingClient.__dict__["from_pretrained"] is before
+    assert runtime_deps == ["peft"]
 
 
 @skip_without_local_artifacts
 def test_the_identity_is_written_before_the_run_and_copied_in_after(
-    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, runtime_deps: list[str]
 ) -> None:
     """Ordering, asserted from inside the run.
 
@@ -220,6 +234,56 @@ def test_the_identity_is_written_before_the_run_and_copied_in_after(
     assert seen["copied_in_during_run"] is False
     assert seen["mode"] == "all-tools"
     assert (out_dir / "identity.json").read_text() == sidecar.read_text()
+
+
+@skip_without_local_artifacts
+def test_a_missing_runtime_dependency_stops_before_the_model_loads(
+    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    """``peft`` is imported by the runner *after* the base checkpoint is read, so
+    the interpreter that cannot load an adapter is the one that reads 3.4 GB first
+    and reports a traceback second. On a GPU host that is a booking spent on a
+    one-line mistake, and it is detectable here for free."""
+    out_dir = tmp_path / "run"
+    sidecar = out_dir.with_suffix(".identity.json")
+
+    def missing(name: str):
+        raise ImportError(f"No module named {name!r}")
+
+    def explode(args: argparse.Namespace) -> None:
+        raise AssertionError("the run must not start without its runtime dependencies")
+
+    monkeypatch.setattr(wrapper, "import_module", missing)
+    monkeypatch.setattr(wrapper.rule_baseline, "run", explode)
+    assert wrapper.main(run_argv(out_dir)) == 1
+
+    err = capsys.readouterr().err
+    assert "RUNTIME FAIL" in err
+    assert "peft" in err
+    assert sys.executable in err
+    # The identity is a fact about the configuration, not about the interpreter:
+    # it is still written, and it is still what the gate should read.
+    assert sidecar.is_file()
+    assert not out_dir.exists()
+
+
+@skip_without_local_artifacts
+def test_a_dry_run_needs_no_runtime_dependencies(
+    wrapper, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The dry run must work where the arm cannot: this repository's CPU
+    environment (``.venv``) has neither torch nor peft, and that is the machine
+    deciding whether to book a GPU. Stubbed rather than relying on that absence,
+    so the test says the same thing in the runtime environment too -- the check is
+    not reached, not merely satisfied."""
+    out_dir = tmp_path / "run"
+
+    def missing(name: str):
+        raise ImportError(f"No module named {name!r}")
+
+    monkeypatch.setattr(wrapper, "import_module", missing)
+    assert wrapper.main([*run_argv(out_dir), "--dry-run"]) == 0
+    assert out_dir.with_suffix(".identity.json").is_file()
 
 
 @skip_without_local_artifacts

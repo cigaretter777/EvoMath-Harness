@@ -60,6 +60,7 @@ import shutil
 import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
+from importlib import import_module
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from types import ModuleType
@@ -120,6 +121,26 @@ def adapter_loader(adapter: Path) -> Iterator[None]:
         client.from_pretrained = original  # type: ignore[method-assign]
 
 
+def require_runtime_dependencies(kind: str) -> None:
+    """Fail *before* the base weights load, not after.
+
+    The runner imports ``PeftModel`` one line *after* ``AutoModelForCausalLM`` has
+    already read the full checkpoint, so a runtime without ``peft`` costs a 3.4 GB
+    load and then a traceback -- on a GPU host, in the first minutes of a booking.
+    The same import also catches the arm being launched with the wrong
+    interpreter, which is easy here because the identity pre-flight deliberately
+    runs in the CPU environment (it has no use for torch) while the arm does not.
+    """
+    try:
+        import_module("peft")
+    except ImportError as exc:
+        raise RuntimeError(
+            f"this interpreter cannot load a {kind} adapter ({exc}); "
+            f"sys.executable={sys.executable}. Run the arm with the runtime "
+            "environment -- the one that has torch and peft."
+        ) from exc
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -166,6 +187,14 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.dry_run:
         return 0
+
+    # After the dry-run return on purpose: the identity is a fact about the
+    # configuration and runs anywhere, the arm is not.
+    try:
+        require_runtime_dependencies(identity["adapter_kind"])
+    except RuntimeError as exc:
+        print(f"RUNTIME FAIL: {exc}", file=sys.stderr)
+        return 1
 
     with adapter_loader(Path(args.adapter)):
         asyncio.run(rule_baseline.run(args))

@@ -414,14 +414,53 @@ because its model is the baseline's. Arm C: the same four plus the `model` note,
 because its base is the merged checkpoint. **Neither arm has a blocking
 difference.** Both candidates reproduce `router_source_sha256 e591c886…` and the
 routing distribution `{direct 76, python 66, sympy 58}` — from the unmodified
-runner's own functions. The sidecars are CPU evidence and they expire at the
-launch; the authoritative identity is the manifest each run writes, and the gate
+runner's own functions.
+
+Both sidecars carry every field that has to survive to the launch — 200 frozen
+tasks, `mode all-tools`, shard 0 of 3, the frozen `--data`/`--task-ids-file`
+paths, `configs/agent/default.yaml`, `configs/reward/r0.yaml`, `temperature 0.0`
+and `max_new_tokens 1024`, `router_source_sha256 e591c886…`, the routing
+distribution above — and one pair of weights each:
+
+| sidecar (read by the gate) | model | adapter sha256 (kind) |
+|---|---|---|
+| `artifacts/rollout_health/thesis_e0_sft_tool.shard0.identity.json` | base snapshot `70d244cc` | `2868f83e…` (sft) |
+| `artifacts/rollout_health/thesis_e0_r0_tool.shard0.identity.json` | merged SFT | `21a3f4aa…` (rl) |
+
+**The sidecar's own sha256 is deliberately not cited**, and this is worth one
+sentence because citing it is the obvious thing to do and it is wrong: the
+identity records the emitting commit as `git_sha`, so its bytes move whenever
+HEAD moves and say nothing about the arm. Emitting this argv at `2f3e6d2` and
+again at `f18ebd6` produced `f4dc7779…` and then `88a1011e…` from otherwise
+identical content, while re-emitting at a fixed HEAD is byte-identical. `git_sha`
+is bookkeeping in the gate (it is in `ALLOWED_TO_DIFFER`); the source drift it
+would otherwise stand for is checked separately and more strictly, by diffing the
+evaluation path. The sidecars are pre-flight evidence and they expire at the
+launch — the authoritative identity is the manifest each run writes, and the gate
 is re-run against it afterwards.
 
-| sidecar (read by the gate) | sha256 |
-|---|---|
-| `artifacts/rollout_health/thesis_e0_sft_tool.shard0.identity.json` | `f4dc77797f275e7d…` |
-| `artifacts/rollout_health/thesis_e0_r0_tool.shard0.identity.json` | `8782ff8846b80abf…` |
+**Two interpreters, and it matters.** Every command above ran under
+`.venv/bin/python`, which has neither torch nor peft — the identity has no use for
+either, and a pre-flight that needs the GPU stack is not a pre-flight. The arm
+does not have that freedom: the runtime is
+`/root/autodl-tmp/conda-envs/adaptive-math/bin/python` (torch 2.8.0+cu128,
+transformers 4.57.3, peft 0.20.0). Launching the arm with the CPU interpreter is
+a live mistake, because the runner imports `PeftModel` *after* it has already read
+the base checkpoint — 3.4 GB and then a traceback. The wrapper therefore checks
+for `peft` before it calls the runner (on the run path only, so a dry run still
+works anywhere), and the failure it produces in the CPU environment is:
+
+```
+RUNTIME FAIL: this interpreter cannot load a sft adapter (No module named 'peft');
+sys.executable=/root/autodl-tmp/Adaptive-Solver-main-git/.venv/bin/python.
+Run the arm with the runtime environment -- the one that has torch and peft.
+```
+
+The two interpreters agree on the identity: the same argv emitted under both
+produced byte-identical sidecars, so the pre-flight is a function of the argv and
+the files, not of the environment. The launch is that argv with the runtime
+interpreter and without `--dry-run`, after which the wrapper copies the identity
+to `<output-dir>/identity.json`, beside the manifest the frozen runner writes.
 
 **The failure mode this opens, and the check that closes it.** An adapter arm that
 silently runs without its adapter would produce a base arm wearing an SFT label,
