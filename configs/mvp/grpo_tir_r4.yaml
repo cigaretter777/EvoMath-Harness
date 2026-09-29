@@ -5,6 +5,18 @@
 # and the run/experiment/checkpoint paths renamed so the released R0 run is
 # never written to. Everything else mirrors configs/mvp/grpo.yaml field for
 # field; that mirror is the thing tests/unit/mvp/test_configs_pinning.py pins.
+#
+# CHANGELOG (a crash fix, not a design change):
+#   2026-09-30 -- data.truncation=middle added below. At step 40/50 one
+#   trajectory's tool-augmented history reached 4175 tokens and the shipped
+#   default (`truncation: error`) raised instead of cutting it. Raising
+#   max_prompt_length was rejected: padded prompt length sizes the sequences
+#   the stack already carries (25.8GB allocated on a 24GB card), and the
+#   history keeps growing, so a bigger ceiling only defers the crash. `middle`
+#   keeps the question (head) and the newest turns (tail) and cuts the middle
+#   of the rare over-length trajectory. This is not result-dependent tuning:
+#   no step up to 39 ever exceeded 4096, so every already-trained step is
+#   untouched, and the cut can only ever fire on what used to crash.
 schema_version: adaptive-math-grpo-v1
 # Formal R0 run (2026-09-19): answer-only reward, 200-task pool from v1 rl_dev,
 # 2 epochs = 50 steps at batch 8. Low-cost route per decision 0001.
@@ -33,6 +45,7 @@ upstream_overrides:
   - data.train_batch_size=8
   - data.return_raw_chat=true
   - data.max_prompt_length=4096
+  - data.truncation=middle  # 2026-09-30 crash fix; see CHANGELOG in the header
   - trainer.total_training_steps=50
   - trainer.n_gpus_per_node=1
   - trainer.nnodes=1
