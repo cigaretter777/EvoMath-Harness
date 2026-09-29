@@ -140,7 +140,13 @@ stage_sft() {
 }
 
 stage_grpo() {
-    if [ -f "$GRPO_ADAPTER/config.json" ]; then
+    # 2026-09-30 fix: this gate used to check "config.json", a name the
+    # exporter never writes -- export_verl_lora.py lands adapter_config.json
+    # plus a COMPLETE marker, and COMPLETE is the same "finished" signal the
+    # SFT stage above uses. The wrong name survived two interrupted runs
+    # because control only reaches this gate after an export; last night's
+    # 50/50 run then "failed" on a file that never existed.
+    if [ -f "$GRPO_ADAPTER/COMPLETE" ]; then
         log "GRPO export already complete ($GRPO_ADAPTER); skipping"
         return 0
     fi
@@ -153,7 +159,7 @@ stage_grpo() {
     "$PY" scripts/mvp/train_grpo.py --config "$GRPO_CONFIG" \
         --export-adapter "$GRPO_ADAPTER" >> "$LOGDIR/grpo.log" 2>&1 \
         || fail "grpo: train_grpo.py failed (rc=$?)"
-    [ -f "$GRPO_ADAPTER/config.json" ] || fail "grpo: exported adapter has no config.json"
+    [ -f "$GRPO_ADAPTER/COMPLETE" ] || fail "grpo: exported adapter has no COMPLETE marker"
     status grpo complete "r4 adapter exported"
     log "GRPO finished"
 }
