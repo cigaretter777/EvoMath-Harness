@@ -59,6 +59,8 @@ ARTS = REPO / "artifacts"
 DIRECT_DIR = ARTS / "eval/thesis_e0_base_direct_b1"
 BASE_TOOL_DIR = ARTS / "rollout_health/thesis_e0_base_tool"
 RULE_DIR = ARTS / "rollout_health/thesis_e0_rule_strategy"
+SFT_TOOL_DIR = ARTS / "rollout_health/thesis_e0_sft_tool"
+R0_TOOL_DIR = ARTS / "rollout_health/thesis_e0_r0_tool"
 R0_DIR = ARTS / "eval/r0_omnimath_200"
 R2_DIR = ARTS / "eval/r2_omnimath_200"
 
@@ -174,6 +176,40 @@ ARMS: tuple[ArmSpec, ...] = (
         expected_tool_calls=0,
         expected_mean_output_tokens=690.015,
         predictions=R2_DIR / "sft_predictions.jsonl",
+    ),
+    # counts: artifacts/rollout_health/thesis_e0_sft_tool/summary.json -- the
+    # merged summary the run itself wrote (the sum of its three shard
+    # summaries). verifier-valid: the agent arms' summaries carry no such field
+    # (same gap as base_agent's 22), so the value comes from the re-scoring pass
+    # in artifacts/results/campaign-2026-09-27/tolerance-rescore.json, which
+    # reads the trajectories under the same rule: status in {correct, incorrect}.
+    ArmSpec(
+        "sft_agent",
+        "agent",
+        expected_n=200,
+        expected_correct=28,
+        expected_verifier_valid=156,
+        expected_rolled_out=200,
+        expected_direct_reused=0,
+        expected_tool_calls=0,
+        expected_invalid_actions=274,
+        expected_generated_tokens=228689,
+        trajectories=SFT_TOOL_DIR / "trajectories.jsonl",
+    ),
+    # counts: artifacts/rollout_health/thesis_e0_r0_tool/summary.json;
+    # verifier-valid from the same rescore artifact.
+    ArmSpec(
+        "r0_agent",
+        "agent",
+        expected_n=200,
+        expected_correct=27,
+        expected_verifier_valid=186,
+        expected_rolled_out=200,
+        expected_direct_reused=0,
+        expected_tool_calls=0,
+        expected_invalid_actions=115,
+        expected_generated_tokens=158808,
+        trajectories=R0_TOOL_DIR / "trajectories.jsonl",
     ),
 )
 
