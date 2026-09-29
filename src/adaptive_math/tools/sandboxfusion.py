@@ -77,6 +77,20 @@ class SandboxFusionClient:
                 error_code=ToolErrorCode.UNAVAILABLE,
                 latency_ms=_elapsed_ms(started),
             )
+        except RuntimeError:
+            # Captured live 2026-09-29 (GRPO night run, step 2): the tunnel went
+            # half-dead, the read timeout fired, and uvloop's connection
+            # teardown raised this *below* httpx's own exception mapping
+            # ("unable to perform operation on <TCPTransport closed=True ...
+            # the handler is closed"), masking the transport fault and killing
+            # the whole training run. At this layer a RuntimeError out of
+            # ``_post`` can only be a transport-stack fault, so fail the call.
+            return ToolResult(
+                ok=False,
+                output="",
+                error_code=ToolErrorCode.UNAVAILABLE,
+                latency_ms=_elapsed_ms(started),
+            )
 
         if response.status_code >= 500:
             return ToolResult(
