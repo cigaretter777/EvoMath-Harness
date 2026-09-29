@@ -107,9 +107,16 @@ def test_disjoint_task_sets_are_fatal(paired):
         paired.compare(base, arm, "base", "arm")
 
 
-def test_the_artifact_and_the_task_list_must_agree(paired, tmp_path):
+def test_the_artifact_and_the_task_list_must_agree(paired, tmp_path, monkeypatch):
     # A rescore artifact scored against a different task set cannot have its
     # task ids paired against this one, however similar the arm names look.
+    # The frozen list is a local eval artifact, absent in CI, so this test
+    # brings its own list and pins the expected hash to it; the real constant
+    # is checked in test_the_constant_is_the_frozen_task_set, where the frozen
+    # list exists.
+    task_ids = tmp_path / "task_ids.txt"
+    task_ids.write_text("t1\nt2\n")
+    monkeypatch.setattr(paired, "EXPECTED_TASK_IDS_SHA256", sha256_hex(b"t1\nt2"))
     artifact = tmp_path / "rescore.json"
     artifact.write_text(json.dumps({"task_ids_sha256": "0" * 64, "arms": {}}))
     with pytest.raises(RuntimeError, match="was scored against task set"):
@@ -117,6 +124,8 @@ def test_the_artifact_and_the_task_list_must_agree(paired, tmp_path):
             [
                 "--from-json",
                 str(artifact),
+                "--task-ids",
+                str(task_ids),
                 "--base",
                 "base_direct",
                 "--against",

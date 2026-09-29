@@ -353,11 +353,19 @@ def test_the_recorded_adapter_is_the_one_the_direct_arm_ran(emitter) -> None:
     assert r0["adapter_sha256"] != sft["adapter_sha256"]
 
 
-def test_a_relative_adapter_path_is_refused(emitter) -> None:
+def test_a_relative_adapter_path_is_refused(emitter, tmp_path: Path, monkeypatch) -> None:
     """Same trap as the other recorded paths, with a sharper consequence: this
-    one names the weights, so a relative spelling is a weak claim about what ran."""
+    one names the weights, so a relative spelling is a weak claim about what ran.
+
+    Spelled from a populated fake adapter this test owns: the real one under
+    ``artifacts/`` is a local training artifact and does not exist in CI."""
+    monkeypatch.chdir(tmp_path)
+    fake = Path("adapter")
+    fake.mkdir()
+    for name in ("COMPLETE", "adapter_config.json", "adapter_model.safetensors"):
+        (fake / name).write_text("")
     with pytest.raises(ValueError, match="must be absolute"):
-        emitter.adapter_identity(Path("artifacts/sft/qwen3_1_7b_sft_dp_v1/adapter"), "sft")
+        emitter.adapter_identity(fake, "sft")
 
 
 def test_an_rl_adapter_without_provenance_is_refused(emitter, tmp_path: Path) -> None:
