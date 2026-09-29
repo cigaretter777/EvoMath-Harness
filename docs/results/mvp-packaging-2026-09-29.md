@@ -131,8 +131,9 @@ produced by four commands, two of which are new.
   pre-flight, the identity gate and the metrics passthrough are verified. A real
   end-to-end run needs the GPU card and the sandbox, ~1.5–2 h at the released
   scale (B 51 m + C 41 m for the two adapter arms).
-* **No README, no quick start, no trajectory spot-checks.** Out of scope by
-  instruction this round.
+* **No README, no quick start.** Out of scope by instruction. (The trajectory
+  spot-check — design §6.3 criterion 6 — landed after this round:
+  [`mvp-trajectory-spotcheck-2026-09-29.md`](mvp-trajectory-spotcheck-2026-09-29.md).)
 * **No change to the frozen runner, the stored arms or the released artifacts.**
   The adapter hashes above are the released ones precisely because none of them
   moved.
