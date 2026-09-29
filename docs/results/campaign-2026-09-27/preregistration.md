@@ -495,6 +495,63 @@ more flags; P4 is closed on the loading path and remains open on the loaded
 weights, which is what the first-turn check above is for. Nothing here was written
 after seeing a result: no arm of §2 has been rolled out.
 
+## 8c. Amendment 3 (2026-09-29 evening, before the MVP re-run's first GPU minute)
+
+**A5. The MVP entry point gets its real end-to-end run: arms A/B/C re-run through
+`scripts/mvp/evaluate.py`, 3 shards × 3 arms.**
+
+The packaging round ([`mvp-packaging-2026-09-29.md`](../mvp-packaging-2026-09-29.md))
+verified the entry point on CPU only; it has never taken its real path. This
+amendment pre-commits that path's shape and its readings before any GPU minute.
+
+**The command.** Three concurrent processes, one per shard, each running the
+three arms serially for its shard:
+
+```
+/root/autodl-tmp/conda-envs/adaptive-math/bin/python scripts/mvp/evaluate.py \
+    --shard-count 3 --shard-id {0,1,2} --out-root artifacts/mvp/eval
+```
+
+Every setting is §8b's argv verbatim — same `--data`/`--task-ids-file`, same
+agent/reward configs, `temperature 0.0`, `max_new_tokens 1024`, mode
+`all-tools` — and the same released weights: base snapshot `70d244cc`, sft
+adapter `2868f83e…`, merged SFT + r0 adapter `21a3f4aa…`. No new flags, no
+config change. Metrics are computed after the shards merge
+(`merge_rule_shards.py`, then `evaluate.py --metrics-only`), because the
+runner's `summary.json` always describes all 200 tasks and only a merged,
+single-shard-shaped run can be checked against it.
+
+**The gates, all in the launch path** (`scripts/campaign-20260929/run_mvp_eval.sh`,
+committed before launch): the nine pre-launch identity gates (3 arms × 3 shards,
+same-arm stored baselines, `--justify` for base as always), the same nine re-run
+against each run's real manifest, and §8b's first-turn rule for the two adapter
+arms.
+
+**What is expected, pre-committed.** The run path has not changed since the
+campaign arms ran: `git diff 74c61da..HEAD -- src configs/agent configs/reward
+scripts/campaign-20260927 scripts/campaign-20260926 scripts/eval` shows only two
+files *added* under `scripts/campaign-20260927/` (`7bb0f53`: the campaign
+launcher and the first-turn script) and nothing else; `configs/` differs only by
+the added `configs/mvp/*` mirrors. Same weights, same code, same greedy decoding
+⇒ the sft and grpo arms are expected to reproduce their stored runs, first turns
+at or near 200/200 byte-identical (§8b's measured same-weights pole). The base
+arm is *not* expected to be byte-identical: its stored counterpart predates the
+2026-09-27 eval-path change (the always-justified drift), so the fresh base arm
+is a current-code base arm and any delta is reported as drift, not hidden.
+
+**Stop rules — §6's, unchanged.** A first-turn alarm on either adapter arm marks
+that arm **void** (§8b) and the launcher exits non-zero without a claim; gates
+run before any weights move; an incomplete shard is reported, never resumed
+into; a fresh arm whose first outputs agree with its stored same-weight run on
+fewer than 50% of shared tasks (the reproduction reading, the same tool with the
+expected outcome inverted) is flagged for investigation before any report. All
+three fresh arms are reported whatever they read — a drift is reported as such,
+and §9 still forbids the claims it forbids. No arm is re-run to chase a number.
+
+**What this amendment does not change.** Nothing in §1–§8b. This run is a
+reproduction and a packaging validation, not a new comparison; the released
+table remains the table of record.
+
 ## 9. What this campaign will NOT claim
 
 * **That GRPO beats SFT.** r0 and r2 never significantly exceeded SFT in the
