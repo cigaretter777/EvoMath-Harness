@@ -1,0 +1,16 @@
+{
+  "dataset_version": "sft-tir-v1",
+  "source": "data/processed/sft_tir_v1_10k.parquet",
+  "seed": 42,
+  "total": 7871,
+  "train": {
+    "count": 7083,
+    "file": "data/processed/sft_tir_v1/train.parquet",
+    "sha256": "8f6ec6277afdc1dd9e36fac3dfdf7b00881a506e54e1cb61e0d9f9eec1d32924"
+  },
+  "validation": {
+    "count": 788,
+    "file": "data/processed/sft_tir_v1/validation.parquet",
+    "sha256": "9e09650570d6f41909fa99763aee0fbe37c5ed62e23e27b6219cab3a2e8e3918"
+  }
+}

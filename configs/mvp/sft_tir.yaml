@@ -1,0 +1,27 @@
+# MVP SFT config for the TIR cold start: configs/mvp/sft.yaml field for field,
+# with exactly two fields changed -- the data pin (the frozen TIR split,
+# data/manifests/sft_tir_v1_split.json, 7871 replayed records -> 7083 train /
+# 788 validation) and the output directory. Same model revision, epochs,
+# learning rate, LoRA shape and seed as the released run, so the only variable
+# between artifacts/sft/qwen3_1_7b_sft_dp_v1 and this adapter is the corpus.
+# Consumed by scripts/mvp/train_sft.py --config configs/mvp/sft_tir.yaml.
+model_id: Qwen/Qwen3-1.7B
+model_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+data_manifest_sha256: "5d89ad0dc0e41855d8d644e0e587bcba4ecb195a515618446aa2df052cf8aabc"
+output_dir: artifacts/sft/qwen3_1_7b_sft_tir
+precision: bf16
+max_length: 4096
+epochs: 2
+learning_rate: 2.0e-5
+warmup_ratio: 0.0
+weight_decay: 0.0
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_targets: [q_proj, k_proj, v_proj, o_proj]
+gradient_checkpointing: false
+seed: 20260910
+logging_steps: 1
+per_device_batch_size: 1
+gradient_accumulation_steps: 4
