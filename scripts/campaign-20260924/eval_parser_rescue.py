@@ -104,6 +104,7 @@ def _reward(
     context = RewardContext(
         verifier_result=verdict,
         tool_calls=0,
+        tool_successes=0,
         python_seconds=0.0,
         invalid_action_count=invalid_actions,
         generated_tokens=generated_tokens,

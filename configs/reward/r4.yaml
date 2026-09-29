@@ -1,10 +1,10 @@
-version: r1-v1
-variant: r1
+version: r4-v1
+variant: r4
 tool_weight: 0.0
 python_weight: 0.0
 invalid_weight: 0.10
 invalid_cap: 3
 token_weight: 0.0
-tool_success_bonus: 0.0
+tool_success_bonus: 0.10
 clip_min: -1.0
-clip_max: 1.0
+clip_max: 1.2

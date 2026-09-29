@@ -75,7 +75,7 @@ def _worker(values: dict[str, object], result_queue: Any) -> None:
         args = SympyArguments.model_validate(values)
         symbols = {name: sympy.Symbol(name) for name in args.variables}
         locals_map = {**symbols, "sin": sympy.sin, "cos": sympy.cos, "tan": sympy.tan, "sqrt": sympy.sqrt, "pi": sympy.pi, "E": sympy.E}
-        expression = sympy.sympify(args.expression.replace("^", "**"), locals=locals_map)
+        expression = sympy.sympify(_normalize_relations(args.expression.replace("^", "**")), locals=locals_map)
         if args.operation == "factor":
             output = sympy.factor(expression)
         elif args.operation == "expand":
@@ -97,6 +97,25 @@ def _worker(values: dict[str, object], result_queue: Any) -> None:
     # receives only a structured result, never an arbitrary child exception.
     except Exception:  # noqa: BLE001
         result_queue.put(ToolResult(ok=False, output="", error_code=ToolErrorCode.EXECUTION_ERROR, latency_ms=0).model_dump())
+
+
+def _normalize_relations(source: str) -> str:
+    """Rewrite equation markers into a zero form so ``sympify`` keeps them symbolic.
+
+    ``sympify`` parses ``"x == 0"`` as Python's structural equality, which
+    returns a plain ``False`` instead of an ``Eq``, so every model-emitted
+    ``== 0`` solve silently evaluated to ``[]`` with ``ok=True`` (attributed
+    2026-09-29 from the stored trajectories; roots are unchanged by moving the
+    right side over, and this matches the ``lhs - rhs`` form the compiled
+    demos already emit for ``=``).
+    """
+    if "==" in source:
+        parts = [part.strip() for part in source.split("==")]
+        return "-".join(f"({part})" for part in parts if part) or source
+    if "=" in source and not any(op in source for op in ("<=", ">=", "!=")):
+        left, _, right = source.partition("=")
+        return f"({left})-({right})"
+    return source
 
 
 def _reject(arguments: SympyArguments) -> str | None:

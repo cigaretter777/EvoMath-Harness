@@ -4,6 +4,7 @@ import math
 
 from pydantic import BaseModel, ConfigDict
 
+from adaptive_math.agent.state import EventKind
 from adaptive_math.agent.trace import Trajectory
 from adaptive_math.core.types import Budget
 from adaptive_math.reward import (
@@ -24,6 +25,25 @@ class GroupAdvantages(BaseModel):
     std_reward: float
 
 
+def _tool_successes(trajectory: Trajectory) -> int:
+    """Count executed tool calls whose recorded result reports ``ok``.
+
+    The event payload shape is the one the environment writes
+    (``{"name": ..., "result": {...}}``); failed or rejected calls contribute
+    nothing. This is the only positive tool-use signal in the reward family
+    (R4's bonus), so it is derived from the trajectory, never from usage
+    counters that increment before execution succeeds.
+    """
+    successes = 0
+    for event in trajectory.events:
+        if event.kind is not EventKind.TOOL_RESULT:
+            continue
+        result = event.payload.get("result")
+        if isinstance(result, dict) and result.get("ok") is True:
+            successes += 1
+    return successes
+
+
 def reward_for_trajectory(
     trajectory: Trajectory,
     verdict: VerifierResult,
@@ -37,6 +57,7 @@ def reward_for_trajectory(
         RewardContext(
             verifier_result=verdict,
             tool_calls=trajectory.usage.tool_calls,
+            tool_successes=_tool_successes(trajectory),
             python_seconds=trajectory.usage.python_seconds,
             invalid_action_count=trajectory.usage.invalid_actions,
             generated_tokens=trajectory.usage.generated_tokens,
