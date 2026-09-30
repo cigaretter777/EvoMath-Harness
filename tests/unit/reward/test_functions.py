@@ -12,12 +12,14 @@ from adaptive_math.reward import (
     R1_DEFAULT,
     R2_DEFAULT,
     R3_DEFAULT,
+    R4_DEFAULT,
     RewardBreakdown,
     RewardConfig,
     RewardContext,
     compute_reward,
     reward_r0,
     reward_r2,
+    reward_r4,
 )
 from adaptive_math.verifier import VerifierResult, VerifierStatus
 
@@ -37,6 +39,7 @@ def make_context(
     status: VerifierStatus = VerifierStatus.CORRECT,
     *,
     tool_calls: int = 0,
+    tool_successes: int = 0,
     python_seconds: float = 0.0,
     invalid_action_count: int = 0,
     generated_tokens: int = 0,
@@ -47,6 +50,7 @@ def make_context(
     return RewardContext(
         verifier_result=make_verifier(status),
         tool_calls=tool_calls,
+        tool_successes=tool_successes,
         python_seconds=python_seconds,
         invalid_action_count=invalid_action_count,
         generated_tokens=generated_tokens,
@@ -147,6 +151,7 @@ def test_total_is_clipped_to_config_bounds() -> None:
         invalid_weight=1.0,
         invalid_cap=3,
         token_weight=0.0,
+        tool_success_bonus=0.0,
         clip_min=-0.5,
         clip_max=1.0,
     )
@@ -160,11 +165,36 @@ def test_incorrect_valid_trajectories_receive_zero_under_r0_and_r2() -> None:
     assert reward_r2(context).total == 0.0
 
 
+def test_r4_pays_a_flat_bonus_once_for_a_successful_tool_use() -> None:
+    assert reward_r4(make_context(tool_successes=1)).total == pytest.approx(1.1)
+    # The bonus pays once, not per success: three successes score as one.
+    assert reward_r4(make_context(tool_successes=3)).total == pytest.approx(1.1)
+    assert reward_r4(make_context()).total == pytest.approx(1.0)
+
+
+def test_r4_success_bonus_is_not_gated_by_correctness() -> None:
+    # The whole point of R4: a successful tool call pays even when the answer
+    # is wrong, because that is the gradient GRPO needs to learn tool use
+    # before correctness appears (2026-09-29).
+    wrong = reward_r4(make_context(status=VerifierStatus.INCORRECT, tool_successes=1))
+    assert wrong.components["correct"] == 0.0
+    assert wrong.components["tool_success_bonus"] == pytest.approx(0.10)
+    assert wrong.total == pytest.approx(0.10)
+
+
+def test_r0_through_r3_ignore_tool_successes() -> None:
+    for config in (R0_DEFAULT, R1_DEFAULT, R2_DEFAULT, R3_DEFAULT):
+        assert (
+            compute_reward(make_context(), config).total
+            == compute_reward(make_context(tool_successes=2), config).total
+        )
+
+
 def test_reward_is_deterministic(
     correct_context: RewardContext, wrong_context: RewardContext
 ) -> None:
     for context in (correct_context, wrong_context):
-        for config in (R0_DEFAULT, R1_DEFAULT, R2_DEFAULT, R3_DEFAULT):
+        for config in (R0_DEFAULT, R1_DEFAULT, R2_DEFAULT, R3_DEFAULT, R4_DEFAULT):
             assert compute_reward(context, config) == compute_reward(context, config)
 
 
@@ -194,6 +224,7 @@ def test_config_hash_is_stable_and_sensitive() -> None:
         ("r1.yaml", R1_DEFAULT),
         ("r2.yaml", R2_DEFAULT),
         ("r3.yaml", R3_DEFAULT),
+        ("r4.yaml", R4_DEFAULT),
     ],
 )
 def test_yaml_configs_match_code_presets(filename: str, preset: RewardConfig) -> None:
@@ -204,6 +235,7 @@ def test_yaml_configs_match_code_presets(filename: str, preset: RewardConfig) ->
 @given(
     st.booleans(),
     st.integers(min_value=0, max_value=20),
+    st.integers(min_value=0, max_value=20),
     st.floats(min_value=0.0, max_value=100.0, allow_nan=False),
     st.integers(min_value=0, max_value=20),
     st.integers(min_value=0, max_value=10000),
@@ -212,6 +244,7 @@ def test_yaml_configs_match_code_presets(filename: str, preset: RewardConfig) ->
 def test_total_is_finite_and_bounded(
     correct: bool,
     tool_calls: int,
+    tool_successes: int,
     python_seconds: float,
     invalid_actions: int,
     generated_tokens: int,
@@ -220,12 +253,13 @@ def test_total_is_finite_and_bounded(
     context = make_context(
         status=VerifierStatus.CORRECT if correct else VerifierStatus.INCORRECT,
         tool_calls=tool_calls,
+        tool_successes=tool_successes,
         python_seconds=python_seconds,
         invalid_action_count=invalid_actions,
         generated_tokens=generated_tokens,
         max_generated_tokens=max_generated_tokens,
     )
-    for config in (R0_DEFAULT, R1_DEFAULT, R2_DEFAULT, R3_DEFAULT):
+    for config in (R0_DEFAULT, R1_DEFAULT, R2_DEFAULT, R3_DEFAULT, R4_DEFAULT):
         total = compute_reward(context, config).total
         assert math.isfinite(total)
-        assert -1.0 <= total <= 1.0
+        assert config.clip_min <= total <= config.clip_max

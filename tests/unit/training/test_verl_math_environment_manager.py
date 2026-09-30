@@ -178,6 +178,7 @@ def test_math_rollout_uses_versioned_reward_breakdown_at_terminal() -> None:
         invalid_weight=0.10,
         invalid_cap=3,
         token_weight=0.0,
+        tool_success_bonus=0.0,
         clip_min=-1.0,
         clip_max=1.0,
     )
@@ -198,6 +199,7 @@ def test_math_rollout_uses_versioned_reward_breakdown_at_terminal() -> None:
         "python_cost": 0.0,
         "token_cost": 0.0,
         "tool_cost": 0.0,
+        "tool_success_bonus": 0.0,
     }
 
 
@@ -216,6 +218,7 @@ def test_budget_exhaustion_does_not_outscore_an_honest_wrong_answer() -> None:
         invalid_weight=0.10,
         invalid_cap=3,
         token_weight=0.0,
+        tool_success_bonus=0.0,
         clip_min=-1.0,
         clip_max=1.0,
     )

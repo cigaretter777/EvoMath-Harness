@@ -1,0 +1,9 @@
+{
+  "mode": "python_tir",
+  "raw_record_count": 10000,
+  "raw_records_sha256": "252e9920cec8885d21c70d5bac9e61dd0e3c988716789c53a6d5bc278509c2ad",
+  "requested_revision": "77a91d7b7a1a98ac4b1beb7d86c09d156b935dcd",
+  "resolved_revision": null,
+  "schema_version": "source-sft-input-v1",
+  "source": "numinamath_tir"
+}

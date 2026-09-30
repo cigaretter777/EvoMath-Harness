@@ -20,12 +20,16 @@ class RewardConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     version: str
-    variant: Literal["r0", "r1", "r2", "r3"]
+    variant: Literal["r0", "r1", "r2", "r3", "r4"]
     tool_weight: float = Field(ge=0, le=1)
     python_weight: float = Field(ge=0, le=1)
     invalid_weight: float = Field(ge=0, le=1)
     invalid_cap: int = Field(ge=0)
     token_weight: float = Field(ge=0, le=1)
+    # Positive term: paid once when at least one tool call executed
+    # successfully (the only member of the family with a tool reward). Zero in
+    # R0-R3, whose totals are unchanged by the field's presence.
+    tool_success_bonus: float = Field(ge=0, le=1)
     clip_min: float
     clip_max: float
 
@@ -46,6 +50,7 @@ class RewardContext(BaseModel):
 
     verifier_result: VerifierResult
     tool_calls: int = Field(ge=0)
+    tool_successes: int = Field(ge=0)
     python_seconds: float = Field(ge=0)
     invalid_action_count: int = Field(ge=0)
     generated_tokens: int = Field(ge=0)

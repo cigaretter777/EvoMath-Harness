@@ -115,7 +115,16 @@ class ProductMathEnv:
             {"name": call.name, "result": result.model_dump()},
             monotonic_ms,
         )
-        observation = self._observation("tool_result", result.output, state)
+        if result.ok:
+            observation_content = result.output
+        else:
+            # Errors carry output="" by contract, so rendering output alone
+            # showed the model an empty observation it could not learn from
+            # (attributed 2026-09-29: every failed call looked identical to a
+            # call that returned nothing).
+            error = result.error_code.value if result.error_code else "unknown_error"
+            observation_content = f"Tool call failed ({error}); no output was produced."
+        observation = self._observation("tool_result", observation_content, state)
         state = self._terminate_if_exhausted(state)
         return self._store(state, observation)
 

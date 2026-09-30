@@ -1,0 +1,25 @@
+# MVP SFT config (design doc §7): a mirror of the config that produced the
+# released SFT adapter, pinned field-for-field by
+# tests/unit/mvp/test_configs_pinning.py so the two cannot drift apart.
+# GPU-gated 200-record overfit smoke (tests/integration/test_sft_overfit.py).
+# Expectation: loss decreases, adapter reloads, >=98% protocol-valid terminals.
+model_id: Qwen/Qwen3-1.7B
+model_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+data_manifest_sha256: "f9cc4c4a41ea7f63e95c9ebe7f6de26ff225fbd6c6d8b144fcb745c78350433b"
+output_dir: artifacts/sft/qwen3_1_7b_sft_dp_v1
+precision: bf16
+max_length: 4096
+epochs: 2
+learning_rate: 2.0e-5
+warmup_ratio: 0.0
+weight_decay: 0.0
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_targets: [q_proj, k_proj, v_proj, o_proj]
+gradient_checkpointing: false
+seed: 20260910
+logging_steps: 1
+per_device_batch_size: 1
+gradient_accumulation_steps: 4

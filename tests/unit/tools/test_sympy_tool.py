@@ -26,3 +26,20 @@ def test_sympy_tool_supports_calculus() -> None:
 
     assert derivative.output == "cos(x)"
     assert integral.output == "2"
+
+
+def test_sympy_tool_rewrites_equation_markers_for_solve() -> None:
+    tool = SympyTool()
+
+    # Model-emitted equations arrive with "==" (or a bare "="); sympify alone
+    # parses that as Python equality and returns a plain False, so solve used
+    # to yield [] with ok=True for every equation-shaped call (2026-09-29).
+    solve_double = asyncio.run(
+        tool.execute(SympyArguments(operation="solve", expression="1/6 + 1/3 - 1/x == 0", variables=["x"]), context())
+    )
+    solve_single = asyncio.run(
+        tool.execute(SympyArguments(operation="solve", expression="x^2 = 4", variables=["x"]), context())
+    )
+
+    assert solve_double.ok and solve_double.output == "[2]"
+    assert solve_single.ok and solve_single.output == "[-2, 2]"

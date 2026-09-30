@@ -232,3 +232,23 @@ def test_timed_out_run_still_reports_execution_time_for_the_python_budget(respx_
     assert result.error_code is ToolErrorCode.TIMEOUT
     assert result.metadata["execution_time"] == 10.0015
     asyncio.run(client.aclose())
+
+
+def test_run_code_survives_a_uvloop_teardown_crash(respx_mock: object) -> None:
+    """Captured live 2026-09-29: with the sandbox tunnel half-dead, uvloop's
+    connection teardown raised a bare RuntimeError from inside httpcore, below
+    httpx's own exception mapping, and it killed the whole GRPO run. It must
+    fail the call like any other transport fault."""
+    respx_mock.post("http://sandbox.test/run_code").mock(
+        side_effect=RuntimeError(
+            "unable to perform operation on <TCPTransport closed=True reading=False"
+            " 0x55d83b8558e0>; the handler is closed"
+        )
+    )
+    client = SandboxFusionClient(base_url="http://sandbox.test")
+
+    result = asyncio.run(client.run_code("print(1)"))
+
+    assert not result.ok
+    assert result.error_code is ToolErrorCode.UNAVAILABLE
+    asyncio.run(client.aclose())
