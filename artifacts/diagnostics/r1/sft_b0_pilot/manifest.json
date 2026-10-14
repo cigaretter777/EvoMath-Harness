@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "data": "data/processed/diagnostics/r1/diagnostic_r1_pilot20.parquet",
+  "model": "/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged",
+  "adapter": null,
+  "agent_config": "configs/agent/diagnostic_b0.yaml",
+  "reward_config": "configs/reward/r0.yaml",
+  "task_count": 20,
+  "group_size": 4,
+  "trajectory_count_expected": 80,
+  "selection_seed": 20261014,
+  "generation": {
+    "max_new_tokens": 1024,
+    "temperature": 0.7,
+    "seed_enforced_by_transformers_client": false
+  },
+  "sandbox_url": "http://localhost:8080",
+  "parser_tolerance": [
+    "unclosed_think",
+    "bare_final_scalar"
+  ],
+  "summary": {
+    "group_count": 20,
+    "all_zero_group_count": 11,
+    "mixed_group_count": 6,
+    "all_one_group_count": 3,
+    "effective_group_count": 6,
+    "all_zero_group_rate": 0.55,
+    "mixed_group_rate": 0.3,
+    "all_one_group_rate": 0.15,
+    "effective_group_rate": 0.3,
+    "task_count": 20,
+    "group_size": 4,
+    "trajectory_count": 80,
+    "mean_reward": 0.25,
+    "reward_std": 0.4330127018922193,
+    "correct_count": 20,
+    "verifier_accuracy": 0.25,
+    "final_answer_count": 77,
+    "valid_final_rate": 0.9625,
+    "verifier_evaluated_count": 80,
+    "verifier_evaluated_rate": 1.0,
+    "termination_counts": {
+      "final": 77,
+      "max_steps": 3
+    },
+    "tool_calls_total": 0,
+    "tool_calls_mean": 0.0,
+    "invalid_actions_total": 34,
+    "invalid_actions_mean": 0.425,
+    "generated_tokens_total": 57700,
+    "generated_tokens_mean": 721.25,
+    "python_seconds_total": 0.0,
+    "python_seconds_mean": 0.0,
+    "elapsed_seconds": 1959.7668368835002
+  }
+}

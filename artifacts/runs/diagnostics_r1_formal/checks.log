@@ -1,0 +1,14 @@
+== round1 formal checks 2026-10-13T20:15:18Z ==
+C0 ok: pilot state complete (four arms paired and complete)
+C1 ok: formal parquet sha 15cdaa5441f8, rows 100
+C2 ok: 100 expected task ids -> /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/runs/diagnostics_r1_formal/expected_task_ids_formal100.txt
+C3 ok: model at /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged; output dirs fresh
+arm b0 exit 0
+arm b1 exit 0
+arm b2 exit 0
+arm b4 exit 0
+b0: episodes=400/400 paired=True term={'max_steps': 16, 'final': 384}
+b1: episodes=400/400 paired=True term={'final': 379, 'max_steps': 21}
+b2: episodes=400/400 paired=True term={'final': 380, 'max_steps': 20}
+b4: episodes=400/400 paired=True term={'final': 376, 'max_steps': 24}
+post-check flags: 0

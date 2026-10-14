@@ -1,0 +1,22 @@
+2026-10-13T18:21:29Z launcher start; arms=0 1 2 4
+2026-10-13T18:21:36Z no GPU yet, waiting
+2026-10-13T18:22:36Z no GPU yet, waiting
+2026-10-13T18:23:36Z no GPU yet, waiting
+2026-10-13T18:24:36Z no GPU yet, waiting
+2026-10-13T18:25:36Z no GPU yet, waiting
+2026-10-13T18:26:37Z no GPU yet, waiting
+2026-10-13T18:27:37Z no GPU yet, waiting
+2026-10-13T18:28:37Z no GPU yet, waiting
+2026-10-13T18:29:37Z no GPU yet, waiting
+2026-10-13T18:30:37Z no GPU yet, waiting
+2026-10-13T18:31:37Z no GPU yet, waiting
+2026-10-13T18:32:37Z no GPU yet, waiting
+2026-10-13T18:33:37Z no GPU yet, waiting
+2026-10-13T18:34:37Z no GPU yet, waiting
+2026-10-13T19:31:43Z launcher start; arms=0 1 2 4
+2026-10-13T19:31:46Z gpu and sandbox ready; launching arms: 0 1 2 4
+2026-10-13T20:04:28Z arm b0 exit 0
+2026-10-13T20:10:28Z arm b1 exit 0
+2026-10-13T20:14:27Z arm b2 exit 0
+2026-10-13T20:14:27Z arm b4 exit 0
+2026-10-13T20:14:27Z pilot complete; all checks passed

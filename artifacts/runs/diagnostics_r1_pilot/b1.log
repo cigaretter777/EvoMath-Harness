@@ -1,0 +1,162 @@
+[rollout-health] loading model: /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[rollout-health] task 1/20 id=omni_math:cfd1da8604a325e749e2
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=846
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=1802
+  sample=3/4 reward=0.000 termination=max_steps tools=0 tokens=2860
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=180
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 2/20 id=omni_math:8cbe0c48c29daa190277
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=849
+  sample=2/4 reward=0.000 termination=max_steps tools=0 tokens=2282
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=3084
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=2061
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 3/20 id=omni_math:40e067a90f6a0432e579
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=843
+  sample=2/4 reward=0.000 termination=max_steps tools=0 tokens=1514
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=415
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=507
+  group mean=0.500 std=0.500 effective=True
+[rollout-health] task 4/20 id=omni_math:6317a0595c2f92ff6874
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=746
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=1361
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=593
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=706
+  group mean=0.250 std=0.433 effective=True
+[rollout-health] task 5/20 id=omni_math:5aab3eb4acd50196d860
+  sample=1/4 reward=1.000 termination=final tools=0 tokens=634
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=955
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=957
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=940
+  group mean=0.500 std=0.500 effective=True
+[rollout-health] task 6/20 id=omni_math:8924663d0e48f9815d9d
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=628
+  sample=2/4 reward=1.000 termination=final tools=0 tokens=417
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=538
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=910
+  group mean=0.250 std=0.433 effective=True
+[rollout-health] task 7/20 id=omni_math:5c95294cc128be4d87ec
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=1046
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=2067
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=153
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=2063
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 8/20 id=omni_math:48a0e06e36e421cba955
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=740
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=632
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=575
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=716
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 9/20 id=omni_math:842e8b1f3ecd8c82ac00
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=1100
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=438
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=1039
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=626
+  group mean=0.250 std=0.433 effective=True
+[rollout-health] task 10/20 id=omni_math:ffc5a7d0d1b7309e726f
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=947
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=1044
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=4111
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=579
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 11/20 id=omni_math:bc8aca553a71b9139a79
+  sample=1/4 reward=1.000 termination=final tools=0 tokens=281
+  sample=2/4 reward=1.000 termination=final tools=0 tokens=216
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=521
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=174
+  group mean=1.000 std=0.000 effective=False
+[rollout-health] task 12/20 id=omni_math:f1069a0605746e77f02b
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=324
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=737
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=708
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=599
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 13/20 id=omni_math:cdaaad37badd1126c60d
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=467
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=310
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=223
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=412
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 14/20 id=omni_math:8cc783279bbf4cd36bd0
+  sample=1/4 reward=1.000 termination=final tools=0 tokens=909
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=184
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=1039
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=604
+  group mean=0.250 std=0.433 effective=True
+[rollout-health] task 15/20 id=omni_math:2e55f04edc10a9c42f9d
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=1052
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=2064
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=1120
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=1040
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 16/20 id=omni_math:e7ce0a36c776a990ac85
+  sample=1/4 reward=1.000 termination=final tools=0 tokens=302
+  sample=2/4 reward=1.000 termination=final tools=0 tokens=360
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=300
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=93
+  group mean=1.000 std=0.000 effective=False
+[rollout-health] task 17/20 id=omni_math:bc59bae1f8d5e2511c53
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=588
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=773
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=34
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=629
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 18/20 id=omni_math:31379d4ab3c591a63f08
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=389
+  sample=2/4 reward=0.000 termination=final tools=0 tokens=469
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=414
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=422
+  group mean=0.250 std=0.433 effective=True
+[rollout-health] task 19/20 id=omni_math:46e39a2cac5a7070682a
+  sample=1/4 reward=1.000 termination=final tools=0 tokens=181
+  sample=2/4 reward=1.000 termination=final tools=0 tokens=225
+  sample=3/4 reward=1.000 termination=final tools=0 tokens=216
+  sample=4/4 reward=1.000 termination=final tools=0 tokens=227
+  group mean=1.000 std=0.000 effective=False
+[rollout-health] task 20/20 id=omni_math:3e81816fbdb983295ded
+  sample=1/4 reward=0.000 termination=final tools=0 tokens=1039
+  sample=2/4 reward=0.000 termination=max_steps tools=0 tokens=6144
+  sample=3/4 reward=0.000 termination=final tools=0 tokens=971
+  sample=4/4 reward=0.000 termination=final tools=0 tokens=198
+  group mean=0.000 std=0.000 effective=False
+
+[rollout-health] COMPLETE
+{
+  "group_count": 20,
+  "all_zero_group_count": 10,
+  "mixed_group_count": 7,
+  "all_one_group_count": 3,
+  "effective_group_count": 7,
+  "all_zero_group_rate": 0.5,
+  "mixed_group_rate": 0.35,
+  "all_one_group_rate": 0.15,
+  "effective_group_rate": 0.35,
+  "task_count": 20,
+  "group_size": 4,
+  "trajectory_count": 80,
+  "mean_reward": 0.2625,
+  "reward_std": 0.43999289766995103,
+  "correct_count": 21,
+  "verifier_accuracy": 0.2625,
+  "final_answer_count": 76,
+  "valid_final_rate": 0.95,
+  "verifier_evaluated_count": 80,
+  "verifier_evaluated_rate": 1.0,
+  "termination_counts": {
+    "final": 76,
+    "max_steps": 4
+  },
+  "tool_calls_total": 0,
+  "tool_calls_mean": 0.0,
+  "invalid_actions_total": 53,
+  "invalid_actions_mean": 0.6625,
+  "generated_tokens_total": 71462,
+  "generated_tokens_mean": 893.275,
+  "python_seconds_total": 0.0,
+  "python_seconds_mean": 0.0,
+  "elapsed_seconds": 2319.774481737986
+}
