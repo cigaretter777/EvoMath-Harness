@@ -1,0 +1,49 @@
+[rollout-health] loading model: /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[rollout-health] task 1/2 id=omni_math:cfd1da8604a325e749e2
+  sample=1/2 reward=0.000 termination=final tools=0 tokens=1281
+  sample=2/2 reward=0.000 termination=final tools=0 tokens=1469
+  group mean=0.000 std=0.000 effective=False
+[rollout-health] task 2/2 id=omni_math:8cbe0c48c29daa190277
+  sample=1/2 reward=0.000 termination=final tools=0 tokens=1433
+  sample=2/2 reward=0.000 termination=final tools=0 tokens=967
+  group mean=0.000 std=0.000 effective=False
+
+[rollout-health] COMPLETE
+{
+  "group_count": 2,
+  "all_zero_group_count": 2,
+  "mixed_group_count": 0,
+  "all_one_group_count": 0,
+  "effective_group_count": 0,
+  "all_zero_group_rate": 1.0,
+  "mixed_group_rate": 0.0,
+  "all_one_group_rate": 0.0,
+  "effective_group_rate": 0.0,
+  "task_count": 2,
+  "group_size": 2,
+  "trajectory_count": 4,
+  "mean_reward": 0.0,
+  "reward_std": 0.0,
+  "correct_count": 0,
+  "verifier_accuracy": 0.0,
+  "final_answer_count": 4,
+  "valid_final_rate": 1.0,
+  "verifier_evaluated_count": 4,
+  "verifier_evaluated_rate": 1.0,
+  "termination_counts": {
+    "final": 4
+  },
+  "tool_calls_total": 0,
+  "tool_calls_mean": 0.0,
+  "invalid_actions_total": 0,
+  "invalid_actions_mean": 0.0,
+  "generated_tokens_total": 5150,
+  "generated_tokens_mean": 1287.5,
+  "python_seconds_total": 0.0,
+  "python_seconds_mean": 0.0,
+  "elapsed_seconds": 152.9108064090833
+}

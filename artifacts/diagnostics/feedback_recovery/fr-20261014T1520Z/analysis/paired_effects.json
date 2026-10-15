@@ -1,0 +1,105 @@
+{
+  "unit_of_analysis": "anchor (task)",
+  "arms": [
+    "F",
+    "P",
+    "M"
+  ],
+  "primary_contrast": "F - M",
+  "secondary_contrast": "P - F",
+  "complete_anchor_groups": 27,
+  "incomplete_anchor_groups": [],
+  "missing_branches": 0,
+  "arm_accuracy_over_complete_groups": {
+    "F": 0.08333333333333333,
+    "P": 0.07407407407407407,
+    "M": 0.08333333333333333
+  },
+  "paired": [
+    {
+      "contrast": "F - M",
+      "anchors": 27,
+      "difference": 0.0,
+      "ci95": [
+        -0.037037037037037035,
+        0.037037037037037035
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null
+    },
+    {
+      "contrast": "P - F",
+      "anchors": 27,
+      "difference": -0.009259259259259259,
+      "ci95": [
+        -0.06481481481481481,
+        0.046296296296296294
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null
+    }
+  ],
+  "sensitivity": [
+    {
+      "contrast": "F - M",
+      "anchors": 27,
+      "difference": 0.0,
+      "ci95": [
+        -0.037037037037037035,
+        0.037037037037037035
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null,
+      "scenario": "missing_as_correct"
+    },
+    {
+      "contrast": "P - F",
+      "anchors": 27,
+      "difference": -0.009259259259259259,
+      "ci95": [
+        -0.06481481481481481,
+        0.046296296296296294
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null,
+      "scenario": "missing_as_correct"
+    },
+    {
+      "contrast": "F - M",
+      "anchors": 27,
+      "difference": 0.0,
+      "ci95": [
+        -0.037037037037037035,
+        0.037037037037037035
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null,
+      "scenario": "missing_as_wrong"
+    },
+    {
+      "contrast": "P - F",
+      "anchors": 27,
+      "difference": -0.009259259259259259,
+      "ci95": [
+        -0.06481481481481481,
+        0.046296296296296294
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null,
+      "scenario": "missing_as_wrong"
+    }
+  ],
+  "small_sample_note": null
+}

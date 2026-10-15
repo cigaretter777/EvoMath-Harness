@@ -1,0 +1,212 @@
+{
+  "name": "diagnostic_feedback_recovery",
+  "created_utc": "2026-10-14T15:20:51Z",
+  "git_sha": "206750eebf8de9d4949d0eefacd12ae3a93f9640",
+  "source_pool": {
+    "path": "data/processed/v1/frozen_eval.parquet",
+    "sha256": "3b3255316c7e57480982e041d5e7172ca63b6052b15f7a5269c9ede574e05c43",
+    "rows": 3438
+  },
+  "excluded": {
+    "sources": {
+      "artifacts/eval/thesis_e0_base_direct_b1/task_ids.txt": 200,
+      "artifacts/diagnostics/r1/sft_b0_100/task_pool.jsonl": 100,
+      "artifacts/diagnostics/r1/sft_b0_pilot/task_pool.jsonl": 20,
+      "artifacts/diagnostics/r1/sft_b1_100/task_pool.jsonl": 100,
+      "artifacts/diagnostics/r1/sft_b1_pilot/task_pool.jsonl": 20,
+      "artifacts/diagnostics/r1/sft_b2_100/task_pool.jsonl": 100,
+      "artifacts/diagnostics/r1/sft_b2_pilot/task_pool.jsonl": 20,
+      "artifacts/diagnostics/r1/sft_b4_100/task_pool.jsonl": 100,
+      "artifacts/diagnostics/r1/sft_b4_pilot/task_pool.jsonl": 20,
+      "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/preflight/dp_v1_merged/task_pool.jsonl": 2,
+      "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/preflight/tir_merged/task_pool.jsonl": 2
+    },
+    "union": 300,
+    "duplicates_across_sources": 100,
+    "not_found_in_pool": []
+  },
+  "pool_rows_after_exclusion": 3138,
+  "numeric_filter": {
+    "enabled": true,
+    "pattern": "^[+-]?\\d+(\\.\\d+)?$",
+    "note": "every row of the pool has answer_type=expression, so the report's numeric-answer preference is applied as a value-form rule on reference_value"
+  },
+  "selection": {
+    "method": "rank each layer by sha256(main_seed:layer:task_id); A = ranks 1..a_per_layer, B = the next b_per_layer; outcome-blind, no resampling at run time",
+    "seed": 20261014,
+    "layers": [
+      {
+        "index": 0,
+        "difficulties": [
+          3.5,
+          3.75,
+          4.0
+        ],
+        "eligible_rows": 379,
+        "a_ids": [
+          "omni_math:7b0cf9755aa83a29045b",
+          "omni_math:901774abb2fd0d2dfcda",
+          "omni_math:e6f6283b573f56a96067",
+          "omni_math:59a4facbbf2f11b45d1e",
+          "omni_math:aea316824fca5c49c005"
+        ],
+        "b_ids": [
+          "omni_math:ce665d2b193e2a844d1c",
+          "omni_math:853274aea22a14c7227f",
+          "omni_math:a28dda842d79e6ba6be1",
+          "omni_math:550ee799ef54e6d13eec",
+          "omni_math:5043c10435cd06b10647",
+          "omni_math:80e0ecb1564b8c68ce86",
+          "omni_math:b68f24392d3c5242905a",
+          "omni_math:99b6596d16b340117cc6",
+          "omni_math:cbb2456143cbcf1ac261",
+          "omni_math:3f37c6b407757bc477df",
+          "omni_math:9c98682bfac4cd9e6cd5",
+          "omni_math:d657fd5bcd446dd96b41",
+          "omni_math:818a83e3fb303f3ee85d",
+          "omni_math:19ca1a43020bfd8658c4",
+          "omni_math:4366cd7cc5b7da0e632d",
+          "omni_math:88d0b1a43de05bc31d14",
+          "omni_math:b0687727d321379eb101",
+          "omni_math:bec7986869df54d2a547",
+          "omni_math:962275787812e6cad353",
+          "omni_math:8e6d0bcd73dcd00ea153"
+        ],
+        "difficulty_counts": {
+          "3.5": 97,
+          "3.75": 1,
+          "4.0": 281
+        }
+      },
+      {
+        "index": 1,
+        "difficulties": [
+          4.25,
+          4.375,
+          4.5,
+          4.75
+        ],
+        "eligible_rows": 192,
+        "a_ids": [
+          "omni_math:690aae57fb4c8f6c97ab",
+          "omni_math:95755e105c5f44a632c6",
+          "omni_math:136e0d3319121547cc3c",
+          "omni_math:32441bfcdbecad0f6614",
+          "omni_math:2d5ff05e559e986817e3"
+        ],
+        "b_ids": [
+          "omni_math:cdd90b01566b59f682cf",
+          "omni_math:1478b49f18dac37fd5db",
+          "omni_math:1164bf418a9d683a3e21",
+          "omni_math:629c9b63a81440478213",
+          "omni_math:3d4d68b07fa77d07fd46",
+          "omni_math:1e2a1793ad0ad289728e",
+          "omni_math:60eb2767f6a01571cfcc",
+          "omni_math:6a1b497b1a409be8ae17",
+          "omni_math:56f772b387a79d52ce55",
+          "omni_math:e8453df9f58e77c86dbb",
+          "omni_math:cfca3c77882695874526",
+          "omni_math:9caade08b1dd36051103",
+          "omni_math:8df02d96b9ccba40fc28",
+          "omni_math:88f3676134f6169af0b5",
+          "omni_math:c065348d0ee4ce4548dc",
+          "omni_math:71dda168375cbeb5b570",
+          "omni_math:c7d5d6188ea25816b2a4",
+          "omni_math:21d2c140392c7444f357",
+          "omni_math:5f821b3eff281e10202c",
+          "omni_math:2fc80608da25a1ec0b0f"
+        ],
+        "difficulty_counts": {
+          "4.375": 1,
+          "4.5": 186,
+          "4.75": 5
+        }
+      }
+    ]
+  },
+  "layer_rationale": {
+    "source": "artifacts/mvp/dual_loop_eval/sft (TIR model on the spent E0/E1 200)",
+    "observed": "difficulty 3.5-4.5: 12.1% final accuracy, 32% of tasks hit an execution error; 1-3: 45.2% accuracy (too easy to leave room for a recovery effect); 5-7: 9-12% with the same error rate but a higher chance of an unrecoverable floor",
+    "note": "outcome-blind for the tasks selected here; used only to fix the window"
+  },
+  "overlap_with_spent_tasks": {
+    "round1_diagnostic_ids": {
+      "count": 100,
+      "overlap": []
+    },
+    "e0_e1_200": {
+      "count": 200,
+      "overlap": []
+    }
+  },
+  "overlap_with_training_data": {
+    "note": "read 129828 ids from data/processed/v1/train.parquet",
+    "train_rows": 129828,
+    "task_id_overlap": [],
+    "source_hash_overlap": []
+  },
+  "a": {
+    "path": "data/processed/diagnostics/feedback_recovery/fr_a10.parquet",
+    "sha256": "4be6f905b417288a3d150b9d2b31fb91223835e98006dae5f1e80bd55d0e85ab",
+    "rows": 10,
+    "task_ids": [
+      "omni_math:7b0cf9755aa83a29045b",
+      "omni_math:901774abb2fd0d2dfcda",
+      "omni_math:e6f6283b573f56a96067",
+      "omni_math:59a4facbbf2f11b45d1e",
+      "omni_math:aea316824fca5c49c005",
+      "omni_math:690aae57fb4c8f6c97ab",
+      "omni_math:95755e105c5f44a632c6",
+      "omni_math:136e0d3319121547cc3c",
+      "omni_math:32441bfcdbecad0f6614",
+      "omni_math:2d5ff05e559e986817e3"
+    ]
+  },
+  "b": {
+    "path": "data/processed/diagnostics/feedback_recovery/fr_b40.parquet",
+    "sha256": "05094c9b9705ce1195a57edaf0999c671e9e391f01213cd41569a376ade50dbf",
+    "rows": 40,
+    "task_ids": [
+      "omni_math:ce665d2b193e2a844d1c",
+      "omni_math:853274aea22a14c7227f",
+      "omni_math:a28dda842d79e6ba6be1",
+      "omni_math:550ee799ef54e6d13eec",
+      "omni_math:5043c10435cd06b10647",
+      "omni_math:80e0ecb1564b8c68ce86",
+      "omni_math:b68f24392d3c5242905a",
+      "omni_math:99b6596d16b340117cc6",
+      "omni_math:cbb2456143cbcf1ac261",
+      "omni_math:3f37c6b407757bc477df",
+      "omni_math:9c98682bfac4cd9e6cd5",
+      "omni_math:d657fd5bcd446dd96b41",
+      "omni_math:818a83e3fb303f3ee85d",
+      "omni_math:19ca1a43020bfd8658c4",
+      "omni_math:4366cd7cc5b7da0e632d",
+      "omni_math:88d0b1a43de05bc31d14",
+      "omni_math:b0687727d321379eb101",
+      "omni_math:bec7986869df54d2a547",
+      "omni_math:962275787812e6cad353",
+      "omni_math:8e6d0bcd73dcd00ea153",
+      "omni_math:cdd90b01566b59f682cf",
+      "omni_math:1478b49f18dac37fd5db",
+      "omni_math:1164bf418a9d683a3e21",
+      "omni_math:629c9b63a81440478213",
+      "omni_math:3d4d68b07fa77d07fd46",
+      "omni_math:1e2a1793ad0ad289728e",
+      "omni_math:60eb2767f6a01571cfcc",
+      "omni_math:6a1b497b1a409be8ae17",
+      "omni_math:56f772b387a79d52ce55",
+      "omni_math:e8453df9f58e77c86dbb",
+      "omni_math:cfca3c77882695874526",
+      "omni_math:9caade08b1dd36051103",
+      "omni_math:8df02d96b9ccba40fc28",
+      "omni_math:88f3676134f6169af0b5",
+      "omni_math:c065348d0ee4ce4548dc",
+      "omni_math:71dda168375cbeb5b570",
+      "omni_math:c7d5d6188ea25816b2a4",
+      "omni_math:21d2c140392c7444f357",
+      "omni_math:5f821b3eff281e10202c",
+      "omni_math:2fc80608da25a1ec0b0f"
+    ]
+  }
+}

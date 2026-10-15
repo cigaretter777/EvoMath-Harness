@@ -1,0 +1,248 @@
+{
+  "created_utc": "2026-10-14T15:34:33Z",
+  "spec_hash": "4ca6c6c51c295a977a7e21011b257ddeaad05dc6887f749d355fe0bafbaa9364",
+  "frozen": {
+    "protocol": {
+      "path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/2026-10-14-feedback-recovery-validation.md",
+      "sha256": "40267c5f1f7c85d77a29bff7573956e449d721f97e91d92cc9cd60b45c001605",
+      "sections_frozen": [
+        "5 gate",
+        "6 B stage",
+        "7 C arms",
+        "8 analysis"
+      ]
+    },
+    "model": {
+      "path": "artifacts/models/qwen3_1_7b_sft_tir_merged",
+      "version": "artifacts/models/qwen3_1_7b_sft_tir_merged@c0284b582e14",
+      "files": {
+        "added_tokens.json": {
+          "size": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "chat_template.jinja": {
+          "size": 4168,
+          "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+        },
+        "config.json": {
+          "size": 1360,
+          "sha256": "d75242c5e00d1fee395226085a27703534889eaed85eb92c615fae0c6667532e"
+        },
+        "generation_config.json": {
+          "size": 214,
+          "sha256": "19d9395705449004ddebeeaf62841338a48cc8df85cddb1ca0b2c60396d95c96"
+        },
+        "merges.txt": {
+          "size": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "model.safetensors": {
+          "size": 3441185608,
+          "sha256": "047ac5c7eac92bed957891162bc8a693524c6f42dfb97618093cdcc475432077"
+        },
+        "special_tokens_map.json": {
+          "size": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        "tokenizer.json": {
+          "size": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "tokenizer_config.json": {
+          "size": 5404,
+          "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+        },
+        "vocab.json": {
+          "size": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      },
+      "fingerprint_sha256": "7c687ba1cfff57595c216ef85603c05f75b784a6e892211db885a22afe9bfa8b",
+      "chat_template": {
+        "chat_template_sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+        "chat_template_chars": 4168,
+        "enable_thinking_passed": false,
+        "note": "apply_chat_template is called without enable_thinking, so the template default decides; recorded as an unresolved uncertainty"
+      }
+    },
+    "budget": {
+      "max_steps": 8,
+      "max_tool_calls": 4,
+      "max_python_seconds": 12.0,
+      "max_observation_chars": 8000
+    },
+    "generation": {
+      "max_new_tokens": 2048,
+      "temperature": 0.7,
+      "seed_enforced_by_transformers_client": true,
+      "seed_key": "stage,task_id,sample_id,arm,turn -> sha256(main_seed)",
+      "parser_tolerance": [
+        "unclosed_think",
+        "bare_final_scalar"
+      ]
+    },
+    "seeds": {
+      "main_seed": 20261014,
+      "construction": "sha256('seed-v1:{main_seed}' : purpose : parts) via hashlib",
+      "generation_key": "(stage, task_id, sample_id, arm, turn)",
+      "purposes": [
+        "task_selection",
+        "state_selection",
+        "run_order",
+        "generation"
+      ]
+    },
+    "data": {
+      "data/processed/diagnostics/feedback_recovery/fr_a10.parquet": {
+        "sha256": "4be6f905b417288a3d150b9d2b31fb91223835e98006dae5f1e80bd55d0e85ab",
+        "exists": true
+      },
+      "data/processed/diagnostics/feedback_recovery/fr_b40.parquet": {
+        "sha256": "05094c9b9705ce1195a57edaf0999c671e9e391f01213cd41569a376ade50dbf",
+        "exists": true
+      }
+    },
+    "manifest_file": {
+      "path": "data/manifests/diagnostic_feedback_recovery.json",
+      "sha256": "e9bb06b3e5decdcb85cb25125c4dec2ce44954338dcfd0a54b45dbec227c26f1"
+    },
+    "code": {
+      "branch": "codex/feedback-recovery",
+      "head_commit": "206750eebf8de9d4949d0eefacd12ae3a93f9640",
+      "working_tree_dirty": true,
+      "files": {
+        "src/adaptive_math/recovery/anchors.py": "e61de93f677f099af8d54902419d55b5dab2c5721f39b9ced5d04aa527f66f99",
+        "src/adaptive_math/recovery/arms.py": "05773cbb54dfce104b1fc591adf658b07b5e68e331994a27281b4367e1c36aca",
+        "src/adaptive_math/recovery/resume.py": "e2b61620d7d0286ea79ad89ac9eed23bb1b3566d8650c3870dd6011db490e322",
+        "src/adaptive_math/recovery/seeds.py": "7497785c30d7c7aeb0311002d8cd7c67e9c3cb031e84845f0661c2081d42d129",
+        "src/adaptive_math/recovery/taxonomy.py": "ddbd9afb768eee181920e24c8c618293a5e53e20e9e09cc7fdecdad4015006e5",
+        "src/adaptive_math/agent/__init__.py": "c4ff2ceff0ba844bab49d2ec3dc8d04c0c271815aa6f3e82816fb704138fa984",
+        "src/adaptive_math/agent/actions.py": "d9e2fc2963491ed581de67ea51ac32f991bd0854b3bf3cc6c90fba52d7f9a814",
+        "src/adaptive_math/agent/environment.py": "9e49fc2afb81d987718601029aab560bcc460f97e5838d0edfb66b5ebb648f84",
+        "src/adaptive_math/agent/loop.py": "44508a4fb2e8aa2455a1fe82993ace403368a840273af488861d88c19ad97dc5",
+        "src/adaptive_math/agent/model_client.py": "c5ce71f214ba3743b991bef650487492b03b6e98886dc241503036b9fa6d10ff",
+        "src/adaptive_math/agent/parser.py": "636f951a3a5c9186d5ae3abb868b35aa5f15df21b6ed57c9fdb3b1b623706d9e",
+        "src/adaptive_math/agent/prompts.py": "9db23ccfa0863cc5cf6fb3b4e9670ddcc328531532b9d0ff4eb499718ccf7379",
+        "src/adaptive_math/agent/replay.py": "33397bb23fb3eef74a155c91eaaf5587cc5c0008b1b4d3efbf6c699ebff95c0d",
+        "src/adaptive_math/agent/state.py": "e46aaa137c92af727f47d5e1a037177592c8a82637c6015b5a1416362a14a9c3",
+        "src/adaptive_math/agent/trace.py": "caaf5ef2dc0220176c26ae8190e6284848dd58633457b31d89a318ddb41f65bf",
+        "src/adaptive_math/agent/transformers_client.py": "e70a9d1e864fac3390b134e7d1e12fbae53a0a7730b105bed48a952bd258ac6a",
+        "src/adaptive_math/tools/sandboxfusion.py": "42ee7f6d7bdd77d8426a12436b881881d2301f71544b9b0ff747e4862b555cf0",
+        "src/adaptive_math/verifier/__init__.py": "899de6ec34d35bb356ac64000e37eb9e90422123e6c8be5ee6d1afeac3768e56",
+        "src/adaptive_math/verifier/extractor.py": "029570bd2957e313a74e17ea4b96cf12fc16c2e5b523b329fe18bf1636707581",
+        "src/adaptive_math/verifier/hidden.py": "0105d1fa672f34a6baf4fe58d937535869cf9eb09761a7fa967f0287026aedbe",
+        "src/adaptive_math/verifier/normalizer.py": "224b6d7d2e68723facb394754059e3d20f0e7f288681b622aaab7f1f41c57482",
+        "src/adaptive_math/verifier/numeric.py": "e22ca54c7a4319e17bc30bcd0c619457bb1d3ccbb69315e145bc312623aaef57",
+        "src/adaptive_math/verifier/service.py": "3cfc5e61639fa7bf61f148f0a1cc79329868ba6bde4e70356a3391237c4ce02c",
+        "src/adaptive_math/verifier/symbolic.py": "f4f21ac39e66ee21ae8fea4625b9a9522a7e0f92747b6ac3bc1fef393a6b2194",
+        "src/adaptive_math/verifier/worker.py": "25f8327fd85e93ee70b63f7d712509102a312cb606357fbedfdda60f76501995",
+        "scripts/eval/run_feedback_recovery.py": "10595459d5388b070c169743754d294504a2b7ce2565b16b07a24a9e1341e9bd",
+        "scripts/eval/check_seed_reproducibility.py": "9bfe05ca821fb4a9f6fead4e94f538079b798285bb4533465d9341b3ffbb9a91",
+        "scripts/data/build_feedback_recovery_set.py": "4a3b5c966c05bea3aad04fc626203bc93b308d7475ab85ab205d8f36ec7d1084",
+        "scripts/analysis/analyze_feedback_recovery.py": "8d5379958ce94737c81840e70371c58d40749447468b56cb78efa95d5042e74c",
+        "configs/agent/feedback_recovery.yaml": "92c8f5f3d8b3eccd8239b2a1b431dd8021f2c3cb2c656d69bfe5f05a217addb0",
+        "tests/unit/recovery/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/unit/recovery/fakes.py": "fa5d31ddea19bc1ea56165216ac2d63a2bbd59c05814ac71f6443da3330c5216",
+        "tests/unit/recovery/test_anchors.py": "2e00eaaafacb1c5f98ec12649f1b5eca1f723b5e7beff9a2ea2ea58ee95d16d3",
+        "tests/unit/recovery/test_arms.py": "33e5b4e3d00bd8b0a8a86fdcfb2a1dfa8977b56e701bfea949e875ebeda275c6",
+        "tests/unit/recovery/test_resume.py": "9819ed63c4c4191a78e2063fd1bb3806b31b57cca413c2771dd2695b79705def",
+        "tests/unit/recovery/test_seeds.py": "eb439c74798c4834773c533966a125eed3adc171205ea4bc5ea3657d7c9b2bbe",
+        "tests/unit/recovery/test_taxonomy.py": "765a0576620eb3c46a765b3cf06a09c6e8b588df782e48be439bcc377a4cb7f9"
+      }
+    },
+    "stage_a": {
+      "gate": {
+        "checks": {
+          "executed_tool_call_trajectories": {
+            "value": 20,
+            "threshold": 5,
+            "total": 20,
+            "pass": true
+          },
+          "infrastructure_failures": {
+            "value": 0,
+            "threshold": 0,
+            "pass": true
+          },
+          "parse_error_step_rate": {
+            "value": 0.0,
+            "threshold": 0.1,
+            "pass": true
+          },
+          "length_truncated_without_action_rate": {
+            "value": 0.023809523809523808,
+            "threshold": 0.1,
+            "pass": true
+          },
+          "hidden_label_leakage": {
+            "value": [],
+            "pass": true
+          }
+        },
+        "generation_steps": 42,
+        "parse_error_steps": 0,
+        "environment_parse_error_steps": 1,
+        "reparse_agrees_with_environment": false,
+        "length_truncated_without_action_steps": 1,
+        "successful_tool_call_trajectories": 14,
+        "automated_pass": true,
+        "manual_checks_required": [
+          "read at least 3 full call-feedback-continuation trajectories",
+          "confirm the rendered input matches the log",
+          "answer-judge smoke test (see verifier_smoke in the stage summary)"
+        ]
+      },
+      "seed_check": {
+        "task_id": "omni_math:7b0cf9755aa83a29045b",
+        "sample_index": 0,
+        "same_seed": 1452410852,
+        "other_seed": 2092036096,
+        "recorded_chars": 607,
+        "replay_chars": [
+          607,
+          607,
+          655
+        ],
+        "replay_matches_recorded": true,
+        "replay_is_deterministic": true,
+        "different_seed_changes_text": true,
+        "episode_events_identical": true,
+        "origin_events": 5,
+        "replay_events": 5,
+        "first_difference": null,
+        "usage_identical_except_python_seconds": true,
+        "origin_python_seconds": 0.38184285163879395,
+        "replay_python_seconds": 0.25812220573425293,
+        "replay_correct": false,
+        "pass": true,
+        "model_version": "artifacts/models/qwen3_1_7b_sft_tir_merged@c0284b582e14"
+      },
+      "manual_read": {
+        "trajectories": 3,
+        "indices": [
+          1,
+          15,
+          16
+        ],
+        "file": "stage_a/trajectories.jsonl",
+        "findings": [
+          "s1 of task 5aa83a29045b: repeated 'domain' kwarg -> SyntaxError; stderr returned in full; model abandoned and answered 800 (ref 21)",
+          "s1 of task 19121547cc3c: final answer truncated at the 2048 ceiling (finish_reason=length, action_parse_error), then answered 0 correctly",
+          "s0 of task 32441bfcdbec: NameError not fixed; same code resent to another tool -> invalid_arguments; answered 33 (ref 14)"
+        ],
+        "reviewer": "executing agent; no independent reviewer available"
+      },
+      "sandbox_probe": {
+        "sandbox_url": "http://localhost:8080",
+        "ping": true,
+        "pong42": true,
+        "pong42_output": "stdout:\n42\n",
+        "stateless_first_call_ok": true,
+        "stateless_second_call_output": "stdout:\nFalse\n",
+        "persistent_across_calls": false
+      },
+      "attempt0_failure_kept_at": "stage_a_attempt0_model_error/"
+    }
+  },
+  "note": "stages B and C must run with --protocol-hash <spec_hash[:12]>; any change to a file listed here invalidates them and needs a new run version"
+}

@@ -1,0 +1,264 @@
+{
+  "run_dir": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z",
+  "analysis_script_sha256": "3ca9b54d5dd4e51f87a216fceda2d196b874c990485bffab57aa627d00ae0d54",
+  "stage_b_recomputed": {
+    "tasks_with_any_exec_error_corrected": 27,
+    "stage_b_summary_field_is_buggy": "stage_b/summary.json.tasks_with_any_exec_error counts all tasks with a rollout; use this corrected value (DEVIATIONS D11)"
+  },
+  "stage_a_gate": {
+    "checks": {
+      "executed_tool_call_trajectories": {
+        "value": 20,
+        "threshold": 5,
+        "total": 20,
+        "pass": true
+      },
+      "infrastructure_failures": {
+        "value": 0,
+        "threshold": 0,
+        "pass": true
+      },
+      "parse_error_step_rate": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "length_truncated_without_action_rate": {
+        "value": 0.023809523809523808,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "hidden_label_leakage": {
+        "value": [],
+        "pass": true
+      }
+    },
+    "generation_steps": 42,
+    "parse_error_steps": 0,
+    "environment_parse_error_steps": 1,
+    "reparse_agrees_with_environment": false,
+    "length_truncated_without_action_steps": 1,
+    "successful_tool_call_trajectories": 14,
+    "automated_pass": true,
+    "manual_checks_required": [
+      "read at least 3 full call-feedback-continuation trajectories",
+      "confirm the rendered input matches the log",
+      "answer-judge smoke test (see verifier_smoke in the stage summary)"
+    ]
+  },
+  "stage_a_verifier_smoke": {
+    "task_id": "omni_math:7b0cf9755aa83a29045b",
+    "answer_type": "expression",
+    "pipeline_version": "canonicalize-v1",
+    "reference_self_status": "correct",
+    "reference_self_reward": 1.0,
+    "wrong_status": "incorrect",
+    "wrong_reward": 0.0,
+    "pass": true
+  },
+  "stage_b": {
+    "stage": "b",
+    "task_count": 40,
+    "samples_per_task": 4,
+    "trajectory_count": 160,
+    "elapsed_seconds": 1796.6982951397076,
+    "generated_tokens_total": 58165,
+    "tool_calls_total": 172,
+    "python_seconds_total": 219.55927085876465,
+    "candidates": 54,
+    "candidate_summary": {
+      "candidates": 54,
+      "eligible": 54
+    },
+    "selected_anchors": 27,
+    "selected_by_task": [
+      "omni_math:1478b49f18dac37fd5db",
+      "omni_math:5043c10435cd06b10647",
+      "omni_math:853274aea22a14c7227f",
+      "omni_math:9c98682bfac4cd9e6cd5",
+      "omni_math:88d0b1a43de05bc31d14",
+      "omni_math:cbb2456143cbcf1ac261",
+      "omni_math:bec7986869df54d2a547",
+      "omni_math:e8453df9f58e77c86dbb",
+      "omni_math:5f821b3eff281e10202c",
+      "omni_math:1164bf418a9d683a3e21",
+      "omni_math:88f3676134f6169af0b5",
+      "omni_math:8df02d96b9ccba40fc28",
+      "omni_math:c7d5d6188ea25816b2a4",
+      "omni_math:3d4d68b07fa77d07fd46",
+      "omni_math:80e0ecb1564b8c68ce86",
+      "omni_math:71dda168375cbeb5b570",
+      "omni_math:1e2a1793ad0ad289728e",
+      "omni_math:cfca3c77882695874526",
+      "omni_math:550ee799ef54e6d13eec",
+      "omni_math:b68f24392d3c5242905a",
+      "omni_math:56f772b387a79d52ce55",
+      "omni_math:ce665d2b193e2a844d1c",
+      "omni_math:cdd90b01566b59f682cf",
+      "omni_math:2fc80608da25a1ec0b0f",
+      "omni_math:a28dda842d79e6ba6be1",
+      "omni_math:19ca1a43020bfd8658c4",
+      "omni_math:962275787812e6cad353"
+    ],
+    "pool_verdict": "C",
+    "pool_verdict_note": ">=20 anchors: run stage C; 8-19: small-sample exploration; <8: INSUFFICIENT_ERROR_STATES (report section 6.1)",
+    "selected_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/selected.jsonl",
+    "snapshots_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/snapshots.jsonl",
+    "natural": {
+      "trajectories": 160,
+      "accuracy": 0.1,
+      "no_tool_call_rate": 0.025,
+      "executed_tool_call_rate": 0.975,
+      "exec_error_trajectory_rate": 0.3375,
+      "timeout_trajectory_rate": 0.09375,
+      "infrastructure_trajectory_rate": 0.00625,
+      "conditional_accuracy_after_exec_error": 0.09259259259259259,
+      "trajectories_with_exec_error": 54,
+      "termination_counts": {
+        "final": 145,
+        "max_steps": 1,
+        "python_time_budget": 14
+      },
+      "error_counts": {
+        "E_EXEC": 56,
+        "E_INFRA": 1,
+        "E_TIMEOUT": 15,
+        "call_form_errors": 11,
+        "executed_calls": 172,
+        "length_truncated_turns": 7
+      },
+      "tasks_with_any_exec_error": 40
+    }
+  },
+  "anchors_selected": 27,
+  "pool_verdict": "C",
+  "continuations": 324,
+  "attempt_dedupe": {
+    "records_before_dedupe": 324,
+    "logical_samples": 324,
+    "retried_samples": 0,
+    "samples_missing_after_retry": 0,
+    "protocol_violations": []
+  },
+  "continuations_by_arm": {
+    "F": 108,
+    "P": 108,
+    "M": 108
+  },
+  "infrastructure_missing": 0,
+  "auxiliary": {
+    "F": {
+      "branches": 108,
+      "correct": 9,
+      "accuracy": 0.08333333333333333,
+      "called_again_rate": 0.05555555555555555,
+      "next_call_success_all_branches": 0.0,
+      "next_call_success_conditional": 0.0,
+      "repeated_original_code_rate": 0.027777777777777776,
+      "repeated_same_error_class_rate": 0.027777777777777776,
+      "next_call_executed_and_code_changed_PROXY_only": 0.0,
+      "direct_final_without_calling_rate": 0.9074074074074074,
+      "budget_terminated_rate": 0.05555555555555555,
+      "invalid_actions_total": 36,
+      "suffix_tool_calls_mean": 0.25,
+      "suffix_generated_tokens_mean": 734.2314814814815,
+      "suffix_python_seconds_mean": 0.12049980516786929,
+      "suffix_inference_ms_estimate_mean": 15835.222222222223,
+      "suffix_inference_ms_measured_turns": 57,
+      "correct_only_suffix_tokens_mean": 74.0
+    },
+    "P": {
+      "branches": 108,
+      "correct": 8,
+      "accuracy": 0.07407407407407407,
+      "called_again_rate": 0.07407407407407407,
+      "next_call_success_all_branches": 0.009259259259259259,
+      "next_call_success_conditional": 0.125,
+      "repeated_original_code_rate": 0.009259259259259259,
+      "repeated_same_error_class_rate": 0.009259259259259259,
+      "next_call_executed_and_code_changed_PROXY_only": 0.009259259259259259,
+      "direct_final_without_calling_rate": 0.8981481481481481,
+      "budget_terminated_rate": 0.06481481481481481,
+      "invalid_actions_total": 40,
+      "suffix_tool_calls_mean": 0.14814814814814814,
+      "suffix_generated_tokens_mean": 776.5277777777778,
+      "suffix_python_seconds_mean": 0.44683230806280066,
+      "suffix_inference_ms_estimate_mean": 17096.712962962964,
+      "suffix_inference_ms_measured_turns": 49,
+      "correct_only_suffix_tokens_mean": 1551.0
+    },
+    "M": {
+      "branches": 108,
+      "correct": 9,
+      "accuracy": 0.08333333333333333,
+      "called_again_rate": 0.009259259259259259,
+      "next_call_success_all_branches": 0.0,
+      "next_call_success_conditional": 0.0,
+      "repeated_original_code_rate": 0.009259259259259259,
+      "repeated_same_error_class_rate": 0.009259259259259259,
+      "next_call_executed_and_code_changed_PROXY_only": 0.0,
+      "direct_final_without_calling_rate": 0.9444444444444444,
+      "budget_terminated_rate": 0.05555555555555555,
+      "invalid_actions_total": 50,
+      "suffix_tool_calls_mean": 0.009259259259259259,
+      "suffix_generated_tokens_mean": 947.25,
+      "suffix_python_seconds_mean": 0.002546597410131384,
+      "suffix_inference_ms_estimate_mean": 19177.083333333332,
+      "suffix_inference_ms_measured_turns": 45,
+      "correct_only_suffix_tokens_mean": 15.0
+    }
+  },
+  "effects": {
+    "complete_anchor_groups": 27,
+    "arm_accuracy": {
+      "F": 0.08333333333333333,
+      "P": 0.07407407407407407,
+      "M": 0.08333333333333333
+    },
+    "primary": {
+      "contrast": "F - M",
+      "anchors": 27,
+      "difference": 0.0,
+      "ci95": [
+        -0.037037037037037035,
+        0.037037037037037035
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null
+    },
+    "secondary": {
+      "contrast": "P - F",
+      "anchors": 27,
+      "difference": -0.009259259259259259,
+      "ci95": [
+        -0.06481481481481481,
+        0.046296296296296294
+      ],
+      "draws": 10000,
+      "seed": 156994340,
+      "degenerate_zero_width": false,
+      "note": null
+    }
+  },
+  "audit": {
+    "records": 50,
+    "rule": {
+      "seed": 1224885119,
+      "stage_b": "seeded random sample of up to 20 trajectories whose automated error inventory contains E_EXEC",
+      "stage_c": "up to 5 branches the classifier flagged as rare classes (call form / timeout), then round-robin over arms from a seeded shuffle, up to 30 branches",
+      "not_used_for_selection": [
+        "the branch's correctness",
+        "whether the branch recovered",
+        "the arm's aggregate accuracy"
+      ],
+      "reviewer": "executing agent; no independent reviewer available",
+      "fixed_before_stage_c_finished": true
+    },
+    "rule_written_to": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/audit/labels.jsonl"
+  },
+  "bootstrap_seed": 156994340,
+  "bootstrap_draws": 10000,
+  "code_normalization_rule": "line endings and surrounding whitespace only (\\r\\n/\\r -> \\n, then str.strip); stated so the objective \"same code again\" metric stays separable from the human judgement of similar-but-edited code"
+}

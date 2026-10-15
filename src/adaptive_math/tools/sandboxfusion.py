@@ -124,7 +124,7 @@ class SandboxFusionClient:
                 output=output,
                 error_code=ToolErrorCode.TIMEOUT,
                 latency_ms=_elapsed_ms(started),
-                metadata=_timing_metadata(run_result.execution_time),
+                metadata=_failure_metadata(run_result),
             )
         if payload.status == "Success" and run_result.status == "Finished" and run_result.return_code == 0:
             return ToolResult(
@@ -138,7 +138,7 @@ class SandboxFusionClient:
             output=output,
             error_code=ToolErrorCode.EXECUTION_ERROR,
             latency_ms=_elapsed_ms(started),
-            metadata=_timing_metadata(run_result.execution_time),
+            metadata=_failure_metadata(run_result),
         )
 
     async def _post(self, payload: dict[str, object], timeout_seconds: float | None) -> httpx.Response:
@@ -178,6 +178,18 @@ def _format_output(stdout: str | None, stderr: str | None) -> str:
 def _timing_metadata(execution_time: float | None) -> dict[str, JSONValue]:
     """Omit the key instead of writing null: the budget reads it as seconds."""
     return {} if execution_time is None else {"execution_time": execution_time}
+
+
+def _failure_metadata(run_result: SandboxRunResult) -> dict[str, JSONValue]:
+    """Timing plus the sandbox's own verdict, so a caller can tell "the code
+    reached the interpreter and raised" (status Finished, return_code != 0)
+    apart from "the request never executed". Only emitted on failure paths:
+    success payloads keep their existing shape."""
+    metadata = _timing_metadata(run_result.execution_time)
+    metadata["sandbox_status"] = run_result.status
+    if run_result.return_code is not None:
+        metadata["return_code"] = run_result.return_code
+    return metadata
 
 
 def _elapsed_ms(started: float) -> int:

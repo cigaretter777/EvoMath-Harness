@@ -1,0 +1,25 @@
+{
+  "task_id": "omni_math:7b0cf9755aa83a29045b",
+  "sample_index": 0,
+  "same_seed": 1452410852,
+  "other_seed": 2092036096,
+  "recorded_chars": 607,
+  "replay_chars": [
+    607,
+    607,
+    655
+  ],
+  "replay_matches_recorded": true,
+  "replay_is_deterministic": true,
+  "different_seed_changes_text": true,
+  "episode_events_identical": true,
+  "origin_events": 5,
+  "replay_events": 5,
+  "first_difference": null,
+  "usage_identical_except_python_seconds": true,
+  "origin_python_seconds": 0.38184285163879395,
+  "replay_python_seconds": 0.25812220573425293,
+  "replay_correct": false,
+  "pass": true,
+  "model_version": "artifacts/models/qwen3_1_7b_sft_tir_merged@c0284b582e14"
+}

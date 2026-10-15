@@ -1,0 +1,9 @@
+{
+  "sandbox_url": "http://localhost:8080",
+  "ping": true,
+  "pong42": true,
+  "pong42_output": "stdout:\n42\n",
+  "stateless_first_call_ok": true,
+  "stateless_second_call_output": "stdout:\nFalse\n",
+  "persistent_across_calls": false
+}
