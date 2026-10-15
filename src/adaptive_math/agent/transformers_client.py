@@ -63,12 +63,17 @@ class TransformersModelClient:
             input_device = get_input_embeddings().weight.device
             input_ids = input_ids.to(input_device)
         prompt_tokens = _token_count(input_ids)
-        generated = self._model.generate(
+        eos_ids = _eos_token_ids(getattr(self._tokenizer, "eos_token_id", None))
+        generated = _call_generate(
+            self._model,
             input_ids,
-            max_new_tokens=config.max_new_tokens,
-            do_sample=config.temperature > 0,
-            temperature=config.temperature if config.temperature > 0 else None,
-            eos_token_id=getattr(self._tokenizer, "eos_token_id", None),
+            seed=config.seed,
+            kwargs={
+                "max_new_tokens": config.max_new_tokens,
+                "do_sample": config.temperature > 0,
+                "temperature": config.temperature if config.temperature > 0 else None,
+                "eos_token_id": getattr(self._tokenizer, "eos_token_id", None),
+            },
         )
         sequence = _first_sequence(generated)
         completion = sequence[prompt_tokens:]
@@ -79,7 +84,7 @@ class TransformersModelClient:
             text=text,
             prompt_tokens=prompt_tokens,
             generated_tokens=len(completion),
-            finish_reason="stop",
+            finish_reason=_finish_reason(completion, eos_ids, config.max_new_tokens),
             model_id=self._model_id,
         )
 
@@ -87,6 +92,46 @@ class TransformersModelClient:
 def _first_sequence(value: Any) -> list[int]:
     first = value[0]
     return [int(token) for token in first]
+
+
+def _call_generate(model: Any, input_ids: Any, *, seed: int | None, kwargs: dict[str, Any]) -> Any:
+    """Call ``model.generate``, honouring a requested seed.
+
+    Hugging Face's ``generate`` has no per-call RNG argument -- passing
+    ``generator`` raises "The following `model_kwargs` are not used by the
+    model" on transformers 4.57 -- so the only way to make a declared seed real
+    is to seed torch's global RNG and restore it afterwards. ``fork_rng``
+    snapshots and restores both the CPU and the listed CUDA device states, so
+    one call cannot leak randomness into the next.
+
+    The callers here run one generation at a time; a concurrent caller would
+    need its own lock, because the seeding window is process-global.
+    """
+    if seed is None:
+        return model.generate(input_ids, **kwargs)
+    import torch  # type: ignore[import-not-found, unused-ignore]
+
+    device = getattr(input_ids, "device", None)
+    devices = [device] if getattr(device, "type", None) == "cuda" else []
+    with torch.random.fork_rng(devices=devices):
+        torch.manual_seed(seed)
+        return model.generate(input_ids, **kwargs)
+
+
+def _eos_token_ids(value: Any) -> set[int]:
+    if value is None:
+        return set()
+    if isinstance(value, int):
+        return {value}
+    return {int(token) for token in value}
+
+
+def _finish_reason(completion: list[int], eos_ids: set[int], max_new_tokens: int) -> str:
+    """``length`` only when the ceiling was hit without an end-of-sequence
+    token; the previous hardcoded ``stop`` could not distinguish truncation."""
+    if len(completion) < max_new_tokens:
+        return "stop"
+    return "stop" if completion and completion[-1] in eos_ids else "length"
 
 
 def _token_count(value: Any) -> int:

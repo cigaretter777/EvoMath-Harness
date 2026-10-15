@@ -1,0 +1,12 @@
+{
+  "stage": "c",
+  "anchors": 27,
+  "arms": [
+    "F",
+    "P",
+    "M"
+  ],
+  "continuations_per_arm": 4,
+  "executed_this_invocation": 312,
+  "elapsed_seconds": 6543.233820122667
+}

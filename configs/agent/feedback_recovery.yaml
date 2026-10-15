@@ -1,0 +1,10 @@
+# Budget for the 2026-10-14 feedback-recovery diagnostic.
+# Values are the protocol's recommended initial run values (section 4.2), not
+# tuned hyper-parameters: 8 action steps, 4 tool calls, 12 s of cumulative
+# Python time, 8000 characters per observation. The generic
+# configs/agent/default.yaml uses 6 steps and is deliberately not reused here,
+# so the diagnostic cannot be confused with an earlier run's budget.
+max_steps: 8
+max_tool_calls: 4
+max_python_seconds: 12.0
+max_observation_chars: 8000

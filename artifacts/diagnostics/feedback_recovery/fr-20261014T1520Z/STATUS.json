@@ -1,0 +1,43 @@
+{
+  "run_id": "fr-20261014T1520Z",
+  "status": "COMPLETE",
+  "decided_utc": "2026-10-15T01:41:30Z",
+  "status_values_allowed": [
+    "COMPLETE",
+    "BLOCKED_VALIDITY",
+    "INSUFFICIENT_ERROR_STATES",
+    "INCOMPLETE"
+  ],
+  "why_complete": {
+    "stage_a": "gate passed (5/5 automated checks; 3 trajectories read by hand; seed effectiveness and whole-episode replay reproducibility recorded in stage_a/seed_check.json)",
+    "stage_b": "160/160 natural trajectories; 54 candidates -> 27 selected anchors (>=20 => run stage C per section 6.1); pool_verdict C",
+    "stage_c": "324/324 logical samples complete (27 anchors x 3 arms x 4); integrity.problems = [] in manifest.c.json.summary.integrity; attempt_dedupe.retried_samples = 0; samples_missing_after_retry = 0; protocol_violations = []",
+    "analysis": "analysis/{tables.md,summary.json,paired_effects.json} written from the raw records by scripts/analysis/analyze_feedback_recovery.py"
+  },
+  "missing_data": 0,
+  "protocol_violations": [],
+  "research_decision": {
+    "recommendation": "INCONCLUSIVE",
+    "note": "The recommendation was written after the contrasts were computed; the contrasts themselves (primary F-M, secondary P-F), the pool, and the stopping rules were fixed before Stage C. See REPORT.md Q6.",
+    "primary_contrast_F_minus_M": {
+      "difference": 0.0,
+      "ci95": [-0.037037037037037035, 0.037037037037037035],
+      "anchors": 27
+    },
+    "secondary_contrast_P_minus_F": {
+      "difference": -0.009259259259259259,
+      "ci95": [-0.06481481481481481, 0.046296296296296294],
+      "anchors": 27
+    }
+  },
+  "evidence": {
+    "manifest": "manifest.json",
+    "protocol_lock": "protocol.lock.json (spec_hash=4ca6c6c51c29)",
+    "gates": "stage_a/summary.json.gate",
+    "integrity": "manifest.c.json.summary.integrity",
+    "analysis": "analysis/summary.json",
+    "deviations": "DEVIATIONS.md (D1-D13)",
+    "report": "REPORT.md",
+    "audit": "audit/labels.jsonl (selection rule + automated labels + appended human-review block, DEVIATIONS D12)"
+  }
+}

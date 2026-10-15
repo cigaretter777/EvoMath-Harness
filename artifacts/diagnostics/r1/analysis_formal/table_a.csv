@@ -1,0 +1,5 @@
+budget,questions,episodes,accuracy_macro_by_question,accuracy_micro_by_episode,mean_tool_calls,share_calls_0,share_calls_1,share_calls_2,share_calls_3,share_calls_4,mean_generated_tokens,mean_python_seconds,mean_invalid_actions,term_final,term_max_steps,term_max_tool_calls,term_python_time_budget,term_model_error,term_infrastructure_error,term_cancelled
+b0,100,400,0.1175,0.1175,0.0,1.0,0.0,0.0,0.0,0.0,715.6,0.0,0.435,0.96,0.04,0.0,0.0,0.0,0.0,0.0
+b1,100,400,0.14,0.14,0.0,1.0,0.0,0.0,0.0,0.0,760.4,0.0,0.532,0.9475,0.0525,0.0,0.0,0.0,0.0,0.0
+b2,100,400,0.13,0.13,0.0,1.0,0.0,0.0,0.0,0.0,781.1,0.0,0.46,0.95,0.05,0.0,0.0,0.0,0.0,0.0
+b4,100,400,0.1375,0.1375,0.0,1.0,0.0,0.0,0.0,0.0,812.4,0.0,0.555,0.94,0.06,0.0,0.0,0.0,0.0,0.0

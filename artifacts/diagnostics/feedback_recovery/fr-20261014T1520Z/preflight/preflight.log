@@ -1,0 +1,6 @@
+2026-10-14T15:04:42Z preflight start; HEAD 206750e
+2026-10-14T15:04:42Z start tir_merged (/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged)
+2026-10-14T15:05:22Z tir_merged exit rc=0
+2026-10-14T15:05:22Z start dp_v1_merged (/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged)
+2026-10-14T15:07:57Z dp_v1_merged exit rc=0
+2026-10-14T15:07:57Z preflight done rc=0

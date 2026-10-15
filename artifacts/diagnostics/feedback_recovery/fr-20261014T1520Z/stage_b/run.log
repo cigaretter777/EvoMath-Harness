@@ -1,0 +1,238 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from 'artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[fr-b] 1/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 1/40 s1 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 1/40 s2 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 1/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 2/40 s0 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 2/40 s1 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 2/40 s2 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 2/40 s3 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 3/40 s0 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 3/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 3/40 s2 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 3/40 s3 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 4/40 s0 correct=False term=python_time_budget calls=2 steps=2 errors={'executed_calls': 2, 'E_EXEC': 1, 'E_TIMEOUT': 1}
+[fr-b] 4/40 s1 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 4/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 4/40 s3 correct=False term=final calls=1 steps=3 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 5/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 5/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 5/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 5/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 6/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 6/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 6/40 s2 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 6/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 7/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 7/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 7/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 7/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 8/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 8/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 8/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 8/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 9/40 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 9/40 s1 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 9/40 s2 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 9/40 s3 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 10/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 10/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 10/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 10/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 11/40 s0 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 2}
+[fr-b] 11/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 11/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 11/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 12/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 12/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 12/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 12/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 13/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 13/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 13/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 13/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 14/40 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 14/40 s1 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 14/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 14/40 s3 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 15/40 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 15/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 15/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 15/40 s3 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 16/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 16/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 16/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 16/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 17/40 s0 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 17/40 s1 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 17/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 17/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 18/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 18/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 18/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 18/40 s3 correct=False term=final calls=0 steps=2 errors={}
+[fr-b] 19/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 19/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 19/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 19/40 s3 correct=False term=max_steps calls=2 steps=8 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1, 'length_truncated_turns': 6}
+[fr-b] 20/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 20/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 20/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 20/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 21/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 21/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 21/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 21/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_INFRA': 1}
+[fr-b] 22/40 s0 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1}
+[fr-b] 22/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 22/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 22/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 23/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 23/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 23/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 23/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 24/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 24/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 24/40 s2 correct=False term=final calls=0 steps=2 errors={'length_truncated_turns': 1}
+[fr-b] 24/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 25/40 s0 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 25/40 s1 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 25/40 s2 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 25/40 s3 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 26/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 26/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 26/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 26/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 27/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 27/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 27/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 27/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 28/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 28/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 28/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 28/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 29/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 29/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 29/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 29/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 30/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 30/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 30/40 s2 correct=False term=final calls=0 steps=2 errors={}
+[fr-b] 30/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 31/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 31/40 s1 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 31/40 s2 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-b] 31/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 32/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 32/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 32/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 32/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 33/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 33/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 33/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 33/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 34/40 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 34/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 34/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 34/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 35/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 35/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 35/40 s2 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 35/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 36/40 s0 correct=False term=final calls=3 steps=4 errors={'executed_calls': 3, 'E_EXEC': 2, 'call_form_errors': 1}
+[fr-b] 36/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 36/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 36/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 37/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 37/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 37/40 s2 correct=False term=python_time_budget calls=1 steps=1 errors={'executed_calls': 1, 'E_TIMEOUT': 1}
+[fr-b] 37/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 38/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 38/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 38/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 38/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 39/40 s0 correct=False term=final calls=0 steps=2 errors={}
+[fr-b] 39/40 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 39/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 39/40 s3 correct=True term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1}
+[fr-b] 40/40 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 40/40 s1 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-b] 40/40 s2 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-b] 40/40 s3 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+{
+  "stage": "b",
+  "task_count": 40,
+  "samples_per_task": 4,
+  "trajectory_count": 160,
+  "elapsed_seconds": 1796.6982951397076,
+  "generated_tokens_total": 58165,
+  "tool_calls_total": 172,
+  "python_seconds_total": 219.55927085876465,
+  "candidates": 54,
+  "candidate_summary": {
+    "candidates": 54,
+    "eligible": 54
+  },
+  "selected_anchors": 27,
+  "selected_by_task": [
+    "omni_math:1478b49f18dac37fd5db",
+    "omni_math:5043c10435cd06b10647",
+    "omni_math:853274aea22a14c7227f",
+    "omni_math:9c98682bfac4cd9e6cd5",
+    "omni_math:88d0b1a43de05bc31d14",
+    "omni_math:cbb2456143cbcf1ac261",
+    "omni_math:bec7986869df54d2a547",
+    "omni_math:e8453df9f58e77c86dbb",
+    "omni_math:5f821b3eff281e10202c",
+    "omni_math:1164bf418a9d683a3e21",
+    "omni_math:88f3676134f6169af0b5",
+    "omni_math:8df02d96b9ccba40fc28",
+    "omni_math:c7d5d6188ea25816b2a4",
+    "omni_math:3d4d68b07fa77d07fd46",
+    "omni_math:80e0ecb1564b8c68ce86",
+    "omni_math:71dda168375cbeb5b570",
+    "omni_math:1e2a1793ad0ad289728e",
+    "omni_math:cfca3c77882695874526",
+    "omni_math:550ee799ef54e6d13eec",
+    "omni_math:b68f24392d3c5242905a",
+    "omni_math:56f772b387a79d52ce55",
+    "omni_math:ce665d2b193e2a844d1c",
+    "omni_math:cdd90b01566b59f682cf",
+    "omni_math:2fc80608da25a1ec0b0f",
+    "omni_math:a28dda842d79e6ba6be1",
+    "omni_math:19ca1a43020bfd8658c4",
+    "omni_math:962275787812e6cad353"
+  ],
+  "pool_verdict": "C",
+  "pool_verdict_note": ">=20 anchors: run stage C; 8-19: small-sample exploration; <8: INSUFFICIENT_ERROR_STATES (report section 6.1)",
+  "selected_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/selected.jsonl",
+  "snapshots_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/snapshots.jsonl",
+  "natural": {
+    "trajectories": 160,
+    "accuracy": 0.1,
+    "no_tool_call_rate": 0.025,
+    "executed_tool_call_rate": 0.975,
+    "exec_error_trajectory_rate": 0.3375,
+    "timeout_trajectory_rate": 0.09375,
+    "infrastructure_trajectory_rate": 0.00625,
+    "conditional_accuracy_after_exec_error": 0.09259259259259259,
+    "trajectories_with_exec_error": 54,
+    "termination_counts": {
+      "final": 145,
+      "max_steps": 1,
+      "python_time_budget": 14
+    },
+    "error_counts": {
+      "E_EXEC": 56,
+      "E_INFRA": 1,
+      "E_TIMEOUT": 15,
+      "call_form_errors": 11,
+      "executed_calls": 172,
+      "length_truncated_turns": 7
+    },
+    "tasks_with_any_exec_error": 40
+  }
+}

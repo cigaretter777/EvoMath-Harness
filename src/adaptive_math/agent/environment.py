@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from adaptive_math.agent.actions import FinalAction, ToolAction
 from adaptive_math.agent.state import AgentState, EventKind, StepErrorCode, TerminationReason
-from adaptive_math.core.types import Budget, LabeledMathTask, MathTask
+from adaptive_math.core.types import Budget, JSONValue, LabeledMathTask, MathTask
 from adaptive_math.tools.base import ToolContext
 from adaptive_math.tools.registry import ToolRegistry
 from adaptive_math.verifier.hidden import HiddenVerifier
@@ -37,10 +37,30 @@ class StepResult(BaseModel):
 class ProductMathEnv:
     """Serving environment: its constructor deliberately has no label input."""
 
-    def __init__(self, task: MathTask, budget: Budget, registry: ToolRegistry, trace_id: str = "runtime") -> None:
+    def __init__(
+        self,
+        task: MathTask,
+        budget: Budget,
+        registry: ToolRegistry,
+        trace_id: str = "runtime",
+        *,
+        state: AgentState | None = None,
+    ) -> None:
         self._registry = registry
         self._trace_id = trace_id
-        self._state = AgentState(task=task, budget=budget)
+        if state is None:
+            self._state = AgentState(task=task, budget=budget)
+        else:
+            # Resume path: a caller that supplies state is re-entering an
+            # episode mid-trajectory, so the state must be an active one for
+            # exactly this task and budget. Everything else is copied as-is.
+            if state.task != task:
+                raise ValueError("resumed state does not belong to this task")
+            if state.budget != budget:
+                raise ValueError("resumed state does not match this budget")
+            if state.termination_reason is not None:
+                raise ValueError("cannot resume a terminated state")
+            self._state = state
 
     @property
     def state(self) -> AgentState:
@@ -55,12 +75,41 @@ class ProductMathEnv:
         """Live public tool schemas used for prompt rendering."""
         return self._registry
 
-    def record_model_output(self, raw: str, generated_tokens: int, monotonic_ms: int) -> AgentState:
+    def record_model_output(
+        self,
+        raw: str,
+        generated_tokens: int,
+        monotonic_ms: int,
+        *,
+        finish_reason: str | None = None,
+    ) -> AgentState:
         if self._state.termination_reason is not None:
             raise ValueError("cannot record output for a terminated environment")
+        payload: dict[str, JSONValue] = {"raw": raw, "generated_tokens": generated_tokens}
+        # Optional so legacy callers keep byte-identical payloads; a real
+        # "length" marker is the only honest truncation evidence (the client
+        # used to hardcode "stop").
+        if finish_reason is not None:
+            payload["finish_reason"] = finish_reason
         self._state = self._state.append_event(
-            EventKind.MODEL_OUTPUT, {"raw": raw, "generated_tokens": generated_tokens}, monotonic_ms
+            EventKind.MODEL_OUTPUT, payload, monotonic_ms
         ).with_usage(generated_tokens=generated_tokens)
+        return self._state
+
+    def record_model_error(self, message: str, monotonic_ms: int) -> AgentState:
+        """Record why a model call failed before the episode is aborted.
+
+        Without this the trajectory says only ``model_error``, which is not
+        auditable and hides the difference between a transport fault and a
+        harness bug -- exactly the distinction the recovery protocol has to
+        make between missing samples and the model's own behaviour."""
+        if self._state.termination_reason is not None:
+            raise ValueError("cannot record an error for a terminated environment")
+        self._state = self._state.append_event(
+            EventKind.TERMINATION,
+            {"reason": TerminationReason.MODEL_ERROR.value, "error": message},
+            monotonic_ms,
+        )
         return self._state
 
     def abort(self, reason: TerminationReason) -> AgentState:
@@ -118,12 +167,17 @@ class ProductMathEnv:
         if result.ok:
             observation_content = result.output
         else:
-            # Errors carry output="" by contract, so rendering output alone
-            # showed the model an empty observation it could not learn from
-            # (attributed 2026-09-29: every failed call looked identical to a
-            # call that returned nothing).
             error = result.error_code.value if result.error_code else "unknown_error"
-            observation_content = f"Tool call failed ({error}); no output was produced."
+            # A failing sandbox call still carries the interpreter's own stderr
+            # (the traceback) and, for timeouts, partial output. That text is
+            # the point of the observation: replacing it with a content-free
+            # marker hid every error the model had to react to (found in the
+            # 2026-10-14 feedback-recovery pre-flight, report section 3.3).
+            # Only a call that truly produced nothing keeps the bare marker.
+            if result.output.strip():
+                observation_content = f"Tool call failed ({error}).\n{result.output}"
+            else:
+                observation_content = f"Tool call failed ({error}); no output was produced."
         observation = self._observation("tool_result", observation_content, state)
         state = self._terminate_if_exhausted(state)
         return self._store(state, observation)
@@ -160,8 +214,18 @@ class ProductMathEnv:
 class OfflineMathEnv(ProductMathEnv):
     """Training environment whose label is inaccessible to the public parent API."""
 
-    def __init__(self, labeled_task: LabeledMathTask, budget: Budget, registry: ToolRegistry, trace_id: str = "runtime") -> None:
-        super().__init__(labeled_task.public_view(), budget, registry, trace_id)
+    def __init__(
+        self,
+        labeled_task: LabeledMathTask,
+        budget: Budget,
+        registry: ToolRegistry,
+        trace_id: str = "runtime",
+        *,
+        state: AgentState | None = None,
+    ) -> None:
+        super().__init__(labeled_task.public_view(), budget, registry, trace_id, state=state)
+        # Built on the resume path too: a branch that re-enters an episode still
+        # has to be judged by the same hidden reference.
         self.__hidden_verifier = HiddenVerifier(labeled_task.reference, labeled_task.task.task_id)
 
     def evaluate(self) -> VerifierResult | None:

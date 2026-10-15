@@ -1,0 +1,85 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from 'artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[fr-a] 1/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 1/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-a] 2/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 2/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 3/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-a] 3/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 4/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-a] 4/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 5/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 5/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-a] 6/10 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 6/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 7/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 7/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1, 'E_EXEC': 1}
+[fr-a] 8/10 s0 correct=True term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 8/10 s1 correct=True term=final calls=1 steps=3 errors={'executed_calls': 1, 'length_truncated_turns': 1}
+[fr-a] 9/10 s0 correct=False term=final calls=2 steps=3 errors={'executed_calls': 2, 'E_EXEC': 1, 'call_form_errors': 1}
+[fr-a] 9/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 10/10 s0 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+[fr-a] 10/10 s1 correct=False term=final calls=1 steps=2 errors={'executed_calls': 1}
+{
+  "stage": "a",
+  "task_count": 10,
+  "samples_per_task": 2,
+  "trajectory_count": 20,
+  "elapsed_seconds": 208.17221750225872,
+  "generated_tokens_total": 7178,
+  "tool_calls_total": 21,
+  "python_seconds_total": 4.976513862609863,
+  "verifier_smoke": {
+    "task_id": "omni_math:7b0cf9755aa83a29045b",
+    "answer_type": "expression",
+    "pipeline_version": "canonicalize-v1",
+    "reference_self_status": "correct",
+    "reference_self_reward": 1.0,
+    "wrong_status": "incorrect",
+    "wrong_reward": 0.0,
+    "pass": true
+  },
+  "gate": {
+    "checks": {
+      "executed_tool_call_trajectories": {
+        "value": 20,
+        "threshold": 5,
+        "total": 20,
+        "pass": true
+      },
+      "infrastructure_failures": {
+        "value": 0,
+        "threshold": 0,
+        "pass": true
+      },
+      "parse_error_step_rate": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "length_truncated_without_action_rate": {
+        "value": 0.023809523809523808,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "hidden_label_leakage": {
+        "value": [],
+        "pass": true
+      }
+    },
+    "generation_steps": 42,
+    "parse_error_steps": 0,
+    "environment_parse_error_steps": 1,
+    "reparse_agrees_with_environment": false,
+    "length_truncated_without_action_steps": 1,
+    "successful_tool_call_trajectories": 14,
+    "automated_pass": true,
+    "manual_checks_required": [
+      "read at least 3 full call-feedback-continuation trajectories",
+      "confirm the rendered input matches the log",
+      "answer-judge smoke test (see verifier_smoke in the stage summary)"
+    ]
+  }
+}

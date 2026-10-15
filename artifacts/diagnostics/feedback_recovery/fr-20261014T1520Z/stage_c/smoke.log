@@ -1,0 +1,368 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from 'artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 1/1 omni_math:1478b49f18dac37fd5db::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+{
+  "stage": "c",
+  "anchors": 1,
+  "arms": [
+    "F",
+    "P",
+    "M"
+  ],
+  "continuations_per_arm": 4,
+  "executed_this_invocation": 12,
+  "elapsed_seconds": 280.2428127974272,
+  "integrity": {
+    "records": 12,
+    "logical_samples": 12,
+    "problems": [],
+    "complete": true
+  }
+}
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from 'artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 2/27 omni_math:5043c10435cd06b10647::s3::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 3/27 omni_math:853274aea22a14c7227f::s0::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=F s2 attempt=0 correct=True term=final infra=False
+[fr-c] 4/27 omni_math:9c98682bfac4cd9e6cd5::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 5/27 omni_math:88d0b1a43de05bc31d14::s3::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=P s0 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=P s1 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=P s2 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=P s3 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=M s0 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=M s1 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=M s2 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=M s3 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=F s0 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=F s1 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=F s2 attempt=0 correct=True term=final infra=False
+[fr-c] 6/27 omni_math:cbb2456143cbcf1ac261::s0::step0 arm=F s3 attempt=0 correct=True term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 7/27 omni_math:bec7986869df54d2a547::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 8/27 omni_math:e8453df9f58e77c86dbb::s0::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 9/27 omni_math:5f821b3eff281e10202c::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=P s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 10/27 omni_math:1164bf418a9d683a3e21::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 11/27 omni_math:88f3676134f6169af0b5::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=P s1 attempt=0 correct=True term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 12/27 omni_math:8df02d96b9ccba40fc28::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 13/27 omni_math:c7d5d6188ea25816b2a4::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 14/27 omni_math:3d4d68b07fa77d07fd46::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 15/27 omni_math:80e0ecb1564b8c68ce86::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 16/27 omni_math:71dda168375cbeb5b570::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=M s2 attempt=0 correct=True term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=P s1 attempt=0 correct=True term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 17/27 omni_math:1e2a1793ad0ad289728e::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=P s0 attempt=0 correct=True term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=M s0 attempt=0 correct=True term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 18/27 omni_math:cfca3c77882695874526::s3::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=P s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=P s2 attempt=0 correct=True term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=P s3 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=M s0 attempt=0 correct=True term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=M s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=M s3 attempt=0 correct=True term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=F s0 attempt=0 correct=True term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=F s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=F s2 attempt=0 correct=True term=final infra=False
+[fr-c] 19/27 omni_math:550ee799ef54e6d13eec::s0::step0 arm=F s3 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 20/27 omni_math:b68f24392d3c5242905a::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 21/27 omni_math:56f772b387a79d52ce55::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 22/27 omni_math:ce665d2b193e2a844d1c::s1::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=M s1 attempt=0 correct=True term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=F s1 attempt=0 correct=True term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=F s2 attempt=0 correct=True term=final infra=False
+[fr-c] 23/27 omni_math:cdd90b01566b59f682cf::s0::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=M s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=M s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 24/27 omni_math:2fc80608da25a1ec0b0f::s2::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=F s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=F s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=F s3 attempt=0 correct=False term=python_time_budget infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=P s0 attempt=0 correct=False term=python_time_budget infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=P s2 attempt=0 correct=False term=python_time_budget infra=False
+[fr-c] 25/27 omni_math:a28dda842d79e6ba6be1::s2::step0 arm=P s3 attempt=0 correct=False term=python_time_budget infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=P s2 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=F s1 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=M s0 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=M s1 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=M s2 attempt=0 correct=False term=final infra=False
+[fr-c] 26/27 omni_math:19ca1a43020bfd8658c4::s3::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=F s0 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=F s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=F s2 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=F s3 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=M s0 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=M s1 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=M s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=M s3 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=P s0 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=P s1 attempt=0 correct=False term=final infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=P s2 attempt=0 correct=False term=max_steps infra=False
+[fr-c] 27/27 omni_math:962275787812e6cad353::s3::step0 arm=P s3 attempt=0 correct=False term=final infra=False
+{
+  "stage": "c",
+  "anchors": 27,
+  "arms": [
+    "F",
+    "P",
+    "M"
+  ],
+  "continuations_per_arm": 4,
+  "executed_this_invocation": 312,
+  "elapsed_seconds": 6543.233820122667,
+  "integrity": {
+    "records": 324,
+    "logical_samples": 324,
+    "problems": [],
+    "complete": true
+  }
+}

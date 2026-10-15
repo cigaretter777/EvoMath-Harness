@@ -1,0 +1,7 @@
+2026-10-13T20:15:18Z launcher start; arms=0 1 2 4
+2026-10-13T20:15:21Z gpu and sandbox ready; launching arms: 0 1 2 4
+2026-10-13T22:56:02Z arm b0 exit 0
+2026-10-13T23:04:42Z arm b1 exit 0
+2026-10-13T23:07:53Z arm b2 exit 0
+2026-10-13T23:13:03Z arm b4 exit 0
+2026-10-13T23:13:03Z formal complete; all checks passed

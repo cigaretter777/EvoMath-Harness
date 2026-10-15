@@ -1,0 +1,17 @@
+== round1 pilot checks 2026-10-13T18:21:29Z ==
+C1 ok: pilot parquet sha 674fba0664d2, rows 20
+C2 ok: 20 expected task ids -> /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/runs/diagnostics_r1_pilot/expected_task_ids_pilot20.txt
+C3 ok: model at /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged; output dirs fresh
+== round1 pilot checks 2026-10-13T19:31:43Z ==
+C1 ok: pilot parquet sha 674fba0664d2, rows 20
+C2 ok: 20 expected task ids -> /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/runs/diagnostics_r1_pilot/expected_task_ids_pilot20.txt
+C3 ok: model at /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_dp_v1_merged; output dirs fresh
+arm b0 exit 0
+arm b1 exit 0
+arm b2 exit 0
+arm b4 exit 0
+b0: episodes=80/80 paired=True term={'final': 77, 'max_steps': 3}
+b1: episodes=80/80 paired=True term={'final': 76, 'max_steps': 4}
+b2: episodes=80/80 paired=True term={'final': 73, 'max_steps': 7}
+b4: episodes=80/80 paired=True term={'max_steps': 4, 'final': 76}
+post-check flags: 0

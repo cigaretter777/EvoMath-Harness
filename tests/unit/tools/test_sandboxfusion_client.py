@@ -201,7 +201,45 @@ def test_run_code_accepts_the_optional_fields_of_a_failed_command_result(respx_m
     result = asyncio.run(client.run_code("print(1)"))
 
     assert result.error_code is ToolErrorCode.EXECUTION_ERROR
-    assert result.metadata == {}
+    # The sandbox's own verdict rides along on failure paths ("Error" here = the
+    # run never produced a process), which is what lets a caller tell it apart
+    # from a traceback response. The null fields are still omitted, not None.
+    assert result.metadata == {"sandbox_status": "Error"}
+    asyncio.run(client.aclose())
+
+
+def test_run_code_separates_a_raised_exception_from_a_non_execution(respx_mock: object) -> None:
+    """Both answer EXECUTION_ERROR, but only one means the code actually ran.
+    The recovery study needs that distinction to classify a failure as E_EXEC
+    (the model's code raised) rather than an infrastructure fault."""
+    respx_mock.post("http://sandbox.test/run_code").mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "status": "Failed",
+                "message": "",
+                "compile_result": None,
+                "run_result": {
+                    "status": "Finished",
+                    "execution_time": 0.031,
+                    "return_code": 1,
+                    "stdout": "",
+                    "stderr": "Traceback (most recent call last):\nValueError: bad input\n",
+                },
+            },
+        )
+    )
+    client = SandboxFusionClient(base_url="http://sandbox.test")
+
+    result = asyncio.run(client.run_code("raise ValueError('bad input')"))
+
+    assert result.error_code is ToolErrorCode.EXECUTION_ERROR
+    assert result.metadata == {
+        "execution_time": 0.031,
+        "sandbox_status": "Finished",
+        "return_code": 1,
+    }
+    assert "ValueError" in result.output
     asyncio.run(client.aclose())
 
 
@@ -231,6 +269,35 @@ def test_timed_out_run_still_reports_execution_time_for_the_python_budget(respx_
 
     assert result.error_code is ToolErrorCode.TIMEOUT
     assert result.metadata["execution_time"] == 10.0015
+    asyncio.run(client.aclose())
+
+
+def test_success_payload_keeps_its_original_metadata_shape(respx_mock: object) -> None:
+    """The failure metadata is additive: a green run must not grow keys, or every
+    stored round-1 payload's shape check would change."""
+    respx_mock.post("http://sandbox.test/run_code").mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "status": "Success",
+                "message": "",
+                "compile_result": {"status": "Finished"},
+                "run_result": {
+                    "status": "Finished",
+                    "execution_time": 0.12,
+                    "return_code": 0,
+                    "stdout": "42\n",
+                    "stderr": "",
+                },
+            },
+        )
+    )
+    client = SandboxFusionClient(base_url="http://sandbox.test")
+
+    result = asyncio.run(client.run_code("print(42)"))
+
+    assert result.ok is True
+    assert result.metadata == {"execution_time": 0.12}
     asyncio.run(client.aclose())
 
 

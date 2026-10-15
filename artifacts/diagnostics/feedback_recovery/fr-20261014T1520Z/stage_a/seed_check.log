@@ -1,0 +1,8 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from 'artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[seed-check] seed=1452410852 tokens=188 chars=607
+[seed-check] seed=1452410852 tokens=188 chars=607
+[seed-check] seed=2092036096 tokens=189 chars=655
+{"task_id": "omni_math:7b0cf9755aa83a29045b", "sample_index": 0, "same_seed": 1452410852, "other_seed": 2092036096, "recorded_chars": 607, "replay_chars": [607, 607, 655], "replay_matches_recorded": true, "replay_is_deterministic": true, "different_seed_changes_text": true, "pass": true, "model_version": "artifacts/models/qwen3_1_7b_sft_tir_merged@c0284b582e14"}

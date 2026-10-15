@@ -1,0 +1,61 @@
+{
+  "stage": "a",
+  "task_count": 10,
+  "samples_per_task": 2,
+  "trajectory_count": 20,
+  "elapsed_seconds": 0.22425270453095436,
+  "generated_tokens_total": 0,
+  "tool_calls_total": 0,
+  "python_seconds_total": 0.0,
+  "verifier_smoke": {
+    "task_id": "omni_math:7b0cf9755aa83a29045b",
+    "answer_type": "expression",
+    "pipeline_version": "canonicalize-v1",
+    "reference_self_status": "correct",
+    "reference_self_reward": 1.0,
+    "wrong_status": "incorrect",
+    "wrong_reward": 0.0,
+    "pass": true
+  },
+  "gate": {
+    "checks": {
+      "executed_tool_call_trajectories": {
+        "value": 0,
+        "threshold": 5,
+        "total": 20,
+        "pass": false
+      },
+      "infrastructure_failures": {
+        "value": 20,
+        "threshold": 0,
+        "pass": false
+      },
+      "parse_error_step_rate": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "length_truncated_without_action_rate": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": true
+      },
+      "hidden_label_leakage": {
+        "value": [],
+        "pass": true
+      }
+    },
+    "generation_steps": 0,
+    "parse_error_steps": 0,
+    "environment_parse_error_steps": 0,
+    "reparse_agrees_with_environment": true,
+    "length_truncated_without_action_steps": 0,
+    "successful_tool_call_trajectories": 0,
+    "automated_pass": false,
+    "manual_checks_required": [
+      "read at least 3 full call-feedback-continuation trajectories",
+      "confirm the rendered input matches the log",
+      "answer-judge smoke test (see verifier_smoke in the stage summary)"
+    ]
+  }
+}

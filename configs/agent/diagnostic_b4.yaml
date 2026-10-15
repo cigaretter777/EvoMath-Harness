@@ -1,0 +1,4 @@
+max_steps: 6
+max_tool_calls: 4
+max_python_seconds: 12.0
+max_observation_chars: 8000

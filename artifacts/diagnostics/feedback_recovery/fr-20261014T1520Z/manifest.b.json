@@ -1,0 +1,165 @@
+{
+  "run_id": "fr-20261014T1520Z",
+  "stage": "b",
+  "started_utc": "2026-10-14T15:34:51Z",
+  "model": "artifacts/models/qwen3_1_7b_sft_tir_merged",
+  "model_version": "artifacts/models/qwen3_1_7b_sft_tir_merged@c0284b582e14",
+  "model_fingerprint": {
+    "path": "artifacts/models/qwen3_1_7b_sft_tir_merged",
+    "file_count": 10,
+    "total_bytes": 3457069414,
+    "files": {
+      "added_tokens.json": {
+        "size": 707,
+        "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+      },
+      "chat_template.jinja": {
+        "size": 4168,
+        "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+      },
+      "config.json": {
+        "size": 1360,
+        "sha256": "d75242c5e00d1fee395226085a27703534889eaed85eb92c615fae0c6667532e"
+      },
+      "generation_config.json": {
+        "size": 214,
+        "sha256": "19d9395705449004ddebeeaf62841338a48cc8df85cddb1ca0b2c60396d95c96"
+      },
+      "merges.txt": {
+        "size": 1671853,
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+      },
+      "model.safetensors": {
+        "size": 3441185608,
+        "sha256": "047ac5c7eac92bed957891162bc8a693524c6f42dfb97618093cdcc475432077"
+      },
+      "special_tokens_map.json": {
+        "size": 613,
+        "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+      },
+      "tokenizer.json": {
+        "size": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      "tokenizer_config.json": {
+        "size": 5404,
+        "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+      },
+      "vocab.json": {
+        "size": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    }
+  },
+  "chat_template": {
+    "chat_template_sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+    "chat_template_chars": 4168,
+    "enable_thinking_passed": false,
+    "note": "apply_chat_template is called without enable_thinking, so the template default decides; recorded as an unresolved uncertainty"
+  },
+  "adapter": null,
+  "data": "data/processed/diagnostics/feedback_recovery/fr_b40.parquet",
+  "budget": {
+    "max_steps": 8,
+    "max_tool_calls": 4,
+    "max_python_seconds": 12.0,
+    "max_observation_chars": 8000
+  },
+  "generation": {
+    "max_new_tokens": 2048,
+    "temperature": 0.7,
+    "seed_enforced_by_transformers_client": true,
+    "seed_key": "stage,task_id,sample_id,arm,turn -> sha256(main_seed)"
+  },
+  "parser_tolerance": [
+    "unclosed_think",
+    "bare_final_scalar"
+  ],
+  "protocol_hash": "4ca6c6c51c29",
+  "sandbox_probe": {
+    "sandbox_url": "http://localhost:8080",
+    "ping": true,
+    "pong42": true,
+    "pong42_output": "stdout:\n42\n",
+    "stateless_first_call_ok": true,
+    "stateless_second_call_output": "stdout:\nFalse\n",
+    "persistent_across_calls": false
+  },
+  "host": "autodl-container-d8254d8178-8a28064b",
+  "python": "3.12.14",
+  "status": "complete",
+  "summary": {
+    "stage": "b",
+    "task_count": 40,
+    "samples_per_task": 4,
+    "trajectory_count": 160,
+    "elapsed_seconds": 1796.6982951397076,
+    "generated_tokens_total": 58165,
+    "tool_calls_total": 172,
+    "python_seconds_total": 219.55927085876465,
+    "candidates": 54,
+    "candidate_summary": {
+      "candidates": 54,
+      "eligible": 54
+    },
+    "selected_anchors": 27,
+    "selected_by_task": [
+      "omni_math:1478b49f18dac37fd5db",
+      "omni_math:5043c10435cd06b10647",
+      "omni_math:853274aea22a14c7227f",
+      "omni_math:9c98682bfac4cd9e6cd5",
+      "omni_math:88d0b1a43de05bc31d14",
+      "omni_math:cbb2456143cbcf1ac261",
+      "omni_math:bec7986869df54d2a547",
+      "omni_math:e8453df9f58e77c86dbb",
+      "omni_math:5f821b3eff281e10202c",
+      "omni_math:1164bf418a9d683a3e21",
+      "omni_math:88f3676134f6169af0b5",
+      "omni_math:8df02d96b9ccba40fc28",
+      "omni_math:c7d5d6188ea25816b2a4",
+      "omni_math:3d4d68b07fa77d07fd46",
+      "omni_math:80e0ecb1564b8c68ce86",
+      "omni_math:71dda168375cbeb5b570",
+      "omni_math:1e2a1793ad0ad289728e",
+      "omni_math:cfca3c77882695874526",
+      "omni_math:550ee799ef54e6d13eec",
+      "omni_math:b68f24392d3c5242905a",
+      "omni_math:56f772b387a79d52ce55",
+      "omni_math:ce665d2b193e2a844d1c",
+      "omni_math:cdd90b01566b59f682cf",
+      "omni_math:2fc80608da25a1ec0b0f",
+      "omni_math:a28dda842d79e6ba6be1",
+      "omni_math:19ca1a43020bfd8658c4",
+      "omni_math:962275787812e6cad353"
+    ],
+    "pool_verdict": "C",
+    "pool_verdict_note": ">=20 anchors: run stage C; 8-19: small-sample exploration; <8: INSUFFICIENT_ERROR_STATES (report section 6.1)",
+    "selected_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/selected.jsonl",
+    "snapshots_path": "artifacts/diagnostics/feedback_recovery/fr-20261014T1520Z/anchors/snapshots.jsonl",
+    "natural": {
+      "trajectories": 160,
+      "accuracy": 0.1,
+      "no_tool_call_rate": 0.025,
+      "executed_tool_call_rate": 0.975,
+      "exec_error_trajectory_rate": 0.3375,
+      "timeout_trajectory_rate": 0.09375,
+      "infrastructure_trajectory_rate": 0.00625,
+      "conditional_accuracy_after_exec_error": 0.09259259259259259,
+      "trajectories_with_exec_error": 54,
+      "termination_counts": {
+        "final": 145,
+        "max_steps": 1,
+        "python_time_budget": 14
+      },
+      "error_counts": {
+        "E_EXEC": 56,
+        "E_INFRA": 1,
+        "E_TIMEOUT": 15,
+        "call_form_errors": 11,
+        "executed_calls": 172,
+        "length_truncated_turns": 7
+      },
+      "tasks_with_any_exec_error": 40
+    }
+  }
+}
