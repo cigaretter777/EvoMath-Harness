@@ -73,7 +73,7 @@ B 阶段（§6，160 条自然轨迹）：
 
 ### Q5 协议偏离、判定问题、缺失、资源限制？
 
-- **偏离**：共 11 条记入 `DEVIATIONS.md`。影响最大的三条：D1 A 首次运行因我方 seed 实现缺陷全灭、按协议允许重跑一次（原始记录原样保留）；D3 修复了"工具失败时真实 stderr 对模型不可见"的既有缺陷（**基础条件修复**，故本轮与 MVP/第一轮不可合并比较）；D6 无独立复核者（由执行 agent 自审）。
+- **偏离**：`DEVIATIONS.md` 记 D1–D13（其中 D9 是环境事实、非偏离，D12/D13 为收尾时补记）。影响最大的三条：D1 A 首次运行因我方 seed 实现缺陷全灭、按协议允许重跑一次（原始记录原样保留）；D3 修复了"工具失败时真实 stderr 对模型不可见"的既有缺陷（**基础条件修复**，故本轮与 MVP/第一轮不可合并比较）；D6 无独立复核者（由执行 agent 自审）。
 - **判定问题**：判定器 `verify_answer` / `canonicalize-v1`（表达式题走独立 worker 进程），A 阶段冒烟通过（参考自判 correct、错答 incorrect）。第一轮已知 `free symbol mismatch` 类误判在本轮抽查中未再现，但**不能排除**；人工审计只覆盖 30 条 C 分支中的 6 条、20 条 B 轨迹中的 3 条（D6/D12，覆盖率有限）。
 - **缺失**：0（C 阶段 324/324 完整；`manifest.c.json.summary.integrity.problems = []`）。B 阶段 1 条 E_INFRA（0.6%），未达暂停阈值 2%。
 - **资源**：本机 RTX 4090D；沙箱 SandboxFusion 经 SSH 隧道在另一台机器（Mac）运行，故墙钟含往返延迟，`python_seconds` 只计沙箱自报执行时间。时间：A 208s、B 1797s（30.0 min）、C 6543s（1h49m，含 12 条冒烟），整轮 ≈2h39m。token：A 7,178 / B 58,165 / C 后缀 265,465（F 79,297、P 83,865、M 102,303）。
@@ -103,7 +103,7 @@ B 阶段（§6，160 条自然轨迹）：
 | C | `stage_c/continuations.jsonl`（324 条，含 12 条冒烟，按 `logical_sample_id` 去重） |
 | 人工审计 | `audit/labels.jsonl`（选择规则 + 自动标注 + 末尾人工精读块） |
 | 分析 | `analysis/tables.md`、`analysis/summary.json`、`analysis/paired_effects.json` |
-| 偏离 | `DEVIATIONS.md`（D1–D12） |
+| 偏离 | `DEVIATIONS.md`（D1–D13） |
 
 分析脚本 sha256：`3ca9b54d5dd4…`（`analysis/summary.json.analysis_script_sha256`）。冻结后对两个**非数据生成**脚本的修改见 D10。
 
