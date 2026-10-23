@@ -1,0 +1,290 @@
+{"recorded_at_utc":"2026-10-23T17:32:24Z","attempt":1,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:02:51Z","attempt":2,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:02:51Z","attempt":2,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:25:42Z","attempt":3,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:25:41Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:5b3ed5443b4498e34734",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:25:42Z","attempt":3,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:25:42Z","attempt":3,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:33:17Z","attempt":4,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:33:17Z","attempt":4,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:33:17Z","attempt":4,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:52:45Z","attempt":5,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:52:45Z","attempt":5,"file":"group_r2_75_PAUSED.json","content":{
+  "group": "r2_75",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:52:44Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:413ebdb7338999526eed",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:52:45Z","attempt":5,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:52:45Z","attempt":5,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:55:30Z","attempt":6,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:55:30Z","attempt":6,"file":"group_r2_75_PAUSED.json","content":{
+  "group": "r2_75",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:55:29Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:5b3ed5443b4498e34734",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:55:30Z","attempt":6,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:55:30Z","attempt":6,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:58:00Z","attempt":7,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:58:00Z","attempt":7,"file":"group_r2_75_PAUSED.json","content":{
+  "group": "r2_75",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:57:59Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:67461ad0ff482075529f",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:58:00Z","attempt":7,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:58:00Z","attempt":7,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:59:59Z","attempt":8,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:59:59Z","attempt":8,"file":"group_r2_75_PAUSED.json","content":{
+  "group": "r2_75",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:59:58Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:75d9e04ce7aad4c2979b",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:59:59Z","attempt":8,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T18:59:59Z","attempt":8,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T19:03:15Z","attempt":9,"file":"group_r2_100_PAUSED.json","content":{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T19:03:15Z","attempt":9,"file":"group_r2_75_PAUSED.json","content":{
+  "group": "r2_75",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T19:03:14Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}
+}
+{"recorded_at_utc":"2026-10-23T19:03:15Z","attempt":9,"file":"group_r2_PAUSED.json","content":{
+  "group": "r2",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:02:50Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:8f2a941f1e8a36733064",
+  "verifier_status": "incorrect"
+}
+}
+{"recorded_at_utc":"2026-10-23T19:03:15Z","attempt":9,"file":"group_sft_PAUSED.json","content":{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T17:32:24Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:2892076449fc22ef1afd",
+  "verifier_status": "incorrect"
+}
+}

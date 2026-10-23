@@ -1,0 +1,93 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+===== group sft =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[sft] tasks=200 completed=200 invalid_attempts=3 pending=0
+===== group r2 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/peft/config.py:280: UserWarning: The configuration file contains a `runtime_config` key. This is ignored. Runtime configurations are only valid at runtime.
+  warnings.warn(
+[r2] tasks=200 completed=200 invalid_attempts=1 pending=0
+===== group r2_100 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[r2_100] tasks=200 completed=200 invalid_attempts=2 pending=0
+===== group r2_75 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[r2_75] tasks=200 completed=127 invalid_attempts=5 pending=73
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[r2_75] model warmup complete
+[r2_75] 128/200 math:a0be6631f332b996b014 correct=True reason=final turns=2 tool_calls=1 tool_s=0.250
+[r2_75] 129/200 math:a17d46aad6d69a9ac2dc correct=True reason=final turns=2 tool_calls=1 tool_s=0.249
+[r2_75] 130/200 math:a2498fe23b3ce94cdc54 correct=True reason=final turns=2 tool_calls=1 tool_s=0.333
+[r2_75] 131/200 math:a2da9db36fa1f2850587 correct=False reason=final turns=2 tool_calls=1 tool_s=0.441
+[r2_75] 132/200 math:a2f311678be1ca034535 correct=True reason=final turns=2 tool_calls=1 tool_s=0.340
+[r2_75] 133/200 math:a3982deedf43337bc9fa correct=True reason=final turns=2 tool_calls=1 tool_s=0.282
+[r2_75] 134/200 math:a66962fe3ac65ca5c8a4 correct=True reason=final turns=2 tool_calls=1 tool_s=0.353
+[r2_75] 135/200 math:a6966c540154a4bb6e2c correct=True reason=final turns=2 tool_calls=1 tool_s=0.353
+[r2_75] 136/200 math:a7c2dc97d24432f4f36b correct=False reason=final turns=2 tool_calls=1 tool_s=0.269
+[r2_75] 137/200 math:a922b1548ed7c7b3ef32 correct=True reason=final turns=2 tool_calls=1 tool_s=0.261
+[r2_75] 138/200 math:a9b7b5ffb26455e5431b correct=True reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 139/200 math:a9c9a7ece6d52447f724 correct=True reason=final turns=2 tool_calls=1 tool_s=0.243
+[r2_75] 140/200 math:abc81a277e4c2a5015cd correct=False reason=final turns=2 tool_calls=1 tool_s=0.252
+[r2_75] 141/200 math:abfe09728783a9bc0576 correct=True reason=final turns=2 tool_calls=1 tool_s=0.095
+[r2_75] 142/200 math:ad66b21b4c2e1aa7a1b8 correct=False reason=final turns=2 tool_calls=1 tool_s=0.377
+[r2_75] 143/200 math:ae105dc5e6ced33dadfc correct=False reason=final turns=2 tool_calls=1 tool_s=0.254
+[r2_75] 144/200 math:b259a4d05eeab0649343 correct=True reason=final turns=2 tool_calls=1 tool_s=0.277
+[r2_75] 145/200 math:b2b86a16de1e878a7f2d correct=True reason=final turns=2 tool_calls=1 tool_s=0.265
+[r2_75] 146/200 math:b36965add9907f9521ad correct=False reason=final turns=2 tool_calls=1 tool_s=1.727
+[r2_75] 147/200 math:b6e7f92b8a8cf07ae92e correct=False reason=final turns=2 tool_calls=1 tool_s=0.267
+[r2_75] 148/200 math:b7291e495c98941436ac correct=True reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 149/200 math:ba1cd8822c7b35075337 correct=True reason=final turns=2 tool_calls=1 tool_s=0.343
+[r2_75] 150/200 math:bcbb506750e0625c97c1 correct=True reason=final turns=2 tool_calls=1 tool_s=0.383
+[r2_75] 151/200 math:be9251de444401fd0e80 correct=True reason=final turns=2 tool_calls=1 tool_s=0.244
+[r2_75] 152/200 math:bf3c45f8e183f229d656 correct=False reason=final turns=2 tool_calls=1 tool_s=0.251
+[r2_75] 153/200 math:c17fe0adf94a855c8ff1 correct=False reason=final turns=2 tool_calls=1 tool_s=0.248
+[r2_75] 154/200 math:c263f3d64f84084a45d5 correct=True reason=final turns=2 tool_calls=1 tool_s=0.270
+[r2_75] 155/200 math:c274f6c7dd6c3f45f922 correct=True reason=final turns=2 tool_calls=1 tool_s=0.246
+[r2_75] 156/200 math:c2e23ebbf5eda3a9dd95 correct=True reason=final turns=2 tool_calls=1 tool_s=0.269
+[r2_75] 157/200 math:c3bf9f471459be626169 correct=True reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 158/200 math:c4533935b338d4a120db correct=False reason=final turns=2 tool_calls=1 tool_s=0.475
+[r2_75] 159/200 math:c4af92bf4d3d000a98d4 correct=False reason=final turns=2 tool_calls=1 tool_s=0.356
+[r2_75] 160/200 math:c4d8366c61570b96aba0 correct=True reason=final turns=2 tool_calls=1 tool_s=0.243
+[r2_75] 161/200 math:c6cc5c1ba87a94248e59 correct=False reason=final turns=2 tool_calls=1 tool_s=0.332
+[r2_75] 162/200 math:c6e27c3b64446d2e0149 correct=True reason=final turns=2 tool_calls=1 tool_s=0.279
+[r2_75] 163/200 math:c877300acea618ba73af correct=True reason=final turns=2 tool_calls=1 tool_s=0.244
+[r2_75] 164/200 math:c8ec24e19bcb09082741 correct=True reason=final turns=2 tool_calls=1 tool_s=0.239
+[r2_75] 165/200 math:c8fb59f22faca73f3655 correct=True reason=final turns=2 tool_calls=1 tool_s=0.288
+[r2_75] 166/200 math:cc2b41750b0f16557b79 correct=True reason=final turns=2 tool_calls=1 tool_s=0.259
+[r2_75] 167/200 math:ccef7cff68fd2e50a341 correct=True reason=final turns=2 tool_calls=1 tool_s=0.264
+[r2_75] 168/200 math:cd24d2b3eaf423fb1d85 correct=True reason=final turns=2 tool_calls=1 tool_s=0.338
+[r2_75] 169/200 math:cda2b05c0c79542d6fd5 correct=True reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 170/200 math:d1904ab6893813ddfeec correct=False reason=final turns=2 tool_calls=1 tool_s=0.337
+[r2_75] 171/200 math:d284852b42b20a58ff65 correct=False reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 172/200 math:d2a1c596dd7e862ed8e8 correct=False reason=final turns=2 tool_calls=1 tool_s=0.337
+[r2_75] 173/200 math:d3400907fa4c0622116c correct=True reason=final turns=2 tool_calls=1 tool_s=0.259
+[r2_75] 174/200 math:d3f2df68ed5647f71ca9 correct=False reason=final turns=2 tool_calls=1 tool_s=0.262
+[r2_75] 175/200 math:d708ac38968b58e5e788 correct=False reason=final turns=2 tool_calls=0 tool_s=0.000
+[r2_75] 176/200 math:d72f569d1481ef223a6c correct=True reason=final turns=2 tool_calls=1 tool_s=0.274
+[r2_75] 177/200 math:d8d525ceef5f2864df84 correct=False reason=final turns=2 tool_calls=1 tool_s=0.308
+[r2_75] 178/200 math:d93bdddf8d940bb8c94d correct=False reason=final turns=2 tool_calls=1 tool_s=0.377
+[r2_75] 179/200 math:d95c31385ad985548822 correct=False reason=final turns=2 tool_calls=1 tool_s=0.244
+[r2_75] 180/200 math:db0260fbb016dccdbd6a correct=False reason=final turns=2 tool_calls=1 tool_s=0.268
+[r2_75] 181/200 math:db9c39b6dcb05bb2bd90 correct=True reason=final turns=2 tool_calls=1 tool_s=0.325
+[r2_75] 182/200 math:dbc9f46d79f3ce12022d correct=False reason=final turns=2 tool_calls=1 tool_s=0.256
+[r2_75] 183/200 math:dd2a4cd12e16023a82b4 correct=False reason=final turns=2 tool_calls=1 tool_s=0.276
+[r2_75] 184/200 math:dd48d65e326606be4a9c correct=True reason=final turns=2 tool_calls=1 tool_s=0.260
+[r2_75] 185/200 math:dd64272636251652f6fb correct=True reason=final turns=2 tool_calls=1 tool_s=0.281
+[r2_75] 186/200 math:dff74822fedcfd6aa39c correct=True reason=final turns=2 tool_calls=1 tool_s=0.262
+[r2_75] 187/200 math:e0a3f17f4be1c7e7ea73 correct=False reason=final turns=2 tool_calls=1 tool_s=0.247
+[r2_75] 188/200 math:e3c5c59641dcd3831bf9 correct=True reason=final turns=2 tool_calls=1 tool_s=0.260
+[r2_75] 189/200 math:e497bfcb257b3f786f2e correct=True reason=final turns=2 tool_calls=1 tool_s=0.269
+[r2_75] 190/200 math:e4b2a536211b4536766c correct=True reason=final turns=2 tool_calls=1 tool_s=0.273
+[r2_75] 191/200 math:f1db5061018617931fc8 correct=True reason=final turns=2 tool_calls=1 tool_s=0.262
+[r2_75] 192/200 math:f5abdcbc1564c966287f correct=False reason=final turns=2 tool_calls=1 tool_s=4.068
+[r2_75] 193/200 math:f9394f956574769340bb correct=True reason=final turns=2 tool_calls=1 tool_s=0.334
+[r2_75] 194/200 math:f94063f064f1924ce026 correct=False reason=final turns=2 tool_calls=1 tool_s=0.272
+[r2_75] 195/200 math:fa6274b7ea2ee36597e3 correct=False reason=final turns=2 tool_calls=0 tool_s=0.000
+[r2_75] 196/200 math:fc1dfc4bd36c2ab0cb06 correct=True reason=final turns=2 tool_calls=1 tool_s=0.327
+[r2_75] 197/200 math:fc8a8c4efb2a7afc54cb correct=True reason=final turns=2 tool_calls=1 tool_s=0.253
+[r2_75] 198/200 math:fcfdcc4ac0dc42b803c2 correct=False reason=final turns=2 tool_calls=1 tool_s=0.340
+[r2_75] 199/200 math:fe1d0d07e6fc834d6390 correct=True reason=final turns=2 tool_calls=1 tool_s=0.339
+[r2_75] 200/200 math:ffcb7ae06e26888dad4a correct=True reason=final turns=2 tool_calls=1 tool_s=0.094
+{"all_complete": true, "summaries": {"r2": {"action_attempts": 404, "complete": true, "context_overflow_count": 0, "correct_count": 108, "correct_rate": 0.54, "generated_tokens_total": 39098, "group": "r2", "infrastructure_error_count": 0, "invalid_action_denominator_zero": false, "invalid_action_rate": 0.019801980198019802, "invalid_actions": 8, "length_truncation_count": 2, "length_truncation_rate": 0.01, "missing_task_ids": [], "model_error_count": 0, "observation_truncation_count": 0, "python_seconds": 121.399542, "reward_diagnostics_means": {"r0": {"mean_total": 0.54}, "r1": {"mean_total": 0.537}, "r2": {"mean_total": 0.516699192982912}}, "sandbox_unavailable_count": 0, "sympy_seconds": 0.0, "task_count": 200, "termination_reason_counts": {"final": 199, "max_steps": 1}, "timing_missing_count": 0, "tool_calls": 197, "tool_calls_per_task": 0.985, "tool_failure_count": 40, "tool_seconds": 121.399542, "tool_seconds_per_task": 0.6069977080821991, "valid_task_count": 200, "verifier_retry_count": 0, "verifier_status_counts": {"correct": 108, "incorrect": 89, "invalid_prediction": 3}, "wall_seconds_total": 1699.931316}, "r2_100": {"action_attempts": 423, "complete": true, "context_overflow_count": 0, "correct_count": 108, "correct_rate": 0.54, "generated_tokens_total": 38784, "group": "r2_100", "infrastructure_error_count": 0, "invalid_action_denominator_zero": false, "invalid_action_rate": 0.061465721040189124, "invalid_actions": 26, "length_truncation_count": 0, "length_truncation_rate": 0.0, "missing_task_ids": [], "model_error_count": 0, "observation_truncation_count": 0, "python_seconds": 91.025625, "reward_diagnostics_means": {"r0": {"mean_total": 0.54}, "r1": {"mean_total": 0.529}, "r2": {"mean_total": 0.5085090935528279}}, "sandbox_unavailable_count": 0, "sympy_seconds": 0.0, "task_count": 200, "termination_reason_counts": {"final": 198, "max_steps": 2}, "timing_missing_count": 0, "tool_calls": 199, "tool_calls_per_task": 0.995, "tool_failure_count": 43, "tool_seconds": 91.025625, "tool_seconds_per_task": 0.4551281237602234, "valid_task_count": 200, "verifier_retry_count": 0, "verifier_status_counts": {"correct": 108, "incorrect": 88, "invalid_prediction": 4}, "wall_seconds_total": 1676.122818}, "r2_75": {"action_attempts": 400, "complete": true, "context_overflow_count": 0, "correct_count": 112, "correct_rate": 0.56, "generated_tokens_total": 39678, "group": "r2_75", "infrastructure_error_count": 0, "invalid_action_denominator_zero": false, "invalid_action_rate": 0.0075, "invalid_actions": 3, "length_truncation_count": 2, "length_truncation_rate": 0.01, "missing_task_ids": [], "model_error_count": 0, "observation_truncation_count": 0, "python_seconds": 90.908221, "reward_diagnostics_means": {"r0": {"mean_total": 0.56}, "r1": {"mean_total": 0.5585}, "r2": {"mean_total": 0.5372513536791007}}, "sandbox_unavailable_count": 0, "sympy_seconds": 0.0, "task_count": 200, "termination_reason_counts": {"final": 200}, "timing_missing_count": 0, "tool_calls": 197, "tool_calls_per_task": 0.985, "tool_failure_count": 34, "tool_seconds": 90.908221, "tool_seconds_per_task": 0.4545411038398743, "valid_task_count": 200, "verifier_retry_count": 0, "verifier_status_counts": {"correct": 112, "incorrect": 86, "invalid_prediction": 2}, "wall_seconds_total": 1695.709074}, "sft": {"action_attempts": 401, "complete": true, "context_overflow_count": 1, "correct_count": 110, "correct_rate": 0.55, "generated_tokens_total": 40943, "group": "sft", "infrastructure_error_count": 0, "invalid_action_denominator_zero": false, "invalid_action_rate": 0.00997506234413965, "invalid_actions": 4, "length_truncation_count": 2, "length_truncation_rate": 0.01, "missing_task_ids": [], "model_error_count": 0, "observation_truncation_count": 0, "python_seconds": 94.027598, "reward_diagnostics_means": {"r0": {"mean_total": 0.55}, "r1": {"mean_total": 0.5479999999999999}, "r2": {"mean_total": 0.5271269183695316}}, "sandbox_unavailable_count": 0, "sympy_seconds": 0.0, "task_count": 200, "termination_reason_counts": {"context_overflow": 1, "final": 199}, "timing_missing_count": 0, "tool_calls": 198, "tool_calls_per_task": 0.99, "tool_failure_count": 39, "tool_seconds": 94.027598, "tool_seconds_per_task": 0.4701379907131195, "valid_task_count": 200, "verifier_retry_count": 0, "verifier_status_counts": {"correct": 110, "incorrect": 87, "invalid_prediction": 3}, "wall_seconds_total": 987.177762}}}

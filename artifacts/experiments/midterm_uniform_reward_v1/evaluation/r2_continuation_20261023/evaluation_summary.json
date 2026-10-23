@@ -1,0 +1,217 @@
+{
+  "all_complete": true,
+  "completed_at_utc": "2026-10-23T19:14:20Z",
+  "full_run": true,
+  "groups": [
+    "sft",
+    "r2",
+    "r2_100",
+    "r2_75"
+  ],
+  "schema": "midterm-unified-tool-eval-v1",
+  "summaries": {
+    "r2": {
+      "action_attempts": 404,
+      "complete": true,
+      "context_overflow_count": 0,
+      "correct_count": 108,
+      "correct_rate": 0.54,
+      "generated_tokens_total": 39098,
+      "group": "r2",
+      "infrastructure_error_count": 0,
+      "invalid_action_denominator_zero": false,
+      "invalid_action_rate": 0.019801980198019802,
+      "invalid_actions": 8,
+      "length_truncation_count": 2,
+      "length_truncation_rate": 0.01,
+      "missing_task_ids": [],
+      "model_error_count": 0,
+      "observation_truncation_count": 0,
+      "python_seconds": 121.399542,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.54
+        },
+        "r1": {
+          "mean_total": 0.537
+        },
+        "r2": {
+          "mean_total": 0.516699192982912
+        }
+      },
+      "sandbox_unavailable_count": 0,
+      "sympy_seconds": 0.0,
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 199,
+        "max_steps": 1
+      },
+      "timing_missing_count": 0,
+      "tool_calls": 197,
+      "tool_calls_per_task": 0.985,
+      "tool_failure_count": 40,
+      "tool_seconds": 121.399542,
+      "tool_seconds_per_task": 0.6069977080821991,
+      "valid_task_count": 200,
+      "verifier_retry_count": 0,
+      "verifier_status_counts": {
+        "correct": 108,
+        "incorrect": 89,
+        "invalid_prediction": 3
+      },
+      "wall_seconds_total": 1699.931316
+    },
+    "r2_100": {
+      "action_attempts": 423,
+      "complete": true,
+      "context_overflow_count": 0,
+      "correct_count": 108,
+      "correct_rate": 0.54,
+      "generated_tokens_total": 38784,
+      "group": "r2_100",
+      "infrastructure_error_count": 0,
+      "invalid_action_denominator_zero": false,
+      "invalid_action_rate": 0.061465721040189124,
+      "invalid_actions": 26,
+      "length_truncation_count": 0,
+      "length_truncation_rate": 0.0,
+      "missing_task_ids": [],
+      "model_error_count": 0,
+      "observation_truncation_count": 0,
+      "python_seconds": 91.025625,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.54
+        },
+        "r1": {
+          "mean_total": 0.529
+        },
+        "r2": {
+          "mean_total": 0.5085090935528279
+        }
+      },
+      "sandbox_unavailable_count": 0,
+      "sympy_seconds": 0.0,
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 198,
+        "max_steps": 2
+      },
+      "timing_missing_count": 0,
+      "tool_calls": 199,
+      "tool_calls_per_task": 0.995,
+      "tool_failure_count": 43,
+      "tool_seconds": 91.025625,
+      "tool_seconds_per_task": 0.4551281237602234,
+      "valid_task_count": 200,
+      "verifier_retry_count": 0,
+      "verifier_status_counts": {
+        "correct": 108,
+        "incorrect": 88,
+        "invalid_prediction": 4
+      },
+      "wall_seconds_total": 1676.122818
+    },
+    "r2_75": {
+      "action_attempts": 400,
+      "complete": true,
+      "context_overflow_count": 0,
+      "correct_count": 112,
+      "correct_rate": 0.56,
+      "generated_tokens_total": 39678,
+      "group": "r2_75",
+      "infrastructure_error_count": 0,
+      "invalid_action_denominator_zero": false,
+      "invalid_action_rate": 0.0075,
+      "invalid_actions": 3,
+      "length_truncation_count": 2,
+      "length_truncation_rate": 0.01,
+      "missing_task_ids": [],
+      "model_error_count": 0,
+      "observation_truncation_count": 0,
+      "python_seconds": 90.908221,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.56
+        },
+        "r1": {
+          "mean_total": 0.5585
+        },
+        "r2": {
+          "mean_total": 0.5372513536791007
+        }
+      },
+      "sandbox_unavailable_count": 0,
+      "sympy_seconds": 0.0,
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 200
+      },
+      "timing_missing_count": 0,
+      "tool_calls": 197,
+      "tool_calls_per_task": 0.985,
+      "tool_failure_count": 34,
+      "tool_seconds": 90.908221,
+      "tool_seconds_per_task": 0.4545411038398743,
+      "valid_task_count": 200,
+      "verifier_retry_count": 0,
+      "verifier_status_counts": {
+        "correct": 112,
+        "incorrect": 86,
+        "invalid_prediction": 2
+      },
+      "wall_seconds_total": 1695.709074
+    },
+    "sft": {
+      "action_attempts": 401,
+      "complete": true,
+      "context_overflow_count": 1,
+      "correct_count": 110,
+      "correct_rate": 0.55,
+      "generated_tokens_total": 40943,
+      "group": "sft",
+      "infrastructure_error_count": 0,
+      "invalid_action_denominator_zero": false,
+      "invalid_action_rate": 0.00997506234413965,
+      "invalid_actions": 4,
+      "length_truncation_count": 2,
+      "length_truncation_rate": 0.01,
+      "missing_task_ids": [],
+      "model_error_count": 0,
+      "observation_truncation_count": 0,
+      "python_seconds": 94.027598,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.55
+        },
+        "r1": {
+          "mean_total": 0.5479999999999999
+        },
+        "r2": {
+          "mean_total": 0.5271269183695316
+        }
+      },
+      "sandbox_unavailable_count": 0,
+      "sympy_seconds": 0.0,
+      "task_count": 200,
+      "termination_reason_counts": {
+        "context_overflow": 1,
+        "final": 199
+      },
+      "timing_missing_count": 0,
+      "tool_calls": 198,
+      "tool_calls_per_task": 0.99,
+      "tool_failure_count": 39,
+      "tool_seconds": 94.027598,
+      "tool_seconds_per_task": 0.4701379907131195,
+      "valid_task_count": 200,
+      "verifier_retry_count": 0,
+      "verifier_status_counts": {
+        "correct": 110,
+        "incorrect": 87,
+        "invalid_prediction": 3
+      },
+      "wall_seconds_total": 987.177762
+    }
+  }
+}

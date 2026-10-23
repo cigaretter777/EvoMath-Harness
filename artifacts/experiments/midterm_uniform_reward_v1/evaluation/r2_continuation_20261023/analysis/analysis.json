@@ -1,0 +1,511 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 20261022,
+  "created_at_utc": "2026-10-23T19:14:52Z",
+  "display": {
+    "r2": "R2-50",
+    "r2_100": "R2-100",
+    "r2_75": "R2-75",
+    "sft": "SFT"
+  },
+  "eval_dir": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/evaluation/r2_continuation_20261023",
+  "groups": [
+    "sft",
+    "r2",
+    "r2_75",
+    "r2_100"
+  ],
+  "journal_diagnostics": {
+    "r2": {
+      "invalid_attempt_rows": 1,
+      "journal_rows": 201,
+      "model_version": "r2:step_50",
+      "selected_rows": 200,
+      "verifier_retry_rows": 0
+    },
+    "r2_100": {
+      "invalid_attempt_rows": 2,
+      "journal_rows": 202,
+      "model_version": "r2:step_100",
+      "selected_rows": 200,
+      "verifier_retry_rows": 0
+    },
+    "r2_75": {
+      "invalid_attempt_rows": 5,
+      "journal_rows": 205,
+      "model_version": "r2:step_75",
+      "selected_rows": 200,
+      "verifier_retry_rows": 0
+    },
+    "sft": {
+      "invalid_attempt_rows": 3,
+      "journal_rows": 203,
+      "model_version": "sft",
+      "selected_rows": 200,
+      "verifier_retry_rows": 0
+    }
+  },
+  "main_table": [
+    {
+      "call_distribution": {
+        "above_four_calls": 0,
+        "four_calls": 0,
+        "max": 1,
+        "mean": 0.99,
+        "median": 1.0,
+        "one_call": 198,
+        "p95": 1.0,
+        "three_calls": 0,
+        "two_calls": 0,
+        "zero_calls": 2
+      },
+      "correct_count": 110,
+      "correct_rate": 0.55,
+      "display": "SFT",
+      "group": "sft",
+      "invalid_action_rate": 0.00997506234413965,
+      "length_truncation_rate": 0.01,
+      "one_call_rate": 0.99,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.55
+        },
+        "r1": {
+          "mean_total": 0.5479999999999999
+        },
+        "r2": {
+          "mean_total": 0.5271269183695316
+        }
+      },
+      "task_count": 200,
+      "termination_reason_counts": {
+        "context_overflow": 1,
+        "final": 199
+      },
+      "tool_calls": 198,
+      "tool_calls_per_task": 0.99,
+      "tool_failure_rate": 0.19696969696969696,
+      "tool_health": {
+        "calls_by_tool": {
+          "python": 198
+        },
+        "executed_calls": 198,
+        "failed_by_error_code": {
+          "execution_error": 38,
+          "timeout": 1
+        },
+        "failed_calls": 39,
+        "mean_tool_seconds_per_executed_call": 0.4748868593061813,
+        "successful_calls": 159,
+        "tool_failure_rate": 0.19696969696969696
+      },
+      "tool_seconds": 94.027598,
+      "tool_seconds_per_task": 0.4701379907131195,
+      "two_plus_call_rate": 0.0,
+      "zero_call_rate": 0.01
+    },
+    {
+      "call_distribution": {
+        "above_four_calls": 0,
+        "four_calls": 0,
+        "max": 1,
+        "mean": 0.985,
+        "median": 1.0,
+        "one_call": 197,
+        "p95": 1.0,
+        "three_calls": 0,
+        "two_calls": 0,
+        "zero_calls": 3
+      },
+      "correct_count": 108,
+      "correct_rate": 0.54,
+      "display": "R2-50",
+      "group": "r2",
+      "invalid_action_rate": 0.019801980198019802,
+      "length_truncation_rate": 0.01,
+      "one_call_rate": 0.985,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.54
+        },
+        "r1": {
+          "mean_total": 0.537
+        },
+        "r2": {
+          "mean_total": 0.516699192982912
+        }
+      },
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 199,
+        "max_steps": 1
+      },
+      "tool_calls": 197,
+      "tool_calls_per_task": 0.985,
+      "tool_failure_rate": 0.20304568527918782,
+      "tool_health": {
+        "calls_by_tool": {
+          "python": 197
+        },
+        "executed_calls": 197,
+        "failed_by_error_code": {
+          "execution_error": 39,
+          "timeout": 1
+        },
+        "failed_calls": 40,
+        "mean_tool_seconds_per_executed_call": 0.6162413280022326,
+        "successful_calls": 157,
+        "tool_failure_rate": 0.20304568527918782
+      },
+      "tool_seconds": 121.399542,
+      "tool_seconds_per_task": 0.6069977080821991,
+      "two_plus_call_rate": 0.0,
+      "zero_call_rate": 0.015
+    },
+    {
+      "call_distribution": {
+        "above_four_calls": 0,
+        "four_calls": 0,
+        "max": 1,
+        "mean": 0.985,
+        "median": 1.0,
+        "one_call": 197,
+        "p95": 1.0,
+        "three_calls": 0,
+        "two_calls": 0,
+        "zero_calls": 3
+      },
+      "correct_count": 112,
+      "correct_rate": 0.56,
+      "display": "R2-75",
+      "group": "r2_75",
+      "invalid_action_rate": 0.0075,
+      "length_truncation_rate": 0.01,
+      "one_call_rate": 0.985,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.56
+        },
+        "r1": {
+          "mean_total": 0.5585
+        },
+        "r2": {
+          "mean_total": 0.5372513536791007
+        }
+      },
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 200
+      },
+      "tool_calls": 197,
+      "tool_calls_per_task": 0.985,
+      "tool_failure_rate": 0.17258883248730963,
+      "tool_health": {
+        "calls_by_tool": {
+          "python": 197
+        },
+        "executed_calls": 197,
+        "failed_by_error_code": {
+          "execution_error": 34
+        },
+        "failed_calls": 34,
+        "mean_tool_seconds_per_executed_call": 0.4614630495836287,
+        "successful_calls": 163,
+        "tool_failure_rate": 0.17258883248730963
+      },
+      "tool_seconds": 90.908221,
+      "tool_seconds_per_task": 0.4545411038398743,
+      "two_plus_call_rate": 0.0,
+      "zero_call_rate": 0.015
+    },
+    {
+      "call_distribution": {
+        "above_four_calls": 0,
+        "four_calls": 0,
+        "max": 1,
+        "mean": 0.995,
+        "median": 1.0,
+        "one_call": 199,
+        "p95": 1.0,
+        "three_calls": 0,
+        "two_calls": 0,
+        "zero_calls": 1
+      },
+      "correct_count": 108,
+      "correct_rate": 0.54,
+      "display": "R2-100",
+      "group": "r2_100",
+      "invalid_action_rate": 0.061465721040189124,
+      "length_truncation_rate": 0.0,
+      "one_call_rate": 0.995,
+      "reward_diagnostics_means": {
+        "r0": {
+          "mean_total": 0.54
+        },
+        "r1": {
+          "mean_total": 0.529
+        },
+        "r2": {
+          "mean_total": 0.5085090935528279
+        }
+      },
+      "task_count": 200,
+      "termination_reason_counts": {
+        "final": 198,
+        "max_steps": 2
+      },
+      "tool_calls": 199,
+      "tool_calls_per_task": 0.995,
+      "tool_failure_rate": 0.21608040201005024,
+      "tool_health": {
+        "calls_by_tool": {
+          "python": 199
+        },
+        "executed_calls": 199,
+        "failed_by_error_code": {
+          "execution_error": 43
+        },
+        "failed_calls": 43,
+        "mean_tool_seconds_per_executed_call": 0.45741519975901845,
+        "successful_calls": 156,
+        "tool_failure_rate": 0.21608040201005024
+      },
+      "tool_seconds": 91.025625,
+      "tool_seconds_per_task": 0.4551281237602234,
+      "two_plus_call_rate": 0.0,
+      "zero_call_rate": 0.005
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "b01_baseline_wrong_treated_correct": 6,
+      "b10_baseline_correct_treated_wrong": 2,
+      "baseline_group": "r2",
+      "comparison": "R2-75 - R2-50",
+      "delta_correct_rate": 0.02,
+      "delta_correct_rate_ci95": [
+        -0.0050000000000000044,
+        0.04999999999999993
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": 0.0,
+      "delta_tool_calls_per_task_ci95": [
+        -0.020000000000000018,
+        0.020000000000000018
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": -0.15245660424232482,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.45555985602736476,
+        0.0019311889111995485
+      ],
+      "delta_tool_seconds_per_task_median": 0.0010972023010253906,
+      "discordant_pairs": 8,
+      "mcnemar_exact_two_sided_p": 0.2890625,
+      "mcnemar_holm_adjusted_p_primary_family": 0.8671875,
+      "n_pairs": 200,
+      "treated_group": "r2_75"
+    },
+    {
+      "b01_baseline_wrong_treated_correct": 5,
+      "b10_baseline_correct_treated_wrong": 5,
+      "baseline_group": "r2",
+      "comparison": "R2-100 - R2-50",
+      "delta_correct_rate": 0.0,
+      "delta_correct_rate_ci95": [
+        -0.030000000000000027,
+        0.030000000000000027
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": 0.01,
+      "delta_tool_calls_per_task_ci95": [
+        0.0,
+        0.025000000000000022
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": -0.1518695843219757,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.4548436753749847,
+        0.0025129631161689508
+      ],
+      "delta_tool_seconds_per_task_median": 0.0016694068908691406,
+      "discordant_pairs": 10,
+      "mcnemar_exact_two_sided_p": 1.0,
+      "mcnemar_holm_adjusted_p_primary_family": 1.0,
+      "n_pairs": 200,
+      "treated_group": "r2_100"
+    },
+    {
+      "b01_baseline_wrong_treated_correct": 3,
+      "b10_baseline_correct_treated_wrong": 7,
+      "baseline_group": "r2_75",
+      "comparison": "R2-100 - R2-75",
+      "delta_correct_rate": -0.02,
+      "delta_correct_rate_ci95": [
+        -0.050000000000000044,
+        0.010000000000000009
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": 0.01,
+      "delta_tool_calls_per_task_ci95": [
+        0.0,
+        0.025000000000000022
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": 0.0005870199203491211,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.00584654745459554,
+        0.007286728590726874
+      ],
+      "delta_tool_seconds_per_task_median": 1.823902130126953e-05,
+      "discordant_pairs": 10,
+      "mcnemar_exact_two_sided_p": 0.34375,
+      "mcnemar_holm_adjusted_p_primary_family": 0.8671875,
+      "n_pairs": 200,
+      "treated_group": "r2_100"
+    },
+    {
+      "b01_baseline_wrong_treated_correct": 4,
+      "b10_baseline_correct_treated_wrong": 6,
+      "baseline_group": "sft",
+      "comparison": "R2-50 - SFT",
+      "delta_correct_rate": -0.01,
+      "delta_correct_rate_ci95": [
+        -0.040000000000000036,
+        0.020000000000000018
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": -0.005,
+      "delta_tool_calls_per_task_ci95": [
+        -0.025000000000000022,
+        0.010000000000000009
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": 0.1368597173690796,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.023648195594549108,
+        0.44346769791841506
+      ],
+      "delta_tool_seconds_per_task_median": -0.002453327178955078,
+      "discordant_pairs": 10,
+      "mcnemar_exact_two_sided_p": 0.75390625,
+      "mcnemar_holm_adjusted_p_sft_family": 1.0,
+      "n_pairs": 200,
+      "treated_group": "r2"
+    },
+    {
+      "b01_baseline_wrong_treated_correct": 6,
+      "b10_baseline_correct_treated_wrong": 4,
+      "baseline_group": "sft",
+      "comparison": "R2-75 - SFT",
+      "delta_correct_rate": 0.01,
+      "delta_correct_rate_ci95": [
+        -0.020000000000000018,
+        0.040000000000000036
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": -0.005,
+      "delta_tool_calls_per_task_ci95": [
+        -0.025000000000000022,
+        0.010000000000000009
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": -0.015596886873245239,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.03599975463747985,
+        -0.001664910286664985
+      ],
+      "delta_tool_seconds_per_task_median": -0.0003528594970703125,
+      "discordant_pairs": 10,
+      "mcnemar_exact_two_sided_p": 0.75390625,
+      "mcnemar_holm_adjusted_p_sft_family": 1.0,
+      "n_pairs": 200,
+      "treated_group": "r2_75"
+    },
+    {
+      "b01_baseline_wrong_treated_correct": 5,
+      "b10_baseline_correct_treated_wrong": 7,
+      "baseline_group": "sft",
+      "comparison": "R2-100 - SFT",
+      "delta_correct_rate": -0.01,
+      "delta_correct_rate_ci95": [
+        -0.04499999999999993,
+        0.024999999999999967
+      ],
+      "delta_definition": "treated minus baseline",
+      "delta_tool_calls_per_task": 0.005,
+      "delta_tool_calls_per_task_ci95": [
+        0.0,
+        0.015000000000000013
+      ],
+      "delta_tool_calls_per_task_median": 0.0,
+      "delta_tool_seconds_per_task": -0.015009866952896118,
+      "delta_tool_seconds_per_task_ci95": [
+        -0.034924686163663794,
+        -0.0017507751882076053
+      ],
+      "delta_tool_seconds_per_task_median": -0.0004981756210327148,
+      "discordant_pairs": 12,
+      "mcnemar_exact_two_sided_p": 0.7744140625,
+      "mcnemar_holm_adjusted_p_sft_family": 1.0,
+      "n_pairs": 200,
+      "treated_group": "r2_100"
+    }
+  ],
+  "primary_comparisons": [
+    [
+      "r2_75",
+      "r2"
+    ],
+    [
+      "r2_100",
+      "r2"
+    ],
+    [
+      "r2_100",
+      "r2_75"
+    ]
+  ],
+  "protocol_checks": {
+    "checked_keys": [
+      "task_count",
+      "task_ids_sha256",
+      "test_parquet",
+      "test_parquet_sha256",
+      "model_path",
+      "model_files_sha256",
+      "budget_path",
+      "budget_sha256",
+      "budget",
+      "config_hashes",
+      "initial_prompt_tokens",
+      "reward_configs",
+      "generation",
+      "prompt_version",
+      "parser_tolerance",
+      "sandbox_url",
+      "frozen_inputs_sha256"
+    ],
+    "evaluator_sha256_continuation": "359e0d0204a812f98e27010f6de6926a65520425664e954c2b5c2a854d850e59",
+    "evaluator_sha256_v2": "8bcc6378c3aaf28e6dc289376c33dcf82a90172ebb7d45dbd0a2249c92e14042",
+    "mismatches": [],
+    "note": "The evaluator script hash differs because the continuation-groups extension was added; generation, parser, budget, verifier and prompt fields are checked to be identical to the v2 run.",
+    "passed": true,
+    "v2_manifest": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023_v2/run_manifest.json"
+  },
+  "schema": "r2-continuation-analysis-v1",
+  "secondary_comparisons": [
+    [
+      "r2",
+      "sft"
+    ],
+    [
+      "r2_75",
+      "sft"
+    ],
+    [
+      "r2_100",
+      "sft"
+    ]
+  ]
+}

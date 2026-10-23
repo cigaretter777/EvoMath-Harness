@@ -1,0 +1,32 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+===== group sft =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[sft] tasks=200 completed=13 invalid_attempts=2 pending=187
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[sft] model warmup complete
+[sft] 14/200 math:11bc072a487e9b06ac33 correct=False reason=final turns=2 tool_calls=1 tool_s=0.443
+[sft] 15/200 math:1233cb1c0c2cefb81d5e correct=True reason=final turns=2 tool_calls=1 tool_s=0.262
+[sft] 16/200 math:128198d96778b018a1e4 correct=False reason=final turns=2 tool_calls=1 tool_s=0.248
+[sft] 17/200 math:12eb84e190147f7f3500 correct=False reason=final turns=2 tool_calls=1 tool_s=0.289
+[sft] 18/200 math:14f9a9b34ad8a3afa5c9 correct=True reason=final turns=2 tool_calls=1 tool_s=0.263
+[sft] 19/200 math:158e5fbe7d7016ea4611 correct=False reason=final turns=2 tool_calls=1 tool_s=0.273
+[sft] 20/200 math:1705a13faf3788290d60 correct=True reason=final turns=2 tool_calls=1 tool_s=0.246
+[sft] 21/200 math:18e428a0bda6dcbccdb1 correct=False reason=final turns=2 tool_calls=1 tool_s=0.265
+[sft] 22/200 math:19876b83a667204918e3 correct=False reason=final turns=2 tool_calls=1 tool_s=0.265
+[sft] 23/200 math:1a139d6ee6b7e32b189a correct=False reason=final turns=2 tool_calls=1 tool_s=0.247
+[sft] 24/200 math:1af1d61fb5d234cc6629 correct=False reason=final turns=2 tool_calls=1 tool_s=0.339
+[sft] 25/200 math:1d11f9ffbe4eb325bc2a correct=True reason=final turns=2 tool_calls=1 tool_s=0.264
+[sft] 26/200 math:1e7f3ea4492bf3ee3761 correct=True reason=final turns=2 tool_calls=1 tool_s=0.261
+[sft] 27/200 math:1ed268896b08b281a49e correct=True reason=final turns=2 tool_calls=1 tool_s=0.323
+[sft] 28/200 math:1fda6b5ec398542b3221 correct=True reason=final turns=2 tool_calls=1 tool_s=0.251
+[sft] 29/200 math:20010d90cf74ad97c9af correct=False reason=final turns=2 tool_calls=1 tool_s=0.359
+[sft] 30/200 math:210778075950cc2d4766 correct=True reason=final turns=2 tool_calls=1 tool_s=0.291
+[sft] 31/200 math:21b3b8ef71eab29aa07e correct=True reason=final turns=2 tool_calls=1 tool_s=0.263
+[sft] 32/200 math:23b2a16a6c1bb80a2a60 correct=True reason=final turns=2 tool_calls=1 tool_s=0.247
+[sft] 33/200 math:2495b88033e28bbfff26 correct=True reason=final turns=2 tool_calls=1 tool_s=0.280
+[sft] 34/200 math:25d8948985b9e8b8bbc6 correct=False reason=final turns=2 tool_calls=1 tool_s=0.243
+[sft] 35/200 math:26fd91ac7be838ec3f8c correct=True reason=final turns=2 tool_calls=1 tool_s=0.240
+[sft] 36/200 math:2892076449fc22ef1afd correct=False reason=final turns=2 tool_calls=0 tool_s=0.000
+{"group": "sft", "message": "invalid trajectory retained; evaluation paused for review", "model_error": null, "paused": true, "paused_at_utc": "2026-10-23T17:32:24Z", "sandbox_unavailable_calls": 1, "task_id": "math:2892076449fc22ef1afd", "verifier_status": "incorrect"}

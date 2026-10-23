@@ -1,0 +1,9 @@
+{
+  "group": "r2_100",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-23T18:33:16Z",
+  "sandbox_unavailable_calls": 1,
+  "task_id": "math:a0be6631f332b996b014",
+  "verifier_status": "correct"
+}

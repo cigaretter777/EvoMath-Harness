@@ -1,0 +1,99 @@
+{
+  "adapter": {
+    "archived_at_utc": "2026-10-23T15:29:53.671847+00:00",
+    "files": {
+      "adapter_config.json": {
+        "bytes": 1397,
+        "sha256": "78a0565411b2ac7cf1acea0d1862fe4e0271f055c455c64998413d4e1a9871af"
+      },
+      "adapter_model.safetensors": {
+        "bytes": 69782352,
+        "sha256": "c68b05940044f4060f6643fc9865962a9a96b629305a9fd5aa070c053c122ac5"
+      },
+      "archive_manifest.json": {
+        "bytes": 602,
+        "sha256": "6d7233bc402bee3585fb966568d0668def7868c2640c097caa934c8083adca8a"
+      }
+    },
+    "global_step": 75,
+    "manifest_hashes_match": true,
+    "manifest_recorded_hashes": {
+      "adapter_config.json": "78a0565411b2ac7cf1acea0d1862fe4e0271f055c455c64998413d4e1a9871af",
+      "adapter_model.safetensors": "c68b05940044f4060f6643fc9865962a9a96b629305a9fd5aa070c053c122ac5"
+    },
+    "path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/adapters/step_75",
+    "source": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/checkpoints/global_step_75/actor/lora_adapter"
+  },
+  "disk": {
+    "free": 2703831040,
+    "total": 171798691840,
+    "used": 169094860800
+  },
+  "full_checkpoint": {
+    "files": {
+      "actor/added_tokens.json": {
+        "bytes": 707
+      },
+      "actor/chat_template.jinja": {
+        "bytes": 4168
+      },
+      "actor/config.json": {
+        "bytes": 1359
+      },
+      "actor/extra_state_world_size_1_rank_0.pt": {
+        "bytes": 15077
+      },
+      "actor/generation_config.json": {
+        "bytes": 214
+      },
+      "actor/lora_adapter/adapter_config.json": {
+        "bytes": 1397
+      },
+      "actor/lora_adapter/adapter_model.safetensors": {
+        "bytes": 69782352
+      },
+      "actor/merges.txt": {
+        "bytes": 1671853
+      },
+      "actor/model_world_size_1_rank_0.pt": {
+        "bytes": 8197332351
+      },
+      "actor/optim_world_size_1_rank_0.pt": {
+        "bytes": 139806363
+      },
+      "actor/special_tokens_map.json": {
+        "bytes": 613
+      },
+      "actor/tokenizer.json": {
+        "bytes": 11422654
+      },
+      "actor/tokenizer_config.json": {
+        "bytes": 5404
+      },
+      "actor/vocab.json": {
+        "bytes": 2776833
+      },
+      "data.pt": {
+        "bytes": 1947
+      }
+    },
+    "latest_checkpointed_iteration": 75,
+    "note": "full step_75 will be rotated away before step_100 is written; only adapters/step_75 is retained",
+    "path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/checkpoints/global_step_75"
+  },
+  "full_checkpoint_backup": {
+    "adapter_sha256": "c68b05940044f4060f6643fc9865962a9a96b629305a9fd5aa070c053c122ac5",
+    "bytes_total": 8422823292,
+    "copied_at_utc": "2026-10-23T15:32:15Z",
+    "data_pt_sha256": "a4d8a4cb5948ca18e9ba0ee1cb37be6b17ddc731983848adaab4a70771bb9f8a",
+    "filesystem": "/ (overlay), 30G total",
+    "model_sha256": "f6a6c4fe87d731ffaf7589b57fc8a8c23c1983d4bbdc5fdc306624ec14cd5b36",
+    "note": "not part of the original experiment tree; can be removed only with explicit user authorization",
+    "optim_sha256": "709fd255bf72c10db282942d434a49bc0688132c0b3c6ab105f56e01ed0aa4fc",
+    "path": "/root/r2_continue100_step75_full/global_step_75",
+    "reason": "preserve the full step-75 training state because the trainer rotates it away before writing step-100; this is a byte-identical copy made while the original still existed",
+    "verified_byte_identical": true
+  },
+  "training_process_pid": 5242,
+  "verified_at_utc": "2026-10-23T15:30:39Z"
+}

@@ -1,0 +1,15 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+===== group sft =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[sft] tasks=200 completed=8 invalid_attempts=1 pending=192
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[sft] model warmup complete
+[sft] 9/200 math:0940ea16d9b72903d6f4 correct=False reason=final turns=2 tool_calls=1 tool_s=0.317
+[sft] 10/200 math:0a13d264c1acb744bd73 correct=True reason=final turns=2 tool_calls=1 tool_s=0.090
+[sft] 11/200 math:0b8fd4e0903ebb859176 correct=True reason=final turns=2 tool_calls=1 tool_s=0.333
+[sft] 12/200 math:0cc53d4225a1afcfb6d3 correct=True reason=final turns=2 tool_calls=1 tool_s=0.246
+[sft] 13/200 math:118be303d7abffbef5a7 correct=True reason=final turns=2 tool_calls=1 tool_s=0.257
+[sft] 14/200 math:11bc072a487e9b06ac33 correct=False reason=final turns=2 tool_calls=0 tool_s=0.000
+{"group": "sft", "message": "invalid trajectory retained; evaluation paused for review", "model_error": null, "paused": true, "paused_at_utc": "2026-10-23T17:28:24Z", "sandbox_unavailable_calls": 1, "task_id": "math:11bc072a487e9b06ac33", "verifier_status": "incorrect"}

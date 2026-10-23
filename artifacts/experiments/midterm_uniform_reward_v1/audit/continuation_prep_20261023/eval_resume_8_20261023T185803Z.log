@@ -1,0 +1,34 @@
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+===== group sft =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[sft] tasks=200 completed=200 invalid_attempts=3 pending=0
+===== group r2 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+/root/autodl-tmp/conda-envs/adaptive-math/lib/python3.12/site-packages/peft/config.py:280: UserWarning: The configuration file contains a `runtime_config` key. This is ignored. Runtime configurations are only valid at runtime.
+  warnings.warn(
+[r2] tasks=200 completed=200 invalid_attempts=1 pending=0
+===== group r2_100 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[r2_100] tasks=200 completed=200 invalid_attempts=2 pending=0
+===== group r2_75 =====
+The tokenizer you are loading from '/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[r2_75] tasks=200 completed=89 invalid_attempts=3 pending=111
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[r2_75] model warmup complete
+[r2_75] 90/200 math:67461ad0ff482075529f correct=False reason=final turns=2 tool_calls=1 tool_s=0.312
+[r2_75] 91/200 math:68e5d8888a402542dd68 correct=True reason=final turns=2 tool_calls=1 tool_s=0.095
+[r2_75] 92/200 math:6a74ae5ea0d86a1ce024 correct=True reason=final turns=2 tool_calls=1 tool_s=0.318
+[r2_75] 93/200 math:6d964231cd2a36b01c4e correct=True reason=final turns=2 tool_calls=1 tool_s=0.347
+[r2_75] 94/200 math:6de33b198e49bea6f9a1 correct=False reason=final turns=2 tool_calls=1 tool_s=0.095
+[r2_75] 95/200 math:7013f4237e967e4d4b95 correct=True reason=final turns=2 tool_calls=1 tool_s=0.335
+[r2_75] 96/200 math:71114bc7b0975c1b259a correct=True reason=final turns=2 tool_calls=1 tool_s=0.350
+[r2_75] 97/200 math:712c4c0d27b0b06952e9 correct=False reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 98/200 math:71ea797c571bcd83965f correct=False reason=final turns=2 tool_calls=1 tool_s=0.339
+[r2_75] 99/200 math:7262bfd17453263d381f correct=True reason=final turns=2 tool_calls=1 tool_s=0.244
+[r2_75] 100/200 math:72e6e2b9367d775c1a8e correct=True reason=final turns=2 tool_calls=1 tool_s=0.269
+[r2_75] 101/200 math:73440cb70194642f945e correct=True reason=final turns=2 tool_calls=1 tool_s=0.245
+[r2_75] 102/200 math:73f279c3087035a428dd correct=True reason=final turns=2 tool_calls=1 tool_s=0.248
+[r2_75] 103/200 math:75d9e04ce7aad4c2979b correct=False reason=final turns=2 tool_calls=0 tool_s=0.000
+{"group": "r2_75", "message": "invalid trajectory retained; evaluation paused for review", "model_error": null, "paused": true, "paused_at_utc": "2026-10-23T18:59:58Z", "sandbox_unavailable_calls": 1, "task_id": "math:75d9e04ce7aad4c2979b", "verifier_status": "incorrect"}

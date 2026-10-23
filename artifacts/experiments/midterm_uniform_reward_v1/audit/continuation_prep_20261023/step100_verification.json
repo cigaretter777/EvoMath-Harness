@@ -1,0 +1,81 @@
+{
+  "disk": {
+    "free": 2610995200,
+    "total": 171798691840,
+    "used": 169187696640
+  },
+  "eval_preflight": {
+    "adapters_checked": {
+      "r2": 50,
+      "r2_100": 100,
+      "r2_75": 75
+    },
+    "evaluator_sha256_continuation": "359e0d0204a812f98e27010f6de6926a65520425664e954c2b5c2a854d850e59",
+    "evaluator_sha256_v2": "8bcc6378c3aaf28e6dc289376c33dcf82a90172ebb7d45dbd0a2249c92e14042",
+    "gpu_idle": true,
+    "note": "evaluator hash differs only because continuation group selection was added; all frozen protocol keys match",
+    "protocol_mismatches_vs_v2": [],
+    "sandbox": "pong+42"
+  },
+  "original_r2_step_50_untouched": {
+    "adapter_sha256": "12744a0aede8feeb102913dea143a6d760ce4adbfd8de744a7eadb482a7e01e3",
+    "latest_checkpointed_iteration": 50
+  },
+  "step_100_adapter": {
+    "archived_at_utc": "2026-10-23T17:22:41.045357+00:00",
+    "global_step": 100,
+    "manifest_sha256": "c502c4ffbe3571375b6340158dfd0eeaf750a6eaf8c9dec2c64cff30b50e9ebe",
+    "matches": true,
+    "path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/adapters/step_100",
+    "sha256": "c502c4ffbe3571375b6340158dfd0eeaf750a6eaf8c9dec2c64cff30b50e9ebe"
+  },
+  "step_100_full_checkpoint": {
+    "files": {
+      "actor/extra_state_world_size_1_rank_0.pt": {
+        "bytes": 15077,
+        "sha256": "24031ee487057f76fe9052df10df23d275b5d2ea7ff7ae29cf87586f401b3cb7"
+      },
+      "actor/lora_adapter/adapter_config.json": {
+        "bytes": 1397,
+        "sha256": "78a0565411b2ac7cf1acea0d1862fe4e0271f055c455c64998413d4e1a9871af"
+      },
+      "actor/lora_adapter/adapter_model.safetensors": {
+        "bytes": 69782352,
+        "sha256": "c502c4ffbe3571375b6340158dfd0eeaf750a6eaf8c9dec2c64cff30b50e9ebe"
+      },
+      "actor/model_world_size_1_rank_0.pt": {
+        "bytes": 8197332351,
+        "sha256": "e1b2412a71a07dd950746344e0ada9250db362d376a740b84de4ef758c923b3e"
+      },
+      "actor/optim_world_size_1_rank_0.pt": {
+        "bytes": 139806363,
+        "sha256": "e8fc18cb4eaeca677e9fe999fb7e5da2b276e96ce8e43a69aac50177e491f54b"
+      },
+      "data.pt": {
+        "bytes": 1947,
+        "sha256": "aba62d7b5952067be2aed0994bbdc245a0e7e556aa24b9d19e16ab2c4298f010"
+      }
+    },
+    "path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/checkpoints/global_step_100"
+  },
+  "step_75": {
+    "adapter_global_step": 75,
+    "adapter_path": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/adapters/step_75",
+    "adapter_sha256": "c68b05940044f4060f6643fc9865962a9a96b629305a9fd5aa070c053c122ac5",
+    "backup_model_sha256": "f6a6c4fe87d731ffaf7589b57fc8a8c23c1983d4bbdc5fdc306624ec14cd5b36",
+    "backup_verified_byte_identical": true,
+    "full_checkpoint_backup_path": "/root/r2_continue100_step75_full/global_step_75",
+    "full_checkpoint_retained_in_tree": [
+      "data.pt"
+    ],
+    "note": "the trainer rotation removed the full step-75 actor state at step 100; only data.pt remains in the original directory. The byte-identical backup was made before rotation and the LoRA adapter was archived separately."
+  },
+  "training": {
+    "exit": "clean",
+    "final_step": 100,
+    "latest_checkpointed_iteration": 100,
+    "log_errors_matching_traceback_oom_nospace_runtimeerror": 0,
+    "note": "process exited after the step-100 save; no final validation was configured"
+  },
+  "verified_at_utc": "2026-10-23T17:26:16Z"
+}

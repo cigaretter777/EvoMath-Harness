@@ -1,0 +1,379 @@
+adaptive_math:
+  budget_path: configs/agent/unified_tool_budget_v1.yaml
+  output_dir: artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100
+  reward_path: configs/reward/r2_unified.yaml
+  schema_version: adaptive-math-grpo-v1
+  task_pool_path: artifacts/task_pools/math_midterm_v1_rl_train.jsonl
+  task_pool_sha256: 635f9571b056f395fd574b9fd1e4d6e1eb4b28efbf3d38f38c410aed19396d46
+  upstream_config_name: hgpo_trainer
+  upstream_overrides:
+  - actor_rollout_ref.model.path=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged
+  - actor_rollout_ref.model.enable_gradient_checkpointing=True
+  - actor_rollout_ref.model.lora_rank=16
+  - actor_rollout_ref.model.lora_alpha=32
+  - actor_rollout_ref.rollout.n=1
+  - actor_rollout_ref.rollout.tensor_model_parallel_size=1
+  - actor_rollout_ref.rollout.temperature=1.0
+  - actor_rollout_ref.rollout.top_p=0.95
+  - actor_rollout_ref.rollout.top_k=20
+  - +actor_rollout_ref.rollout.engine_kwargs.vllm.enable_prefix_caching=False
+  - actor_rollout_ref.actor.ppo_mini_batch_size=8
+  - actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1
+  - actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1
+  - actor_rollout_ref.actor.use_invalid_action_penalty=False
+  - env.rollout.n=4
+  - env.max_steps=6
+  - data.train_files=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+  - data.val_files=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+  - data.train_batch_size=8
+  - data.val_batch_size=8
+  - data.return_raw_chat=true
+  - data.max_prompt_length=4096
+  - data.max_response_length=2048
+  - data.shuffle=false
+  - +data.seed=20261022
+  - trainer.total_training_steps=100
+  - trainer.n_gpus_per_node=1
+  - trainer.nnodes=1
+  - ray_init.num_cpus=8
+  - trainer.ray_wait_register_center_timeout=120
+  - trainer.logger=["console"]
+  - trainer.project_name=adaptive_math_grpo
+  - trainer.experiment_name=midterm_unified_r2_continue100
+  - trainer.default_local_dir=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/checkpoints
+  - trainer.rollout_data_dir=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/rollout_dump
+  - trainer.save_freq=25
+  - trainer.max_actor_ckpt_to_keep=1
+  - trainer.test_freq=-1
+  - trainer.val_before_train=false
+  - trainer.resume_mode=resume_path
+  - trainer.resume_from_path=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2/checkpoints/global_step_50
+  - algorithm.adv_estimator=grpo
+  - algorithm.use_kl_in_reward=false
+  - actor_rollout_ref.actor.use_kl_loss=false
+upstream:
+  actor_rollout_ref:
+    actor:
+      checkpoint:
+        contents:
+        - model
+        - optimizer
+        - extra
+      clip_ratio: 0.2
+      clip_ratio_c: 3.0
+      clip_ratio_high: 0.2
+      clip_ratio_low: 0.2
+      entropy_coeff: 0.001
+      fsdp_config:
+        fsdp_size: -1
+        offload_policy: false
+        optimizer_offload: false
+        param_offload: false
+        reshard_after_forward: true
+        wrap_policy:
+          min_num_params: 0
+      grad_clip: 1.0
+      invalid_action_penalty_coef: 0.1
+      kl_loss_coef: 0.001
+      kl_loss_type: low_var_kl
+      loss_agg_mode: token-mean
+      optim:
+        lr: 1.0e-06
+        lr_warmup_steps: -1
+        lr_warmup_steps_ratio: 0.0
+        min_lr_ratio: 0.0
+        num_cycles: 0.5
+        total_training_steps: -1
+        warmup_style: constant
+        weight_decay: 0.01
+      policy_loss:
+        loss_mode: vanilla
+      ppo_epochs: 1
+      ppo_max_token_len_per_gpu: 16384
+      ppo_micro_batch_size: null
+      ppo_micro_batch_size_per_gpu: 1
+      ppo_mini_batch_size: 8
+      shuffle: false
+      strategy: fsdp
+      ulysses_sequence_parallel_size: 1
+      use_dynamic_bsz: false
+      use_invalid_action_penalty: false
+      use_kl_loss: false
+      use_torch_compile: true
+    hybrid_engine: true
+    model:
+      enable_activation_offload: false
+      enable_gradient_checkpointing: true
+      external_lib: null
+      lora_alpha: 32
+      lora_rank: 16
+      override_config: {}
+      path: /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged
+      target_modules: all-linear
+      trust_remote_code: false
+      use_fused_kernels: false
+      use_liger: false
+      use_remove_padding: false
+      use_shm: false
+    ref:
+      fsdp_config:
+        param_offload: false
+        reshard_after_forward: true
+        wrap_policy:
+          min_num_params: 0
+      log_prob_max_token_len_per_gpu: 16384
+      log_prob_micro_batch_size: null
+      log_prob_micro_batch_size_per_gpu: null
+      log_prob_use_dynamic_bsz: false
+      strategy: fsdp
+      ulysses_sequence_parallel_size: 1
+      use_torch_compile: true
+    rollout:
+      chat_scheduler: null
+      disable_log_stats: true
+      do_sample: true
+      dtype: bfloat16
+      enable_chunked_prefill: true
+      enforce_eager: true
+      engine_kwargs:
+        sglang:
+          attention_backend: null
+        vllm:
+          enable_prefix_caching: false
+          swap_space: null
+      free_cache_engine: true
+      gpu_memory_utilization: 0.5
+      ignore_eos: false
+      layered_summon: false
+      load_format: dummy_dtensor
+      log_prob_max_token_len_per_gpu: 16384
+      log_prob_micro_batch_size: null
+      log_prob_micro_batch_size_per_gpu: 1
+      log_prob_use_dynamic_bsz: false
+      max_model_len: null
+      max_num_batched_tokens: 8192
+      max_num_seqs: 1024
+      mode: sync
+      multi_turn:
+        enable: false
+        format: chatml
+        max_turns: null
+        tool_config_path: null
+      n: 1
+      name: vllm
+      prompt_length: 4096
+      response_length: 2048
+      temperature: 1.0
+      tensor_model_parallel_size: 1
+      top_k: 20
+      top_p: 0.95
+      use_fire_sampling: false
+      val_kwargs:
+        do_sample: false
+        n: 1
+        temperature: 0
+        top_k: -1
+        top_p: 1.0
+  algorithm:
+    adv_estimator: grpo
+    filter_groups:
+      enable: false
+      max_num_gen_batches: 0
+      metric: null
+    gamma: 1.0
+    gigpo:
+      enable_similarity: false
+      mode: mean_norm
+      similarity_thresh: 0.95
+      step_advantage_w: 1.0
+    hgpo:
+      base_group: false
+      length_weight_alpha: 1.0
+      mode: mean_std_norm
+      weight_type: length
+    kl_ctrl:
+      horizon: 10000
+      kl_coef: 0.001
+      target_kl: 0.1
+      type: fixed
+    kl_penalty: kl
+    lam: 1.0
+    norm_adv_by_std_in_grpo: true
+    pf_ppo:
+      reweight_method: pow
+      weight_pow: 2.0
+    use_kl_in_reward: false
+    use_pf_ppo: false
+  critic:
+    checkpoint:
+      contents:
+      - model
+      - optimizer
+      - extra
+    cliprange_value: 0.5
+    forward_max_token_len_per_gpu: 32768
+    forward_micro_batch_size: null
+    forward_micro_batch_size_per_gpu: null
+    grad_clip: 1.0
+    loss_agg_mode: token-mean
+    model:
+      enable_activation_offload: false
+      enable_gradient_checkpointing: true
+      external_lib: null
+      fsdp_config:
+        fsdp_size: -1
+        offload_policy: false
+        optimizer_offload: false
+        param_offload: false
+        reshard_after_forward: true
+        wrap_policy:
+          min_num_params: 0
+      lora_alpha: 16
+      lora_rank: 0
+      override_config: {}
+      path: ~/models/deepseek-llm-7b-chat
+      target_modules: all-linear
+      tokenizer_path: /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged
+      trust_remote_code: false
+      use_remove_padding: false
+      use_shm: false
+    optim:
+      lr: 1.0e-05
+      lr_warmup_steps_ratio: 0.0
+      min_lr_ratio: null
+      total_training_steps: -1
+      warmup_style: constant
+      weight_decay: 0.01
+    ppo_epochs: 1
+    ppo_max_token_len_per_gpu: 32768
+    ppo_micro_batch_size: null
+    ppo_micro_batch_size_per_gpu: null
+    ppo_mini_batch_size: 8
+    rollout_n: 1
+    shuffle: false
+    strategy: fsdp
+    ulysses_sequence_parallel_size: 1
+    use_dynamic_bsz: false
+  custom_reward_function:
+    name: compute_score
+    path: null
+  data:
+    apply_chat_template_kwargs: {}
+    custom_cls:
+      name: null
+      path: null
+    filter_overlong_prompts: false
+    filter_overlong_prompts_workers: 1
+    gen_batch_size: 8
+    image_key: images
+    max_prompt_length: 4096
+    max_response_length: 2048
+    prompt_key: prompt
+    return_full_prompt: false
+    return_raw_chat: true
+    return_raw_input_ids: false
+    reward_fn_key: data_source
+    seed: 20261022
+    shuffle: false
+    tokenizer: null
+    train_batch_size: 8
+    train_files: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+    truncation: error
+    trust_remote_code: false
+    use_shm: false
+    val_batch_size: 8
+    val_files: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+    video_key: videos
+  env:
+    alfworld:
+      eval_dataset: eval_in_distribution
+    budget_path: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/configs/agent/unified_tool_budget_v1.yaml
+    env_name: adaptive_math
+    history_length: 2
+    max_steps: 6
+    resources_per_worker:
+      num_cpus: 0.1
+      num_gpus: 0
+    reward_path: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/configs/reward/r2_unified.yaml
+    rollout:
+      n: 4
+    search:
+      log_requests: false
+      search_url: http://127.0.0.1:8000/retrieve
+      timeout: 60
+      topk: 3
+    seed: 0
+    sokoban:
+      dim_room:
+      - 6
+      - 6
+      mode: tiny_rgb_array
+      num_boxes: 1
+      search_depth: 30
+    task_pool_path: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_train.jsonl
+    webshop:
+      human_goals: false
+      use_small: true
+  ray_init:
+    num_cpus: 8
+  reward_model:
+    enable: false
+    forward_max_token_len_per_gpu: 32768
+    launch_reward_fn_async: false
+    max_length: null
+    micro_batch_size: null
+    micro_batch_size_per_gpu: null
+    model:
+      external_lib: null
+      fsdp_config:
+        fsdp_size: -1
+        param_offload: false
+        reshard_after_forward: true
+        wrap_policy:
+          min_num_params: 0
+      input_tokenizer: /root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged
+      path: ~/models/FsfairX-LLaMA3-RM-v0.1
+      trust_remote_code: false
+      use_fused_kernels: false
+      use_remove_padding: false
+      use_shm: false
+    overlong_buffer:
+      enable: false
+      len: 0
+      log: false
+      penalty_factor: 0.0
+    reward_manager: episode
+    sandbox_fusion:
+      max_concurrent: 64
+      url: null
+    strategy: fsdp
+    ulysses_sequence_parallel_size: 1
+    use_dynamic_bsz: false
+  trainer:
+    balance_batch: true
+    critic_warmup: 0
+    default_hdfs_dir: null
+    default_local_dir: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/checkpoints
+    del_local_ckpt_after_load: false
+    device: cuda
+    experiment_name: midterm_unified_r2_continue100
+    log_val_generations: 0
+    logger:
+    - console
+    max_actor_ckpt_to_keep: 1
+    max_critic_ckpt_to_keep: null
+    n_gpus_per_node: 1
+    nnodes: 1
+    project_name: adaptive_math_grpo
+    ray_wait_register_center_timeout: 120
+    resume_from_path: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2/checkpoints/global_step_50
+    resume_mode: resume_path
+    rollout_data_dir: /root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2_continue100/rollout_dump
+    save_freq: 25
+    test_freq: -1
+    total_epochs: 30
+    total_training_steps: 100
+    val_before_train: false
+    val_only: false
+    val_out: false
+    validation_data_dir: null
