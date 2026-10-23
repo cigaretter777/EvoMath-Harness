@@ -1,0 +1,7 @@
+{
+  "adapter_archive_patch_changed": true,
+  "archive_root": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r2/adapters",
+  "pid": 113360,
+  "structured_chat_patch_changed": true,
+  "trajectory_level_advantage_patch_changed": true
+}

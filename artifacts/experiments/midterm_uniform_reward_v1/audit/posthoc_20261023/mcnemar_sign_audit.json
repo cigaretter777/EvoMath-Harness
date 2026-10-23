@@ -1,0 +1,41 @@
+{
+  "comparisons": [
+    {
+      "comparison": "r0-sft",
+      "treated": "r0",
+      "baseline": "sft",
+      "n_pairs": 200,
+      "b01_baseline_wrong_treated_correct": 2,
+      "b10_baseline_correct_treated_wrong": 8,
+      "delta_correct_rate": -0.03,
+      "odds_ratio_improved_over_regressed": 0.25,
+      "mcnemar_exact_two_sided_p": 0.109375,
+      "holm_adjusted_p": 0.328125
+    },
+    {
+      "comparison": "r1-r0",
+      "treated": "r1",
+      "baseline": "r0",
+      "n_pairs": 200,
+      "b01_baseline_wrong_treated_correct": 4,
+      "b10_baseline_correct_treated_wrong": 7,
+      "delta_correct_rate": -0.015,
+      "odds_ratio_improved_over_regressed": 0.5714285714285714,
+      "mcnemar_exact_two_sided_p": 0.548828125,
+      "holm_adjusted_p": 0.548828125
+    },
+    {
+      "comparison": "r2-r1",
+      "treated": "r2",
+      "baseline": "r1",
+      "n_pairs": 200,
+      "b01_baseline_wrong_treated_correct": 8,
+      "b10_baseline_correct_treated_wrong": 3,
+      "delta_correct_rate": 0.025,
+      "odds_ratio_improved_over_regressed": 2.6666666666666665,
+      "mcnemar_exact_two_sided_p": 0.2265625,
+      "holm_adjusted_p": 0.453125
+    }
+  ],
+  "note": "The table and p-values in report appendix D and section 6.2's reading bullets use b01=baseline wrong/treated correct and b10=baseline correct/treated wrong. Section 2.8 and the formula line at the top of section 6.2 invert these labels; the numbers themselves are correct."
+}

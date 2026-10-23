@@ -1,0 +1,26 @@
+{
+ "method": "Rebuild per-group GRPO advantages from rollout_dump scores using statistics.stdev (G-1) and statistics.pstdev (G); compare batch max/min with train.log values rounded to 3 decimals.",
+ "groups": {
+  "r0": {
+   "updates_checked": 50,
+   "g_minus_1_exact_after_log_rounding_3dp": 50,
+   "g_exact_after_log_rounding_3dp": 0,
+   "max_abs_error_g_minus_1": 2.3903787036760882e-05,
+   "max_abs_error_g": 0.23204680757811502
+  },
+  "r1": {
+   "updates_checked": 50,
+   "g_minus_1_exact_after_log_rounding_3dp": 50,
+   "g_exact_after_log_rounding_3dp": 0,
+   "max_abs_error_g_minus_1": 0.0004562594933495978,
+   "max_abs_error_g": 0.23204680757811502
+  },
+  "r2": {
+   "updates_checked": 50,
+   "g_minus_1_exact_after_log_rounding_3dp": 50,
+   "g_exact_after_log_rounding_3dp": 0,
+   "max_abs_error_g_minus_1": 0.0004603655164440168,
+   "max_abs_error_g": 0.23204704001253895
+  }
+ }
+}

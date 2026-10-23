@@ -1,0 +1,5 @@
+group,label,task_count,correct_count,correct_rate,action_attempts,invalid_actions,invalid_action_rate,invalid_action_denominator_zero,tool_calls,tool_calls_per_task,tool_seconds,tool_seconds_per_task,length_truncation_count,length_truncation_rate
+sft,SFT,200,112,0.56,401,4,0.00997506234413965,False,198,0.99,88.867023,0.4443351125717163,2,0.01
+r0,GRPO+R0,200,106,0.53,451,56,0.12416851441241686,False,198,0.99,91.746026,0.4587301278114319,11,0.055
+r1,GRPO+R1,200,103,0.515,405,9,0.022222222222222223,False,198,0.99,183.541829,0.9177091467094423,2,0.01
+r2,GRPO+R2,200,108,0.54,400,1,0.0025,False,199,0.995,91.387882,0.4569394087791443,0,0.0

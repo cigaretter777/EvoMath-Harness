@@ -1,0 +1,29 @@
+harness_version: h-unified-v1
+prompt_version: agent-v2
+runtime_version: runtime-v1
+tools:
+  - python
+  - sympy
+budget:
+  max_steps: 6
+  max_tool_calls: 4
+  max_python_seconds: 0.0
+  max_observation_chars: 8000
+  max_tool_seconds: 60.0
+  max_tool_call_seconds: 30.0
+generation:
+  max_new_tokens: 2048
+  temperature: 0.0
+  seed: null
+reward:
+  version: r2-v2-unified-tool-time
+  variant: r2
+  tool_weight: 0.15
+  python_weight: 0.0
+  time_weight: 0.10
+  invalid_weight: 0.10
+  invalid_cap: 3
+  token_weight: 0.0
+  tool_success_bonus: 0.0
+  clip_min: -1.0
+  clip_max: 1.0

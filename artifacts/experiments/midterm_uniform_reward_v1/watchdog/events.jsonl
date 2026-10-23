@@ -1,0 +1,34 @@
+{"chain_id": "20261022T132337Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T13:23:37Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 2, "ts": "2026-10-22T13:23:42Z"}
+{"event": "gpu_verified", "temp_c": 35, "total_mib": 24564, "ts": "2026-10-22T13:23:42Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T13:23:42Z"}
+{"chain_id": "20261022T132413Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T13:24:13Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 2, "ts": "2026-10-22T13:24:17Z"}
+{"event": "gpu_verified", "temp_c": 35, "total_mib": 24564, "ts": "2026-10-22T13:24:17Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T13:24:17Z"}
+{"chain_id": "20261022T132423Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T13:24:23Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 2, "ts": "2026-10-22T13:24:27Z"}
+{"event": "gpu_verified", "temp_c": 35, "total_mib": 24564, "ts": "2026-10-22T13:24:27Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T13:24:27Z"}
+{"attempt": 1, "detail": "pong+42", "event": "sandbox_ready", "ts": "2026-10-22T13:24:27Z"}
+{"event": "group_launch", "group": "r1", "index": 1, "of": 2, "ts": "2026-10-22T13:24:27Z"}
+{"event": "gpu_idle_before_group", "gpu": {"temp_c": 35, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r1", "ts": "2026-10-22T13:24:28Z"}
+{"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r1.yaml", "--manifest", "third_party/manifest.json"], "event": "group_start", "group": "r1", "pid": 96122, "ts": "2026-10-22T13:24:28Z"}
+{"disk": {"checkpoints": ["global_step_10"], "free": 21039517696, "free_gib": 19.595, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r1", "problems": [], "seconds": 12.021, "step": 10, "ts": "2026-10-22T13:58:51Z"}
+{"disk": {"checkpoints": ["global_step_20"], "free": 20959559680, "free_gib": 19.52, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r1", "problems": [], "seconds": 19.556, "step": 20, "ts": "2026-10-22T14:37:39Z"}
+{"disk": {"checkpoints": ["global_step_30"], "free": 20879884288, "free_gib": 19.446, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r1", "problems": [], "seconds": 12.131, "step": 30, "ts": "2026-10-22T15:22:26Z"}
+{"event": "rotation_window_open", "group": "r1", "step": 39, "ts": "2026-10-22T15:55:19Z"}
+{"checkpoints": ["global_step_40"], "event": "rotation_window_closed", "group": "r1", "step": 39, "ts": "2026-10-22T15:55:29Z"}
+{"disk": {"checkpoints": ["global_step_40"], "free": 20800995328, "free_gib": 19.372, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r1", "problems": [], "seconds": 13.201, "step": 40, "ts": "2026-10-22T15:55:39Z"}
+{"disk": {"checkpoints": ["global_step_50"], "free": 20726284288, "free_gib": 19.303, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r1", "problems": [], "seconds": 12.7, "step": 50, "ts": "2026-10-22T16:32:56Z"}
+{"adapter": 69784339, "checkpoint": 8422823292, "event": "group_complete", "group": "r1", "ts": "2026-10-22T16:33:08Z"}
+{"event": "group_launch", "group": "r2", "index": 2, "of": 2, "ts": "2026-10-22T16:33:08Z"}
+{"event": "gpu_idle_before_group", "gpu": {"temp_c": 39, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r2", "ts": "2026-10-22T16:33:09Z"}
+{"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r2.yaml", "--manifest", "third_party/manifest.json"], "event": "group_start", "group": "r2", "pid": 111894, "ts": "2026-10-22T16:33:09Z"}
+{"disk": {"checkpoints": ["global_step_10"], "free": 12224397312, "free_gib": 11.385, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r2", "problems": [], "seconds": 12.69, "step": 10, "ts": "2026-10-22T17:05:39Z"}
+{"disk": {"checkpoints": ["global_step_20"], "free": 12143456256, "free_gib": 11.309, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r2", "problems": [], "seconds": 15.348, "step": 20, "ts": "2026-10-22T17:45:22Z"}
+{"disk": {"checkpoints": ["global_step_30"], "free": 12063883264, "free_gib": 11.235, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r2", "problems": [], "seconds": 15.628, "step": 30, "ts": "2026-10-22T18:18:11Z"}
+{"disk": {"checkpoints": ["global_step_40"], "free": 11979722752, "free_gib": 11.157, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r2", "problems": [], "seconds": 11.987, "step": 40, "ts": "2026-10-22T19:01:35Z"}
+{"disk": {"checkpoints": ["global_step_50"], "free": 11911782400, "free_gib": 11.094, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r2", "problems": [], "seconds": 13.448, "step": 50, "ts": "2026-10-22T19:34:54Z"}
+{"adapter": 69784339, "checkpoint": 8422823292, "event": "group_complete", "group": "r2", "ts": "2026-10-22T19:34:56Z"}
+{"event": "chain_complete", "groups": ["r1", "r2"], "ts": "2026-10-22T19:34:56Z"}

@@ -1,0 +1,12 @@
+[2026-10-22T04:43:25Z] preflight_start {"chain_id": "20261022T044325Z", "sandbox_url": "http://localhost:8080"}
+[2026-10-22T04:43:29Z] frozen_inputs_verified {"configs": 8, "groups": 3}
+[2026-10-22T04:43:29Z] gpu_verified {"temp_c": 35, "total_mib": 24564, "used_mib": 1, "util_pct": 0}
+[2026-10-22T04:43:29Z] disk_preflight_passed {}
+[2026-10-22T04:43:30Z] sandbox_ready {"attempt": 1, "detail": "pong+42"}
+[2026-10-22T04:43:30Z] group_launch {"group": "r0", "index": 1, "of": 3}
+[2026-10-22T04:43:30Z] gpu_idle_before_group {"gpu": {"temp_c": 35, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r0"}
+[2026-10-22T04:43:30Z] group_start {"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r0.yaml", "--manifest", "third_party/manifest.json"], "group": "r0", "pid": 48900}
+[2026-10-22T04:48:08Z] stopping_group {"group": "r0", "reason": "watchdog unwind"}
+2026-10-22 12:48:13,613	INFO scripts.py:1332 -- Did not find any active Ray processes.
+[2026-10-22T04:48:13Z] chain_stopped {"exit_code": 3, "reason": "watchdog received signal 15"}
+WATCHDOG STOP: watchdog received signal 15

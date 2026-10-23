@@ -1,0 +1,18 @@
+{"chain_id": "20261022T044824Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T04:48:24Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 3, "ts": "2026-10-22T04:48:28Z"}
+{"event": "gpu_verified", "temp_c": 38, "total_mib": 24564, "ts": "2026-10-22T04:48:29Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T04:48:29Z"}
+{"chain_id": "20261022T044832Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T04:48:32Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 3, "ts": "2026-10-22T04:48:36Z"}
+{"event": "gpu_verified", "temp_c": 37, "total_mib": 24564, "ts": "2026-10-22T04:48:36Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T04:48:36Z"}
+{"attempt": 1, "detail": "pong+42", "event": "sandbox_ready", "ts": "2026-10-22T04:48:37Z"}
+{"event": "group_launch", "group": "r0", "index": 1, "of": 3, "ts": "2026-10-22T04:48:37Z"}
+{"event": "gpu_idle_before_group", "gpu": {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r0", "ts": "2026-10-22T04:48:37Z"}
+{"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r0.yaml", "--manifest", "third_party/manifest.json"], "event": "group_start", "group": "r0", "pid": 51774, "ts": "2026-10-22T04:48:37Z"}
+{"disk": {"checkpoints": ["global_step_10"], "free": 30042976256, "free_gib": 27.98, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 14.377, "step": 10, "ts": "2026-10-22T05:29:27Z"}
+{"consecutive": 1, "detail": "TimeoutError: timed out", "event": "sandbox_probe_failed", "group": "r0", "ts": "2026-10-22T05:55:13Z"}
+{"consecutive": 2, "detail": "TimeoutError: timed out", "event": "sandbox_probe_failed", "group": "r0", "ts": "2026-10-22T05:55:49Z"}
+{"consecutive": 3, "detail": "TimeoutError: timed out", "event": "sandbox_probe_failed", "group": "r0", "ts": "2026-10-22T05:56:24Z"}
+{"event": "stopping_group", "group": "r0", "reason": "sandbox lost for 3 consecutive probes: TimeoutError: timed out", "ts": "2026-10-22T05:56:24Z"}
+{"event": "chain_stopped", "exit_code": 3, "reason": "sandbox lost for 3 consecutive probes: TimeoutError: timed out", "ts": "2026-10-22T05:56:29Z"}

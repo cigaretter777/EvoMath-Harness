@@ -1,0 +1,7 @@
+max_steps: 6
+max_tool_calls: 4
+max_python_seconds: 0.0
+max_observation_chars: 8000
+# Shared Python+SymPy wall time; a single call may consume at most 30s.
+max_tool_seconds: 60.0
+max_tool_call_seconds: 30.0

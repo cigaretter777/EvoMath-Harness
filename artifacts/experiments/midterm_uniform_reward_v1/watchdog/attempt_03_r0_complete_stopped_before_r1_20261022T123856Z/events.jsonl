@@ -1,0 +1,25 @@
+{"chain_id": "20261022T081527Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T08:15:27Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 3, "ts": "2026-10-22T08:15:31Z"}
+{"event": "gpu_verified", "temp_c": 37, "total_mib": 24564, "ts": "2026-10-22T08:15:31Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T08:15:31Z"}
+{"chain_id": "20261022T081540Z", "event": "preflight_start", "sandbox_url": "http://localhost:8080", "ts": "2026-10-22T08:15:40Z"}
+{"configs": 8, "event": "frozen_inputs_verified", "groups": 3, "ts": "2026-10-22T08:15:44Z"}
+{"event": "gpu_verified", "temp_c": 37, "total_mib": 24564, "ts": "2026-10-22T08:15:44Z", "used_mib": 1, "util_pct": 0}
+{"event": "disk_preflight_passed", "ts": "2026-10-22T08:15:44Z"}
+{"attempt": 1, "detail": "pong+42", "event": "sandbox_ready", "ts": "2026-10-22T08:15:45Z"}
+{"event": "group_launch", "group": "r0", "index": 1, "of": 3, "ts": "2026-10-22T08:15:45Z"}
+{"event": "gpu_idle_before_group", "gpu": {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r0", "ts": "2026-10-22T08:15:45Z"}
+{"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r0.yaml", "--manifest", "third_party/manifest.json"], "event": "group_start", "group": "r0", "pid": 70890, "ts": "2026-10-22T08:15:45Z"}
+{"disk": {"checkpoints": ["global_step_10"], "free": 29867732992, "free_gib": 27.816, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 12.182, "step": 10, "ts": "2026-10-22T08:55:15Z"}
+{"event": "rotation_window_open", "group": "r0", "step": 19, "ts": "2026-10-22T09:38:30Z"}
+{"checkpoints": ["global_step_20"], "event": "rotation_window_closed", "group": "r0", "step": 19, "ts": "2026-10-22T09:38:41Z"}
+{"disk": {"checkpoints": ["global_step_20"], "free": 29787025408, "free_gib": 27.741, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 12.668, "step": 20, "ts": "2026-10-22T09:38:51Z"}
+{"disk": {"checkpoints": ["global_step_30"], "free": 29704683520, "free_gib": 27.665, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 13.242, "step": 30, "ts": "2026-10-22T10:26:49Z"}
+{"disk": {"checkpoints": ["global_step_40"], "free": 29624610816, "free_gib": 27.59, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 14.339, "step": 40, "ts": "2026-10-22T11:29:35Z"}
+{"disk": {"checkpoints": ["global_step_50"], "free": 29542363136, "free_gib": 27.513, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "event": "save_observed", "group": "r0", "problems": [], "seconds": 13.179, "step": 50, "ts": "2026-10-22T12:38:40Z"}
+{"adapter": 69784339, "checkpoint": 8422823292, "event": "group_complete", "group": "r0", "ts": "2026-10-22T12:38:53Z"}
+{"event": "group_launch", "group": "r1", "index": 2, "of": 3, "ts": "2026-10-22T12:38:53Z"}
+{"event": "gpu_idle_before_group", "gpu": {"temp_c": 41, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r1", "ts": "2026-10-22T12:38:53Z"}
+{"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r1.yaml", "--manifest", "third_party/manifest.json"], "event": "group_start", "group": "r1", "pid": 93918, "ts": "2026-10-22T12:38:53Z"}
+{"event": "stopping_group", "group": "r1", "reason": "watchdog unwind", "ts": "2026-10-22T12:38:56Z"}
+{"event": "chain_stopped", "exit_code": 3, "reason": "watchdog received signal 15", "ts": "2026-10-22T12:38:58Z"}

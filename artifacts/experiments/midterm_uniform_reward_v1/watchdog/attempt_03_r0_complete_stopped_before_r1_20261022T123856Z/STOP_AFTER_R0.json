@@ -1,0 +1,14 @@
+{
+  "event": {
+    "adapter": 69784339,
+    "checkpoint": 8422823292,
+    "event": "group_complete",
+    "group": "r0",
+    "ts": "2026-10-22T12:38:53Z"
+  },
+  "group": "r0",
+  "pid": 70874,
+  "result": "sigterm_sent",
+  "sent_utc": "2026-10-22T12:38:56Z",
+  "started_utc": "2026-10-22T09:45:22Z"
+}

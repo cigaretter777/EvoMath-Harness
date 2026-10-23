@@ -1,0 +1,16 @@
+[2026-10-22T04:48:32Z] preflight_start {"chain_id": "20261022T044832Z", "sandbox_url": "http://localhost:8080"}
+[2026-10-22T04:48:36Z] frozen_inputs_verified {"configs": 8, "groups": 3}
+[2026-10-22T04:48:36Z] gpu_verified {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}
+[2026-10-22T04:48:36Z] disk_preflight_passed {}
+[2026-10-22T04:48:37Z] sandbox_ready {"attempt": 1, "detail": "pong+42"}
+[2026-10-22T04:48:37Z] group_launch {"group": "r0", "index": 1, "of": 3}
+[2026-10-22T04:48:37Z] gpu_idle_before_group {"gpu": {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r0"}
+[2026-10-22T04:48:37Z] group_start {"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r0.yaml", "--manifest", "third_party/manifest.json"], "group": "r0", "pid": 51774}
+[2026-10-22T05:29:27Z] save_observed {"disk": {"checkpoints": ["global_step_10"], "free": 30042976256, "free_gib": 27.98, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844}, "group": "r0", "problems": [], "seconds": 14.377, "step": 10}
+[2026-10-22T05:55:13Z] sandbox_probe_failed {"consecutive": 1, "detail": "TimeoutError: timed out", "group": "r0"}
+[2026-10-22T05:55:49Z] sandbox_probe_failed {"consecutive": 2, "detail": "TimeoutError: timed out", "group": "r0"}
+[2026-10-22T05:56:24Z] sandbox_probe_failed {"consecutive": 3, "detail": "TimeoutError: timed out", "group": "r0"}
+[2026-10-22T05:56:24Z] stopping_group {"group": "r0", "reason": "sandbox lost for 3 consecutive probes: TimeoutError: timed out"}
+2026-10-22 13:56:29,211	INFO scripts.py:1332 -- Did not find any active Ray processes.
+[2026-10-22T05:56:29Z] chain_stopped {"exit_code": 3, "reason": "sandbox lost for 3 consecutive probes: TimeoutError: timed out"}
+WATCHDOG STOP: sandbox lost for 3 consecutive probes: TimeoutError: timed out

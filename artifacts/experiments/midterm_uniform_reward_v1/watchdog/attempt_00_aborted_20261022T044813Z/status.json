@@ -1,0 +1,20 @@
+{
+  "chain_id": "20261022T044325Z",
+  "current_group": "r0",
+  "elapsed_h": 0.079,
+  "free_gib": 35.899,
+  "gpu_peak_mib": 22035,
+  "gpu_used_mib": 14869,
+  "group_index": 1,
+  "last_event": null,
+  "pid": null,
+  "rotated_gib": 0.0,
+  "sandbox_consecutive_failures": 0,
+  "sandbox_ok": true,
+  "schema": "midterm-watchdog-v1",
+  "started_utc": "2026-10-22T04:43:25Z",
+  "state": "stopped",
+  "step": 1,
+  "stop_reason": "watchdog received signal 15",
+  "updated_utc": "2026-10-22T04:48:13Z"
+}

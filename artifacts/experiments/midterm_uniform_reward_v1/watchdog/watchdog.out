@@ -1,0 +1,28 @@
+[2026-10-22T13:24:23Z] preflight_start {"chain_id": "20261022T132423Z", "sandbox_url": "http://localhost:8080"}
+[2026-10-22T13:24:27Z] frozen_inputs_verified {"configs": 8, "groups": 2}
+[2026-10-22T13:24:27Z] gpu_verified {"temp_c": 35, "total_mib": 24564, "used_mib": 1, "util_pct": 0}
+[2026-10-22T13:24:27Z] disk_preflight_passed {}
+[2026-10-22T13:24:27Z] sandbox_ready {"attempt": 1, "detail": "pong+42"}
+[2026-10-22T13:24:27Z] group_launch {"group": "r1", "index": 1, "of": 2}
+[2026-10-22T13:24:28Z] gpu_idle_before_group {"gpu": {"temp_c": 35, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r1"}
+[2026-10-22T13:24:28Z] group_start {"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r1.yaml", "--manifest", "third_party/manifest.json"], "group": "r1", "pid": 96122}
+[2026-10-22T13:58:51Z] save_observed {"disk": {"checkpoints": ["global_step_10"], "free": 21039517696, "free_gib": 19.595, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r1", "problems": [], "seconds": 12.021, "step": 10}
+[2026-10-22T14:37:39Z] save_observed {"disk": {"checkpoints": ["global_step_20"], "free": 20959559680, "free_gib": 19.52, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r1", "problems": [], "seconds": 19.556, "step": 20}
+[2026-10-22T15:22:26Z] save_observed {"disk": {"checkpoints": ["global_step_30"], "free": 20879884288, "free_gib": 19.446, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r1", "problems": [], "seconds": 12.131, "step": 30}
+[2026-10-22T15:55:19Z] rotation_window_open {"group": "r1", "step": 39}
+[2026-10-22T15:55:29Z] rotation_window_closed {"checkpoints": ["global_step_40"], "group": "r1", "step": 39}
+[2026-10-22T15:55:39Z] save_observed {"disk": {"checkpoints": ["global_step_40"], "free": 20800995328, "free_gib": 19.372, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r1", "problems": [], "seconds": 13.201, "step": 40}
+[2026-10-22T16:32:56Z] save_observed {"disk": {"checkpoints": ["global_step_50"], "free": 20726284288, "free_gib": 19.303, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r1", "problems": [], "seconds": 12.7, "step": 50}
+2026-10-23 00:33:08,205	INFO scripts.py:1332 -- Did not find any active Ray processes.
+[2026-10-22T16:33:08Z] group_complete {"adapter": 69784339, "checkpoint": 8422823292, "group": "r1"}
+[2026-10-22T16:33:08Z] group_launch {"group": "r2", "index": 2, "of": 2}
+[2026-10-22T16:33:09Z] gpu_idle_before_group {"gpu": {"temp_c": 39, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r2"}
+[2026-10-22T16:33:09Z] group_start {"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r2.yaml", "--manifest", "third_party/manifest.json"], "group": "r2", "pid": 111894}
+[2026-10-22T17:05:39Z] save_observed {"disk": {"checkpoints": ["global_step_10"], "free": 12224397312, "free_gib": 11.385, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r2", "problems": [], "seconds": 12.69, "step": 10}
+[2026-10-22T17:45:22Z] save_observed {"disk": {"checkpoints": ["global_step_20"], "free": 12143456256, "free_gib": 11.309, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r2", "problems": [], "seconds": 15.348, "step": 20}
+[2026-10-22T18:18:11Z] save_observed {"disk": {"checkpoints": ["global_step_30"], "free": 12063883264, "free_gib": 11.235, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r2", "problems": [], "seconds": 15.628, "step": 30}
+[2026-10-22T19:01:35Z] save_observed {"disk": {"checkpoints": ["global_step_40"], "free": 11979722752, "free_gib": 11.157, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r2", "problems": [], "seconds": 11.987, "step": 40}
+[2026-10-22T19:34:54Z] save_observed {"disk": {"checkpoints": ["global_step_50"], "free": 11911782400, "free_gib": 11.094, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844, "rotation": false}, "group": "r2", "problems": [], "seconds": 13.448, "step": 50}
+2026-10-23 03:34:55,904	INFO scripts.py:1332 -- Did not find any active Ray processes.
+[2026-10-22T19:34:56Z] group_complete {"adapter": 69784339, "checkpoint": 8422823292, "group": "r2"}
+[2026-10-22T19:34:56Z] chain_complete {"groups": ["r1", "r2"]}

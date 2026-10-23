@@ -1,0 +1,135 @@
+--- artifacts/experiments/midterm_uniform_reward_v1/audit/verifier_bug_20261023/symbolic.py.pre_fix	2026-10-23 03:57:15.644577830 +0800
++++ src/adaptive_math/verifier/symbolic.py	2026-10-23 03:57:28.257402234 +0800
+@@ -187,11 +187,20 @@
+     ``2 \\leq x`` and ``x \\geq 2`` are the same answer, so every form is read as
+     "something <kind> 0" with kind in {gt, ge, eq, ne}. Strictness is part of the
+     signature: ``x > 2`` must not match a reference of ``x \\geq 2``.
++
++    A relation can contain a set or a tuple, for example ``x \\in (0, 36)`` is
++    parsed as ``Eq(x, Interval.open(0, 36))`` and ``(p, q) = (1, 1)`` as an
++    equality of tuples.  Those operands cannot be subtracted.  Returning None
++    lets the structural comparison below decide them instead of raising out of
++    the verifier worker and turning an ordinary answer into internal_error.
+     """
+     if not isinstance(value, _Relational):
+         return None
+     lhs, rhs = value.args
+-    difference = sympy.simplify(lhs - rhs)
++    try:
++        difference = sympy.simplify(lhs - rhs)
++    except (TypeError, ValueError, AttributeError, ArithmeticError, NotImplementedError):
++        return None
+     if isinstance(value, sympy.Equality):
+         kind = "eq"
+     elif isinstance(value, sympy.Unequality):
+@@ -214,6 +223,69 @@
+     return None
+ 
+ 
++def _membership_set(value: sympy.Basic) -> tuple[sympy.Symbol, sympy.Set] | None:
++    """(variable, set) for a membership answer, or None.
++
++    latex2sympy turns ``x \\in (0, 36)`` into ``Eq(x, Interval.open(0, 36))``
++    (and some parser versions keep a Contains node).  That is a membership
++    claim, not an arithmetic equality: subtracting a set from the variable
++    raises TypeError, and treating it as an unsupported expression loses a
++    correct set answer.  Only a single symbol is accepted on the variable side;
++    ``x^2 \\in S`` denotes something different and must not be graded by set
++    equality alone.
++    """
++    if isinstance(value, (sympy.Equality, sympy.Contains)):
++        lhs, rhs = value.args
++        if isinstance(lhs, sympy.Symbol) and isinstance(rhs, sympy.Set):
++            return lhs, rhs
++        if isinstance(rhs, sympy.Symbol) and isinstance(lhs, sympy.Set):
++            return rhs, lhs
++    return None
++
++
++def _sets_agree(left: sympy.Set, right: sympy.Set) -> bool | None:
++    """Prove set equality/inequality with a symmetric difference.
++
++    Returns None when SymPy cannot decide emptiness (for example a set whose
++    membership predicate it cannot evaluate); callers must then report an
++    unverifiable prediction instead of guessing.
++    """
++    if left == right:
++        return True
++    try:
++        difference = left.symmetric_difference(right)
++        empty = difference.is_empty
++    except (TypeError, ValueError, AttributeError, ArithmeticError, NotImplementedError):
++        return None
++    if empty is True:
++        return True
++    if empty is False:
++        return False
++    return None
++
++
++def _set_verdict(
++    agree: bool | None,
++    pred_canon: str,
++    ref_canon: str,
++    *,
++    method: str,
++) -> dict[str, object]:
++    if agree is None:
++        return _verdict(
++            "invalid_prediction",
++            normalized_prediction=pred_canon,
++            normalized_reference=ref_canon,
++            details={"method": method, "reason": "set comparison undecidable"},
++        )
++    return _verdict(
++        "correct" if agree else "incorrect",
++        normalized_prediction=pred_canon,
++        normalized_reference=ref_canon,
++        details={"method": method},
++    )
++
++
+ def _compare_structural(
+     pred_sym: sympy.Basic, ref_sym: sympy.Basic, pred_canon: str, ref_canon: str
+ ) -> dict[str, object]:
+@@ -223,7 +295,40 @@
+     come back invalid rather than "incorrect", because And/Or ordering is not a
+     semantic difference. A relation against a bare value is a wrong answer,
+     though -- those cannot denote the same thing.
++
++    Set answers are handled before relation signatures.  Interval/Union objects
++    are Sets, and a set-membership answer parses as an Equality whose right side
++    is a Set; both used to reach the arithmetic subtraction in
++    ``_relation_signature`` and crash the worker.
+     """
++    pred_membership = _membership_set(pred_sym)
++    ref_membership = _membership_set(ref_sym)
++    pred_set = (
++        pred_membership[1]
++        if pred_membership is not None
++        else pred_sym if isinstance(pred_sym, sympy.Set) else None
++    )
++    ref_set = (
++        ref_membership[1]
++        if ref_membership is not None
++        else ref_sym if isinstance(ref_sym, sympy.Set) else None
++    )
++    if pred_membership is not None or ref_membership is not None:
++        if pred_set is not None and ref_set is not None:
++            return _set_verdict(
++                _sets_agree(pred_set, ref_set), pred_canon, ref_canon, method="membership"
++            )
++        return _verdict(
++            "incorrect",
++            normalized_prediction=pred_canon,
++            normalized_reference=ref_canon,
++            details={"method": "structure", "reason": "membership_vs_value"},
++        )
++    if pred_set is not None and ref_set is not None:
++        return _set_verdict(
++            _sets_agree(pred_set, ref_set), pred_canon, ref_canon, method="set"
++        )
++
+     pred_relation = _relation_signature(pred_sym)
+     ref_relation = _relation_signature(ref_sym)
+     if pred_relation is not None and ref_relation is not None:

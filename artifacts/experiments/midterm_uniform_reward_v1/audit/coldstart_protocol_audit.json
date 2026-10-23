@@ -1,0 +1,53 @@
+{
+  "all_one_group_count": 0,
+  "all_zero_group_count": 8,
+  "correct_count": 24,
+  "effective_group_count": 12,
+  "generated_tokens_total": 18245,
+  "group_count": 20,
+  "group_size_histogram": {
+    "4": 20
+  },
+  "infrastructure_error_trajectories": [
+    "rollout-health:math:2213a2975f8238b71d42:1"
+  ],
+  "invalid_actions_total": 8,
+  "max_observation_chars": 8000,
+  "max_steps_trajectories": [
+    "rollout-health:math:4d0eb53170b088bbd187:0"
+  ],
+  "mixed_group_count": 12,
+  "no_tool_trajectories": [
+    "rollout-health:math:06219e78c8b17ee9f867:3",
+    "rollout-health:math:2213a2975f8238b71d42:1"
+  ],
+  "parse_error_codes": {
+    "invalid_envelope": 1,
+    "invalid_json": 7
+  },
+  "termination_counts": {
+    "final": 79,
+    "max_steps": 1
+  },
+  "tool_calls_total": 78,
+  "tool_executed_flags": {
+    "True": 78
+  },
+  "tool_result_error_codes": {
+    "None": 50,
+    "execution_error": 26,
+    "timeout": 2
+  },
+  "trajectory_count": 80,
+  "truncated_observation_trajectories": [
+    "rollout-health:math:2bc5271dcd1192301167:1"
+  ],
+  "turn_at_token_cap_trajectories": [
+    "rollout-health:math:06219e78c8b17ee9f867:3"
+  ],
+  "verifier_status_counts": {
+    "correct": 24,
+    "incorrect": 54,
+    "invalid_prediction": 2
+  }
+}

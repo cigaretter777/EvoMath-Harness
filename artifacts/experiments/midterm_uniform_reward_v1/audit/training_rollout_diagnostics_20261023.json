@@ -1,0 +1,434 @@
+{
+ "created_at_utc": "2026-10-22T22:54:50.323026+00:00",
+ "groups": {
+  "r0": {
+   "actions": 6528,
+   "blocks": {
+    "1-10": {
+     "actions": 800,
+     "clip_actions": 5,
+     "ctx_actions": 5,
+     "invalid": 13,
+     "invalid_action_rate": 0.01625,
+     "success": 100,
+     "success_rate": 0.3125,
+     "tool": 319.0,
+     "tool_calls_per_trajectory": 0.996875,
+     "trajectories": 320
+    },
+    "11-20": {
+     "actions": 1152,
+     "clip_actions": 11,
+     "ctx_actions": 8,
+     "invalid": 30,
+     "invalid_action_rate": 0.026041666666666668,
+     "success": 87,
+     "success_rate": 0.271875,
+     "tool": 322.0,
+     "tool_calls_per_trajectory": 1.00625,
+     "trajectories": 320
+    },
+    "21-30": {
+     "actions": 1376,
+     "clip_actions": 10,
+     "ctx_actions": 4,
+     "invalid": 61,
+     "invalid_action_rate": 0.04433139534883721,
+     "success": 100,
+     "success_rate": 0.3125,
+     "tool": 318.0,
+     "tool_calls_per_trajectory": 0.99375,
+     "trajectories": 320
+    },
+    "31-40": {
+     "actions": 1472,
+     "clip_actions": 11,
+     "ctx_actions": 2,
+     "invalid": 95,
+     "invalid_action_rate": 0.06453804347826086,
+     "success": 82,
+     "success_rate": 0.25625,
+     "tool": 321.0,
+     "tool_calls_per_trajectory": 1.003125,
+     "trajectories": 320
+    },
+    "41-50": {
+     "actions": 1728,
+     "clip_actions": 17,
+     "ctx_actions": 10,
+     "invalid": 128,
+     "invalid_action_rate": 0.07407407407407407,
+     "success": 108,
+     "success_rate": 0.3375,
+     "tool": 330.0,
+     "tool_calls_per_trajectory": 1.03125,
+     "trajectories": 320
+    }
+   },
+   "context_overflow_action_rows": 29,
+   "context_overflow_terminal_trajectories": 15,
+   "generated_tokens_total": 545465,
+   "internal_error_step_event_list": [
+    {
+     "global_update": 1,
+     "group_id": "g1:math:16b1bec357848f15f836#3",
+     "sample_index": 3,
+     "step_index": 2,
+     "task_id": "math:16b1bec357848f15f836"
+    },
+    {
+     "global_update": 3,
+     "group_id": "g3:math:a0759bbdd5ac9f3af951#0",
+     "sample_index": 3,
+     "step_index": 2,
+     "task_id": "math:a0759bbdd5ac9f3af951"
+    }
+   ],
+   "internal_error_step_events": 2,
+   "invalid_action_rate": 0.050091911764705885,
+   "invalid_actions": 327,
+   "length_clip_actions": 54,
+   "length_clip_trajectories": 28,
+   "max_prompt_tokens": 6476,
+   "overall_mean_reward_group_std": 0.24496578903249575,
+   "reward_group_composition": {
+    "all_correct": 36,
+    "all_wrong": 177,
+    "mixed": 187
+   },
+   "reward_group_std_by_composition": {
+    "all_correct": {
+     "max_std": 0.0,
+     "mean_std": 0.0,
+     "n": 36,
+     "nonzero_std": 0
+    },
+    "all_wrong": {
+     "max_std": 0.0,
+     "mean_std": 0.0,
+     "n": 177,
+     "nonzero_std": 0
+    },
+    "mixed": {
+     "max_std": 0.5773502691896257,
+     "mean_std": 0.5239909925828786,
+     "n": 187,
+     "nonzero_std": 187
+    }
+   },
+   "reward_groups_nonzero_std": 187,
+   "reward_groups_total": 400,
+   "terminal_internal_error_trajectories": 2,
+   "terminal_verifier_statuses": {
+    "correct": 477,
+    "incorrect": 1067,
+    "internal_error": 2,
+    "invalid_prediction": 54
+   },
+   "termination_reasons": {
+    "context_overflow": 15,
+    "final": 1564,
+    "max_steps": 21
+   },
+   "tool_calls": 1610.0,
+   "tool_calls_per_trajectory": 1.00625,
+   "trajectories": 1600
+  },
+  "r1": {
+   "actions": 4960,
+   "blocks": {
+    "1-10": {
+     "actions": 736,
+     "clip_actions": 3,
+     "ctx_actions": 1,
+     "invalid": 9,
+     "invalid_action_rate": 0.012228260869565218,
+     "success": 106,
+     "success_rate": 0.33125,
+     "tool": 315.0,
+     "tool_calls_per_trajectory": 0.984375,
+     "trajectories": 320
+    },
+    "11-20": {
+     "actions": 1120,
+     "clip_actions": 7,
+     "ctx_actions": 3,
+     "invalid": 31,
+     "invalid_action_rate": 0.027678571428571427,
+     "success": 96,
+     "success_rate": 0.3,
+     "tool": 316.0,
+     "tool_calls_per_trajectory": 0.9875,
+     "trajectories": 320
+    },
+    "21-30": {
+     "actions": 1024,
+     "clip_actions": 11,
+     "ctx_actions": 7,
+     "invalid": 26,
+     "invalid_action_rate": 0.025390625,
+     "success": 113,
+     "success_rate": 0.353125,
+     "tool": 318.0,
+     "tool_calls_per_trajectory": 0.99375,
+     "trajectories": 320
+    },
+    "31-40": {
+     "actions": 1024,
+     "clip_actions": 1,
+     "ctx_actions": 0,
+     "invalid": 20,
+     "invalid_action_rate": 0.01953125,
+     "success": 82,
+     "success_rate": 0.25625,
+     "tool": 315.0,
+     "tool_calls_per_trajectory": 0.984375,
+     "trajectories": 320
+    },
+    "41-50": {
+     "actions": 1056,
+     "clip_actions": 4,
+     "ctx_actions": 5,
+     "invalid": 31,
+     "invalid_action_rate": 0.029356060606060608,
+     "success": 101,
+     "success_rate": 0.315625,
+     "tool": 322.0,
+     "tool_calls_per_trajectory": 1.00625,
+     "trajectories": 320
+    }
+   },
+   "context_overflow_action_rows": 16,
+   "context_overflow_terminal_trajectories": 11,
+   "generated_tokens_total": 405643,
+   "internal_error_step_event_list": [
+    {
+     "global_update": 3,
+     "group_id": "g3:math:163a181d4fc954c57e62#5",
+     "sample_index": 2,
+     "step_index": 2,
+     "task_id": "math:163a181d4fc954c57e62"
+    },
+    {
+     "global_update": 29,
+     "group_id": "g29:math:a0759bbdd5ac9f3af951#6",
+     "sample_index": 2,
+     "step_index": 2,
+     "task_id": "math:a0759bbdd5ac9f3af951"
+    },
+    {
+     "global_update": 39,
+     "group_id": "g39:math:530dbff74491f8eca29f#1",
+     "sample_index": 2,
+     "step_index": 2,
+     "task_id": "math:530dbff74491f8eca29f"
+    },
+    {
+     "global_update": 39,
+     "group_id": "g39:math:530dbff74491f8eca29f#1",
+     "sample_index": 2,
+     "step_index": 3,
+     "task_id": "math:530dbff74491f8eca29f"
+    }
+   ],
+   "internal_error_step_events": 4,
+   "invalid_action_rate": 0.023588709677419356,
+   "invalid_actions": 117,
+   "length_clip_actions": 26,
+   "length_clip_trajectories": 13,
+   "max_prompt_tokens": 7819,
+   "overall_mean_reward_group_std": 0.22464474470537635,
+   "reward_group_composition": {
+    "all_correct": 53,
+    "all_wrong": 183,
+    "mixed": 164
+   },
+   "reward_group_std_by_composition": {
+    "all_correct": {
+     "max_std": 0.0,
+     "mean_std": 0.0,
+     "n": 53,
+     "nonzero_std": 0
+    },
+    "all_wrong": {
+     "max_std": 0.17320508075688776,
+     "mean_std": 0.0183007884282221,
+     "n": 183,
+     "nonzero_std": 41
+    },
+    "mixed": {
+     "max_std": 0.6075908711186061,
+     "mean_std": 0.5274930097547921,
+     "n": 164,
+     "nonzero_std": 164
+    }
+   },
+   "reward_groups_nonzero_std": 205,
+   "reward_groups_total": 400,
+   "terminal_internal_error_trajectories": 3,
+   "terminal_verifier_statuses": {
+    "correct": 498,
+    "incorrect": 1052,
+    "internal_error": 3,
+    "invalid_prediction": 47
+   },
+   "termination_reasons": {
+    "context_overflow": 11,
+    "final": 1579,
+    "max_steps": 10
+   },
+   "tool_calls": 1586.0,
+   "tool_calls_per_trajectory": 0.99125,
+   "trajectories": 1600
+  },
+  "r2": {
+   "actions": 4512,
+   "blocks": {
+    "1-10": {
+     "actions": 768,
+     "clip_actions": 1,
+     "ctx_actions": 0,
+     "invalid": 12,
+     "invalid_action_rate": 0.015625,
+     "success": 107,
+     "success_rate": 0.334375,
+     "tool": 313.0,
+     "tool_calls_per_trajectory": 0.978125,
+     "trajectories": 320
+    },
+    "11-20": {
+     "actions": 896,
+     "clip_actions": 6,
+     "ctx_actions": 5,
+     "invalid": 18,
+     "invalid_action_rate": 0.020089285714285716,
+     "success": 93,
+     "success_rate": 0.290625,
+     "tool": 316.0,
+     "tool_calls_per_trajectory": 0.9875,
+     "trajectories": 320
+    },
+    "21-30": {
+     "actions": 800,
+     "clip_actions": 2,
+     "ctx_actions": 0,
+     "invalid": 15,
+     "invalid_action_rate": 0.01875,
+     "success": 95,
+     "success_rate": 0.296875,
+     "tool": 311.0,
+     "tool_calls_per_trajectory": 0.971875,
+     "trajectories": 320
+    },
+    "31-40": {
+     "actions": 1120,
+     "clip_actions": 5,
+     "ctx_actions": 2,
+     "invalid": 28,
+     "invalid_action_rate": 0.025,
+     "success": 89,
+     "success_rate": 0.278125,
+     "tool": 312.0,
+     "tool_calls_per_trajectory": 0.975,
+     "trajectories": 320
+    },
+    "41-50": {
+     "actions": 928,
+     "clip_actions": 4,
+     "ctx_actions": 2,
+     "invalid": 16,
+     "invalid_action_rate": 0.017241379310344827,
+     "success": 95,
+     "success_rate": 0.296875,
+     "tool": 317.0,
+     "tool_calls_per_trajectory": 0.990625,
+     "trajectories": 320
+    }
+   },
+   "context_overflow_action_rows": 9,
+   "context_overflow_terminal_trajectories": 8,
+   "generated_tokens_total": 376221,
+   "internal_error_step_event_list": [
+    {
+     "global_update": 1,
+     "group_id": "g1:math:16b1bec357848f15f836#3",
+     "sample_index": 2,
+     "step_index": 2,
+     "task_id": "math:16b1bec357848f15f836"
+    },
+    {
+     "global_update": 3,
+     "group_id": "g3:math:a0759bbdd5ac9f3af951#0",
+     "sample_index": 0,
+     "step_index": 2,
+     "task_id": "math:a0759bbdd5ac9f3af951"
+    },
+    {
+     "global_update": 26,
+     "group_id": "g26:math:16b1bec357848f15f836#6",
+     "sample_index": 1,
+     "step_index": 2,
+     "task_id": "math:16b1bec357848f15f836"
+    }
+   ],
+   "internal_error_step_events": 3,
+   "invalid_action_rate": 0.01972517730496454,
+   "invalid_actions": 89,
+   "length_clip_actions": 18,
+   "length_clip_trajectories": 11,
+   "max_prompt_tokens": 5028,
+   "overall_mean_reward_group_std": 0.24398305335033402,
+   "reward_group_composition": {
+    "all_correct": 33,
+    "all_wrong": 180,
+    "mixed": 187
+   },
+   "reward_group_std_by_composition": {
+    "all_correct": {
+     "max_std": 0.01923502021271344,
+     "mean_std": 0.0010023893294282581,
+     "n": 33,
+     "nonzero_std": 33
+    },
+    "all_wrong": {
+     "max_std": 0.15000000000000002,
+     "mean_std": 0.013825972969971186,
+     "n": 180,
+     "nonzero_std": 32
+    },
+    "mixed": {
+     "max_std": 0.6177991704412773,
+     "mean_std": 0.5084035687575811,
+     "n": 187,
+     "nonzero_std": 187
+    }
+   },
+   "reward_groups_nonzero_std": 252,
+   "reward_groups_total": 400,
+   "terminal_internal_error_trajectories": 3,
+   "terminal_verifier_statuses": {
+    "correct": 479,
+    "incorrect": 1083,
+    "internal_error": 3,
+    "invalid_prediction": 35
+   },
+   "termination_reasons": {
+    "context_overflow": 8,
+    "final": 1588,
+    "max_steps": 4
+   },
+   "tool_calls": 1569.0,
+   "tool_calls_per_trajectory": 0.980625,
+   "trajectories": 1600
+  }
+ },
+ "method": {
+  "actions": "all recorded step rows, including post-terminal inactive rows",
+  "note": "Terminal statuses/rewards must use the first done=true row; later post-terminal rows are inactive and carry reward 0.",
+  "reward_group_std": "sample standard deviation (n-1) of terminal rewards within each (global_update, group_id)",
+  "terminal_record": "first step with done=true, else last step",
+  "trajectory_key": "(global_update, group_id, sample_index)"
+ },
+ "schema": "midterm-training-rollout-diagnostics-v1",
+ "source": "training/<group>/rollout_audit.jsonl"
+}

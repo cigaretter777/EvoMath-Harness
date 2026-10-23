@@ -1,0 +1,9 @@
+{
+  "group": "sft",
+  "message": "invalid trajectory retained; evaluation paused for review",
+  "model_error": null,
+  "paused_at_utc": "2026-10-22T19:48:20Z",
+  "sandbox_unavailable_calls": 0,
+  "task_id": "math:45e5f7656e796fc9615c",
+  "verifier_status": "internal_error"
+}

@@ -1,0 +1,208 @@
+{
+  "configs": [
+    {
+      "frozen": "configs/unified_tool_budget_v1.yaml",
+      "sha256": "9e0b8f6e9a420066500799f35e2724cbc79a991e2162505c5806e6cc41474817",
+      "source": "configs/agent/unified_tool_budget_v1.yaml"
+    },
+    {
+      "frozen": "configs/r0_unified.yaml",
+      "sha256": "8e6b5c98f7c0f5dc096ac4f787449e63d538aba315ce2dbdb23d9f7bcc98efe1",
+      "source": "configs/reward/r0_unified.yaml"
+    },
+    {
+      "frozen": "configs/r1_unified.yaml",
+      "sha256": "35a788d95ff3b6661a00f3e717b1e17097619490f9c06e4da7039216dea06535",
+      "source": "configs/reward/r1_unified.yaml"
+    },
+    {
+      "frozen": "configs/r2_unified.yaml",
+      "sha256": "5cdf9218d7ace71781aea5e263277edde846d453db53b98661c0c08ac4e99a87",
+      "source": "configs/reward/r2_unified.yaml"
+    },
+    {
+      "frozen": "configs/unified_tool_reward_v1.yaml",
+      "sha256": "1cf7b851dec161cf298695564d4bb539815b41e553f7cdac262c88a1c0d4c3ae",
+      "source": "configs/harness/unified_tool_reward_v1.yaml"
+    },
+    {
+      "frozen": "configs/midterm_unified_r0.yaml",
+      "sha256": "f66605368d8eb1f202a9d80b1ad2198d236f443ff6e44eb275b52f3cabafe8b6",
+      "source": "configs/grpo/midterm_unified_r0.yaml"
+    },
+    {
+      "frozen": "configs/midterm_unified_r1.yaml",
+      "sha256": "52bb3a4ed3647dd1fa066508bf837ddb1823b124ca910f5c8d0854b173bbb15b",
+      "source": "configs/grpo/midterm_unified_r1.yaml"
+    },
+    {
+      "frozen": "configs/midterm_unified_r2.yaml",
+      "sha256": "087eec9b918ed991283c494c5ab73ab505f42f11f733aa5301a651fdabbcdd79",
+      "source": "configs/grpo/midterm_unified_r2.yaml"
+    }
+  ],
+  "data_and_schedule": [
+    {
+      "path": "data/processed/midterm_math_v1/train.parquet",
+      "sha256": "574f0f259dd11931e82d848ddcfd176f8239ce3ec0d8570f014fcf4fb5e28813"
+    },
+    {
+      "path": "data/processed/midterm_math_v1/dev.parquet",
+      "sha256": "51cb0be79c6bb959a1403e7c1933106205cdd1ef78f16cc58c2bb5acc15f5c1b"
+    },
+    {
+      "path": "data/processed/midterm_math_v1/test.parquet",
+      "sha256": "42aadb047de5370406a6d3fe4d8358cfd7d119b8613fda2573bc07731ed5c769"
+    },
+    {
+      "path": "data/manifests/math_midterm_v1.json",
+      "sha256": "764c7b54d355bb293ab950df4cc8a41b645beec896080fd69986d1f06d78ab8b"
+    },
+    {
+      "path": "data/manifests/math_midterm_v1_audit.json",
+      "sha256": "d339e085449d5184ecc2d1126aed8c8d3252caa2023eac10de81f2042ffecc2d"
+    },
+    {
+      "path": "data/manifests/math_midterm_v1_rl_schedule.json",
+      "sha256": "66f9426e19a0a9eae1fdd67137247e44a99af37bb68f7f58e84b3b6948295b46"
+    },
+    {
+      "path": "artifacts/task_pools/math_midterm_v1_rl_train.jsonl",
+      "sha256": "635f9571b056f395fd574b9fd1e4d6e1eb4b28efbf3d38f38c410aed19396d46"
+    },
+    {
+      "path": "artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet",
+      "sha256": "3154e578308910fa837bb965955bc867f5923f3e52a838de6a4cc34f53b17ca0"
+    }
+  ],
+  "experiment": "midterm_uniform_reward_v1",
+  "frozen_at_utc": "2026-10-22T04:20:51Z",
+  "gpus": [
+    {
+      "driver": "595.71.05",
+      "memory_total": "24564 MiB",
+      "name": "NVIDIA GeForce RTX 4090 D"
+    }
+  ],
+  "notes": [
+    "SFT checkpoint is the Qwen3-1.7B tool-integrated-reasoning SFT merge.",
+    "Schedule parquet is consumed in row order with data.shuffle=false.",
+    "Checkpoint retention uses max_actor_ckpt_to_keep=1; per-10-round LoRA adapters are archived separately before the full checkpoint is replaced."
+  ],
+  "packages": {
+    "accelerate": "1.15.0",
+    "hydra": null,
+    "omegaconf": "2.3.1",
+    "peft": "0.20.0",
+    "ray": "2.50.0",
+    "torch": "2.8.0",
+    "transformers": "4.57.3",
+    "vllm": "0.11.0"
+  },
+  "platform": "Linux-5.15.0-122-generic-x86_64-with-glibc2.35",
+  "python": "3.12.14 | packaged by Anaconda, Inc. | (main, Aug 27 2026, 14:46:43) [GCC 14.3.0]",
+  "sft_checkpoint": {
+    "files": [
+      {
+        "bytes": 707,
+        "name": "added_tokens.json",
+        "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+      },
+      {
+        "bytes": 4168,
+        "name": "chat_template.jinja",
+        "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+      },
+      {
+        "bytes": 1360,
+        "name": "config.json",
+        "sha256": "d75242c5e00d1fee395226085a27703534889eaed85eb92c615fae0c6667532e"
+      },
+      {
+        "bytes": 214,
+        "name": "generation_config.json",
+        "sha256": "19d9395705449004ddebeeaf62841338a48cc8df85cddb1ca0b2c60396d95c96"
+      },
+      {
+        "bytes": 1671853,
+        "name": "merges.txt",
+        "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+      },
+      {
+        "bytes": 3441185608,
+        "name": "model.safetensors",
+        "sha256": "047ac5c7eac92bed957891162bc8a693524c6f42dfb97618093cdcc475432077"
+      },
+      {
+        "bytes": 613,
+        "name": "special_tokens_map.json",
+        "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+      },
+      {
+        "bytes": 11422654,
+        "name": "tokenizer.json",
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      {
+        "bytes": 5404,
+        "name": "tokenizer_config.json",
+        "sha256": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0"
+      },
+      {
+        "bytes": 2776833,
+        "name": "vocab.json",
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    ],
+    "path": "/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged"
+  },
+  "source_trees": {
+    "scripts/data": {
+      "bytes": 79421,
+      "files": 14,
+      "sha256": "c214ef0929bb9f9e0deb470e8a7506b684d5ea2d8d98bec9f6628f15000f0cc2"
+    },
+    "scripts/train": {
+      "bytes": 26847,
+      "files": 4,
+      "sha256": "a3690ebc9041fbfd658432037afcbda490fbe164cf14dafde665125cbb3ef3d6"
+    },
+    "src/adaptive_math": {
+      "bytes": 325448,
+      "files": 64,
+      "sha256": "b53c0b334df52024d4f5b9e9cb2f9867b258d279e3f5d6d6dc2e9af4311430d5"
+    }
+  },
+  "upstream_manifest": {
+    "schema_version": "training-upstreams-v1",
+    "upstreams": {
+      "sandboxfusion": {
+        "compatibility_notes": "Pinned external Python execution service; deployment also requires an audited immutable image digest.",
+        "license": "Apache-2.0",
+        "name": "sandboxfusion",
+        "repository": "https://github.com/bytedance/SandboxFusion",
+        "requested_ref": "main",
+        "resolved_at": "2026-09-10T00:00:00Z",
+        "resolved_sha": "469de0845cb7d665bc68044d541aa3aa28c5b30a"
+      },
+      "verl": {
+        "compatibility_notes": "Pinned RL engine dependency; the cloud preflight validates Qwen, LoRA, GRPO and rollout support.",
+        "license": "Apache-2.0",
+        "name": "verl",
+        "repository": "https://github.com/verl-project/verl",
+        "requested_ref": "main",
+        "resolved_at": "2026-09-10T00:00:00Z",
+        "resolved_sha": "a9f2985159536a607211dcac730d3f5d55028950"
+      },
+      "verl-agent": {
+        "compatibility_notes": "Pinned agent RL backend; its environment manager contract must be checked in the cloud image.",
+        "license": "Apache-2.0",
+        "name": "verl-agent",
+        "repository": "https://github.com/langfengQ/verl-agent",
+        "requested_ref": "master",
+        "resolved_at": "2026-09-10T00:00:00Z",
+        "resolved_sha": "20bd331bdbc9026a5668e11362178e10ab7400c8"
+      }
+    }
+  }
+}

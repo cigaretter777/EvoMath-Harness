@@ -1,0 +1,13 @@
+[2026-10-22T06:39:45Z] preflight_start {"chain_id": "20261022T063945Z", "sandbox_url": "http://localhost:8080"}
+[2026-10-22T06:39:49Z] frozen_inputs_verified {"configs": 8, "groups": 3}
+[2026-10-22T06:39:50Z] gpu_verified {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}
+[2026-10-22T06:39:50Z] disk_preflight_passed {}
+[2026-10-22T06:39:50Z] sandbox_ready {"attempt": 1, "detail": "pong+42"}
+[2026-10-22T06:39:50Z] group_launch {"group": "r0", "index": 1, "of": 3}
+[2026-10-22T06:39:50Z] gpu_idle_before_group {"gpu": {"temp_c": 37, "total_mib": 24564, "used_mib": 1, "util_pct": 0}, "group": "r0"}
+[2026-10-22T06:39:50Z] group_start {"command": ["/root/autodl-tmp/conda-envs/adaptive-math/bin/python", "scripts/train/run_grpo.py", "--config", "configs/grpo/midterm_unified_r0.yaml", "--manifest", "third_party/manifest.json"], "group": "r0", "pid": 61551}
+[2026-10-22T07:10:40Z] save_observed {"disk": {"checkpoints": ["global_step_10"], "free": 21534478336, "free_gib": 20.056, "required_gib": 11.009, "rotated": 8422823292, "rotated_gib": 7.844}, "group": "r0", "problems": [], "seconds": 11.496, "step": 10}
+[2026-10-22T07:57:03Z] stopping_group {"group": "r0", "reason": "watchdog unwind"}
+2026-10-22 15:57:08,232	INFO scripts.py:1332 -- Did not find any active Ray processes.
+[2026-10-22T07:57:08Z] watchdog_error {"error": "KeyError: 'free_gib'"}
+WATCHDOG ERROR: KeyError: 'free_gib'

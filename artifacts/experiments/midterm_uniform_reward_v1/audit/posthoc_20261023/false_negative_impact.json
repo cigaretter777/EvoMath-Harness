@@ -1,0 +1,80 @@
+[
+  {
+    "global_update": 3,
+    "group_id": "g3:math:163a181d4fc954c57e62#5",
+    "sample_index": 2,
+    "terminal_status": "internal_error",
+    "rewards_before": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rewards_after": [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "mean_before": 0.0,
+    "std_before": 0.0,
+    "advantages_before": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mean_after": 0.25,
+    "std_after": 0.5,
+    "advantages_after": [
+      -0.499999000002,
+      -0.499999000002,
+      1.499997000006,
+      -0.499999000002
+    ],
+    "other_samples_advantage_delta": [
+      -0.499999000002,
+      -0.499999000002,
+      -0.499999000002
+    ]
+  },
+  {
+    "global_update": 39,
+    "group_id": "g39:math:530dbff74491f8eca29f#1",
+    "sample_index": 2,
+    "terminal_status": "internal_error",
+    "rewards_before": [
+      0.0,
+      -0.1,
+      0.0,
+      0.0
+    ],
+    "rewards_after": [
+      0.0,
+      -0.1,
+      1.0,
+      0.0
+    ],
+    "mean_before": -0.025,
+    "std_before": 0.05,
+    "advantages_before": [
+      0.499990000199996,
+      -1.499970000599988,
+      0.499990000199996,
+      0.499990000199996
+    ],
+    "mean_after": 0.225,
+    "std_after": 0.5188127472091127,
+    "advantages_after": [
+      -0.43368164627548245,
+      -0.6264290446201413,
+      1.4937923371711062,
+      -0.43368164627548245
+    ],
+    "other_samples_advantage_delta": [
+      -0.9336716464754784,
+      0.8735409559798468,
+      -0.9336716464754784
+    ]
+  }
+]

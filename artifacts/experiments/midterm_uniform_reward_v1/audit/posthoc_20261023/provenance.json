@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-10-23T00:38:28.864646+00:00",
+  "repo_root": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent",
+  "source_sha256": {
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r0/rollout_audit.jsonl": "ee28b068c0e66c85d0b0f71ce203ce3c3184073367303a4a2e69cbe8239ce1ac",
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r0/train.log": "63cc69f8459f4452622ad800f4dc21839d0866ce17a2c192d978e2eda50ec8f6",
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r1/rollout_audit.jsonl": "a857c15322588b9bf9a162fb0b620be57535961a9fb7fc7d53b0b9d9f51d52f7",
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r1/train.log": "8b4e47ba76bb92e7f951f8701cabf29c776ab840806d66a4aa3596dcb89b1515",
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r2/rollout_audit.jsonl": "39d0420032725e8e1667b82c79e2d915d50fe03ae7bc9d64ca356f985bc3a23e",
+    "artifacts/experiments/midterm_uniform_reward_v1/training/r2/train.log": "03c380477cd553373e1a8b203b7525de5dd2ef6bed902008b199193949a51f62",
+    "artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023_v2/group_sft.jsonl": "65eb1e422f9717c095fc168c1c830beae4d8657fc0e10ce6a78625ac74a7ec9e",
+    "artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023_v2/group_r0.jsonl": "9739d99224c6420ef72c79032fc57539c4fb07d8f19bc7708551684b1f6198b9",
+    "artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023_v2/group_r1.jsonl": "96978378b53393a87b43e68fa17a89c8c3ad285cc56bc30c51b4a8d7ae325fb8",
+    "artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023_v2/group_r2.jsonl": "4c72d584f06c84dc5750715718a56ac64699579b2e699b2b4adffbdb0fd99c7f"
+  },
+  "reset_counts": {
+    "r0": 1600,
+    "r1": 1600,
+    "r2": 1600
+  },
+  "reset_unique_pairs": {
+    "r0": 1600,
+    "r1": 1600,
+    "r2": 1600
+  }
+}

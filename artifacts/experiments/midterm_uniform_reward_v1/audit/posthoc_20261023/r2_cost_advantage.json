@@ -1,0 +1,215 @@
+{
+  "composition": {
+    "mixed": 187,
+    "all_correct": 33,
+    "all_wrong": 180
+  },
+  "nonzero_std_groups": {
+    "all_correct": 33,
+    "all_wrong": 32,
+    "mixed": 187
+  },
+  "all_correct_groups": 33,
+  "all_correct_groups_with_tool_cost_spread": 1,
+  "all_correct_groups_with_time_cost_spread": 33,
+  "all_correct_std": {
+    "min": 8.526481653580983e-05,
+    "median": 0.0004162772261295722,
+    "max": 0.01923502021271344
+  },
+  "all_correct_max_abs_advantage": {
+    "min_per_group": 0.968127196487272,
+    "median_per_group": 1.3441687226316292,
+    "max_per_group": 1.4997874700225013
+  },
+  "all_correct_advantage_counts": {
+    "samples": 132,
+    "abs_gt_0_5": 85,
+    "abs_gt_1_0": 36
+  },
+  "counterfactual": {
+    "count_only_median_max_abs_advantage": 0.0,
+    "time_only_median_max_abs_advantage": 1.334224948568788,
+    "actual_median_max_abs_advantage": 1.3441687226316292
+  },
+  "time_spread_seconds": {
+    "min": 0.12482380867004411,
+    "median": 0.5839800834655762,
+    "p75": 0.7536135911941528,
+    "max": 1.2137577533721926,
+    "groups_gt_0_5s": 22
+  },
+  "top_groups_by_advantage": [
+    {
+      "rewards": [
+        1.0,
+        0.9616208326816559,
+        0.961183377901713,
+        0.9617960210641225
+      ],
+      "mean": 0.9711500579118728,
+      "std": 0.01923502021271344,
+      "advantages": [
+        1.4997874700225013,
+        -0.49538444672245097,
+        -0.5181258857054333,
+        -0.48627713759460567
+      ],
+      "max_abs_advantage": 1.4997874700225013,
+      "tool_cost": [
+        0.0,
+        0.0375,
+        0.0375,
+        0.0375
+      ],
+      "time_cost": [
+        0.0,
+        0.0008791673183441162,
+        0.0013166220982869467,
+        0.0007039789358774821
+      ],
+      "count_only_max_abs_advantage": 1.4999200042664376,
+      "time_only_max_abs_advantage": 1.321254117763189,
+      "tool_cost_spread": 0.0375,
+      "time_cost_spread": 0.0013166220982869467,
+      "time_spread_seconds": 0.789973258972168
+    },
+    {
+      "rewards": [
+        0.9603469729423523,
+        0.9621700163682302,
+        0.9603952685991923,
+        0.9603662125269572
+      ],
+      "mean": 0.960819617609183,
+      "std": 0.0009004846917795541,
+      "advantages": [
+        -0.5242958323537485,
+        1.4979719249380339,
+        -0.4707223692872583,
+        -0.502953723297027
+      ],
+      "max_abs_advantage": 1.4979719249380339,
+      "tool_cost": [
+        0.0375,
+        0.0375,
+        0.0375,
+        0.0375
+      ],
+      "time_cost": [
+        0.0021530270576477053,
+        0.0003299836317698161,
+        0.0021047314008076985,
+        0.002133787473042806
+      ],
+      "count_only_max_abs_advantage": 0.0,
+      "time_only_max_abs_advantage": 1.4979719249380339,
+      "tool_cost_spread": 0.0,
+      "time_cost_spread": 0.0018230434258778893,
+      "time_spread_seconds": 1.0938260555267336
+    },
+    {
+      "rewards": [
+        0.9602807958920797,
+        0.9603932023048402,
+        0.9623037254810334,
+        0.9603588259220124
+      ],
+      "mean": 0.9608341373999914,
+      "std": 0.000980853490852612,
+      "advantages": [
+        -0.5635683053192967,
+        -0.4490844094960656,
+        1.4967488476981246,
+        -0.4840961328825361
+      ],
+      "max_abs_advantage": 1.4967488476981246,
+      "tool_cost": [
+        0.0375,
+        0.0375,
+        0.0375,
+        0.0375
+      ],
+      "time_cost": [
+        0.002219204107920329,
+        0.0021067976951599124,
+        0.00019627451896667484,
+        0.002141174077987671
+      ],
+      "count_only_max_abs_advantage": 0.0,
+      "time_only_max_abs_advantage": 1.4967488476980115,
+      "tool_cost_spread": 0.0,
+      "time_cost_spread": 0.002022929588953654,
+      "time_spread_seconds": 1.2137577533721926
+    },
+    {
+      "rewards": [
+        0.9604240715503692,
+        0.9609626495838165,
+        0.9609627795219422,
+        0.960962542295456
+      ],
+      "mean": 0.9608280107378959,
+      "std": 0.0002692928091522835,
+      "advantages": [
+        -1.4944503658589767,
+        0.49812218957227333,
+        0.4986029205473634,
+        0.49772525574016147
+      ],
+      "max_abs_advantage": 1.4944503658589767,
+      "tool_cost": [
+        0.0375,
+        0.0375,
+        0.0375,
+        0.0375
+      ],
+      "time_cost": [
+        0.0020759284496307375,
+        0.0015373504161834718,
+        0.0015372204780578613,
+        0.0015374577045440675
+      ],
+      "count_only_max_abs_advantage": 0.0,
+      "time_only_max_abs_advantage": 1.4944503658593875,
+      "tool_cost_spread": 0.0,
+      "time_cost_spread": 0.0005387079715728762,
+      "time_spread_seconds": 0.32322478294372575
+    },
+    {
+      "rewards": [
+        0.960505345662435,
+        0.9612518564860026,
+        0.9604136196772257,
+        0.9604876065254212
+      ],
+      "mean": 0.9606646070877711,
+      "std": 0.00039350982056693694,
+      "advantages": [
+        -0.40369445076755633,
+        1.488554574858488,
+        -0.6362006658914742,
+        -0.44865945819945746
+      ],
+      "max_abs_advantage": 1.488554574858488,
+      "tool_cost": [
+        0.0375,
+        0.0375,
+        0.0375,
+        0.0375
+      ],
+      "time_cost": [
+        0.001994654337565104,
+        0.001248143513997396,
+        0.0020863803227742514,
+        0.0020123934745788575
+      ],
+      "count_only_max_abs_advantage": 0.0,
+      "time_only_max_abs_advantage": 1.488554574858488,
+      "tool_cost_spread": 0.0,
+      "time_cost_spread": 0.0008382368087768554,
+      "time_spread_seconds": 0.5029420852661133
+    }
+  ],
+  "interpretation": "Raw reward spreads around 1e-3 are divided by a group std of the same order, so GRPO advantages are O(1). In 32 of 33 all-correct groups the only variation is time_cost; the remaining group has a 0-call versus 1-call difference. Whether the time variation is genuine efficiency or timing noise is not identifiable without repeated executions of identical code."
+}

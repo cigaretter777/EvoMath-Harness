@@ -1,0 +1,185 @@
+{
+  "r0": {
+    "n_steps": 50,
+    "first_step": 1,
+    "last_step": 50,
+    "reward_mean": {
+      "mean": 0.28264,
+      "min": 0.107,
+      "max": 0.5,
+      "first10_mean": 0.3094,
+      "last10_mean": 0.30379999999999996
+    },
+    "success_rate": {
+      "mean": 0.29814,
+      "min": 0.125,
+      "max": 0.531,
+      "first10_mean": 0.3125,
+      "last10_mean": 0.33740000000000003
+    },
+    "tool_calls_per_episode": {
+      "mean": 1.0049599999999999,
+      "min": 0.906,
+      "max": 1.125,
+      "first10_mean": 0.9907,
+      "last10_mean": 1.0311
+    },
+    "episode_length": {
+      "mean": 2.17936,
+      "min": 2.0,
+      "max": 2.656,
+      "first10_mean": 2.0218,
+      "last10_mean": 2.375
+    },
+    "response_length_mean": {
+      "mean": 130.2433,
+      "min": 80.409,
+      "max": 278.13,
+      "first10_mean": 121.5799,
+      "last10_mean": 139.46120000000002
+    },
+    "response_length_clip_ratio": {
+      "mean": 0.011779999999999999,
+      "min": 0.0,
+      "max": 0.061,
+      "first10_mean": 0.0077,
+      "last10_mean": 0.0144
+    },
+    "grad_norm": {
+      "mean": 0.31454,
+      "min": 0.058,
+      "max": 1.014,
+      "first10_mean": 0.1866,
+      "last10_mean": 0.3766
+    },
+    "step_seconds": {
+      "mean": 314.37414,
+      "min": 147.842,
+      "max": 656.012,
+      "first10_mean": 231.13850000000002,
+      "last10_mean": 414.72119999999995
+    }
+  },
+  "r1": {
+    "n_steps": 50,
+    "first_step": 1,
+    "last_step": 50,
+    "reward_mean": {
+      "mean": 0.29534,
+      "min": 0.043,
+      "max": 0.594,
+      "first10_mean": 0.3272,
+      "last10_mean": 0.2924
+    },
+    "success_rate": {
+      "mean": 0.31132000000000004,
+      "min": 0.062,
+      "max": 0.594,
+      "first10_mean": 0.33140000000000003,
+      "last10_mean": 0.3155
+    },
+    "tool_calls_per_episode": {
+      "mean": 0.99004,
+      "min": 0.875,
+      "max": 1.031,
+      "first10_mean": 0.9843999999999999,
+      "last10_mean": 1.0
+    },
+    "episode_length": {
+      "mean": 2.0480199999999997,
+      "min": 2.0,
+      "max": 2.406,
+      "first10_mean": 2.0093,
+      "last10_mean": 2.0811
+    },
+    "response_length_mean": {
+      "mean": 112.22048000000001,
+      "min": 69.778,
+      "max": 213.045,
+      "first10_mean": 112.7408,
+      "last10_mean": 112.48240000000001
+    },
+    "response_length_clip_ratio": {
+      "mean": 0.0070599999999999994,
+      "min": 0.0,
+      "max": 0.061,
+      "first10_mean": 0.0047,
+      "last10_mean": 0.0060999999999999995
+    },
+    "grad_norm": {
+      "mean": 0.30874,
+      "min": 0.069,
+      "max": 1.767,
+      "first10_mean": 0.2057,
+      "last10_mean": 0.5437000000000001
+    },
+    "step_seconds": {
+      "mean": 224.96684000000002,
+      "min": 136.729,
+      "max": 484.177,
+      "first10_mean": 200.2476,
+      "last10_mean": 224.1708
+    }
+  },
+  "r2": {
+    "n_steps": 50,
+    "first_step": 1,
+    "last_step": 50,
+    "reward_mean": {
+      "mean": 0.27608,
+      "min": 0.075,
+      "max": 0.512,
+      "first10_mean": 0.3144,
+      "last10_mean": 0.2738
+    },
+    "success_rate": {
+      "mean": 0.2994,
+      "min": 0.094,
+      "max": 0.531,
+      "first10_mean": 0.3344,
+      "last10_mean": 0.297
+    },
+    "tool_calls_per_episode": {
+      "mean": 0.98012,
+      "min": 0.906,
+      "max": 1.031,
+      "first10_mean": 0.9782,
+      "last10_mean": 0.9907
+    },
+    "episode_length": {
+      "mean": 2.0280199999999997,
+      "min": 1.969,
+      "max": 2.125,
+      "first10_mean": 2.0155000000000003,
+      "last10_mean": 2.0311
+    },
+    "response_length_mean": {
+      "mean": 108.44046,
+      "min": 72.368,
+      "max": 214.273,
+      "first10_mean": 102.1066,
+      "last10_mean": 105.8551
+    },
+    "response_length_clip_ratio": {
+      "mean": 0.0055000000000000005,
+      "min": 0.0,
+      "max": 0.061,
+      "first10_mean": 0.0015,
+      "last10_mean": 0.0060999999999999995
+    },
+    "grad_norm": {
+      "mean": 0.30418,
+      "min": 0.065,
+      "max": 0.713,
+      "first10_mean": 0.3019,
+      "last10_mean": 0.2821
+    },
+    "step_seconds": {
+      "mean": 216.9414,
+      "min": 128.741,
+      "max": 481.291,
+      "first10_mean": 189.3124,
+      "last10_mean": 199.64749999999998
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "r0": {
+    "trajectories": 1600,
+    "rows_total": 6528,
+    "active_rows": 3487,
+    "inactive_rows": 3041,
+    "invalid_active": 315,
+    "invalid_inactive": 12,
+    "invalid_active_duplicate_rows": 0,
+    "tool_calls_active": 1608.0,
+    "tool_calls_inactive": 2.0,
+    "terminal_reward_sum": 477.0,
+    "statuses": {
+      "correct": 477,
+      "incorrect": 1067,
+      "invalid_prediction": 54,
+      "internal_error": 2
+    },
+    "termination_reasons": {
+      "final": 1564,
+      "context_overflow": 15,
+      "max_steps": 21
+    },
+    "missing_done": 0,
+    "trajectories_with_inactive_invalid": 8,
+    "inactive_invalid_on_invalid_terminal": 8,
+    "invalid_rate_active": 0.09033553197591053,
+    "invalid_rate_all_rows": 0.04825367647058824,
+    "tool_calls_all_rows": 1610.0,
+    "tool_calls_per_trajectory_active": 1.005,
+    "tool_calls_per_trajectory_all_rows": 1.00625,
+    "actions_per_trajectory_mean": 2.179375,
+    "terminal_reward_mean": 0.298125,
+    "blocks": {
+      "1-10": {
+        "trajectories": 320,
+        "active_rows": 647,
+        "invalid": 13,
+        "tool_calls": 317.0,
+        "invalid_rate": 0.02009273570324575,
+        "tool_calls_per_trajectory": 0.990625
+      },
+      "41-50": {
+        "trajectories": 320,
+        "active_rows": 760,
+        "invalid": 122,
+        "tool_calls": 330.0,
+        "invalid_rate": 0.16052631578947368,
+        "tool_calls_per_trajectory": 1.03125
+      }
+    }
+  },
+  "r1": {
+    "trajectories": 1600,
+    "rows_total": 4960,
+    "active_rows": 3277,
+    "inactive_rows": 1683,
+    "invalid_active": 114,
+    "invalid_inactive": 3,
+    "invalid_active_duplicate_rows": 0,
+    "tool_calls_active": 1584.0,
+    "tool_calls_inactive": 2.0,
+    "terminal_reward_sum": 488.59999999999957,
+    "statuses": {
+      "correct": 498,
+      "incorrect": 1052,
+      "invalid_prediction": 47,
+      "internal_error": 3
+    },
+    "termination_reasons": {
+      "final": 1579,
+      "context_overflow": 11,
+      "max_steps": 10
+    },
+    "missing_done": 0,
+    "trajectories_with_inactive_invalid": 1,
+    "inactive_invalid_on_invalid_terminal": 1,
+    "invalid_rate_active": 0.03478791577662496,
+    "invalid_rate_all_rows": 0.022983870967741935,
+    "tool_calls_all_rows": 1586.0,
+    "tool_calls_per_trajectory_active": 0.99,
+    "tool_calls_per_trajectory_all_rows": 0.99125,
+    "actions_per_trajectory_mean": 2.048125,
+    "terminal_reward_mean": 0.30537499999999973,
+    "blocks": {
+      "1-10": {
+        "trajectories": 320,
+        "active_rows": 643,
+        "invalid": 9,
+        "tool_calls": 315.0,
+        "invalid_rate": 0.013996889580093312,
+        "tool_calls_per_trajectory": 0.984375
+      },
+      "41-50": {
+        "trajectories": 320,
+        "active_rows": 666,
+        "invalid": 31,
+        "tool_calls": 320.0,
+        "invalid_rate": 0.046546546546546545,
+        "tool_calls_per_trajectory": 1.0
+      }
+    }
+  },
+  "r2": {
+    "trajectories": 1600,
+    "rows_total": 4512,
+    "active_rows": 3245,
+    "inactive_rows": 1267,
+    "invalid_active": 89,
+    "invalid_inactive": 0,
+    "invalid_active_duplicate_rows": 0,
+    "tool_calls_active": 1568.0,
+    "tool_calls_inactive": 1.0,
+    "terminal_reward_sum": 452.29933351437234,
+    "statuses": {
+      "correct": 479,
+      "incorrect": 1083,
+      "invalid_prediction": 35,
+      "internal_error": 3
+    },
+    "termination_reasons": {
+      "final": 1588,
+      "max_steps": 4,
+      "context_overflow": 8
+    },
+    "missing_done": 0,
+    "trajectories_with_inactive_invalid": 0,
+    "inactive_invalid_on_invalid_terminal": 0,
+    "invalid_rate_active": 0.027426810477657937,
+    "invalid_rate_all_rows": 0.01972517730496454,
+    "tool_calls_all_rows": 1569.0,
+    "tool_calls_per_trajectory_active": 0.98,
+    "tool_calls_per_trajectory_all_rows": 0.980625,
+    "actions_per_trajectory_mean": 2.028125,
+    "terminal_reward_mean": 0.2826870834464827,
+    "blocks": {
+      "1-10": {
+        "trajectories": 320,
+        "active_rows": 645,
+        "invalid": 12,
+        "tool_calls": 313.0,
+        "invalid_rate": 0.018604651162790697,
+        "tool_calls_per_trajectory": 0.978125
+      },
+      "41-50": {
+        "trajectories": 320,
+        "active_rows": 650,
+        "invalid": 16,
+        "tool_calls": 317.0,
+        "invalid_rate": 0.024615384615384615,
+        "tool_calls_per_trajectory": 0.990625
+      }
+    }
+  }
+}

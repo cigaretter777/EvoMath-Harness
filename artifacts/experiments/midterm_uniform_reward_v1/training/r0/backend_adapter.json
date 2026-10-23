@@ -1,0 +1,11 @@
+{
+  "environment_registration_patch_changed": false,
+  "generated_token_count_patch_changed": false,
+  "grpo_advantage_normalization": "trajectory_level_steps_deduplicated",
+  "pid": 70890,
+  "task_runner_patch_details": "/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r0/task_runner_patches.json",
+  "task_runner_runtime_patch_source_changed": false,
+  "verl_agent_sha": "20bd331bdbc9026a5668e11362178e10ab7400c8",
+  "vllm_prefix_cache_patch_changed": false,
+  "vllm_prefix_caching": false
+}

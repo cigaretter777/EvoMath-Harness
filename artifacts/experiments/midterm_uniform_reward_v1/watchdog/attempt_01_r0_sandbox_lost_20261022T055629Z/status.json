@@ -1,0 +1,25 @@
+{
+  "chain_id": "20261022T044832Z",
+  "current_group": "r0",
+  "elapsed_h": 1.131,
+  "free_gib": 27.973,
+  "gpu_peak_mib": 22795,
+  "gpu_used_mib": 14867,
+  "group_index": 1,
+  "last_event": {
+    "group": "r0",
+    "name": "save_verified",
+    "step": 10,
+    "ts": "2026-10-22T05:29:27Z"
+  },
+  "pid": null,
+  "rotated_gib": 7.844,
+  "sandbox_consecutive_failures": 3,
+  "sandbox_ok": false,
+  "schema": "midterm-watchdog-v1",
+  "started_utc": "2026-10-22T04:48:32Z",
+  "state": "stopped",
+  "step": 18,
+  "stop_reason": "sandbox lost for 3 consecutive probes: TimeoutError: timed out",
+  "updated_utc": "2026-10-22T05:56:29Z"
+}

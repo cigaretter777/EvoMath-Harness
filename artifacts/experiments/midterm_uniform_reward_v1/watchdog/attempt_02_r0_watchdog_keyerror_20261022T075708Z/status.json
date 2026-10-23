@@ -1,0 +1,25 @@
+{
+  "chain_id": "20261022T063945Z",
+  "current_group": "r0",
+  "elapsed_h": 1.288,
+  "free_gib": 20.047,
+  "gpu_peak_mib": 22795,
+  "gpu_used_mib": 22035,
+  "group_index": 1,
+  "last_event": {
+    "group": "r0",
+    "name": "save_verified",
+    "step": 10,
+    "ts": "2026-10-22T07:10:40Z"
+  },
+  "pid": null,
+  "rotated_gib": 7.844,
+  "sandbox_consecutive_failures": 0,
+  "sandbox_ok": true,
+  "schema": "midterm-watchdog-v1",
+  "started_utc": "2026-10-22T06:39:45Z",
+  "state": "failed",
+  "step": 19,
+  "stop_reason": "KeyError: 'free_gib'",
+  "updated_utc": "2026-10-22T07:57:08Z"
+}

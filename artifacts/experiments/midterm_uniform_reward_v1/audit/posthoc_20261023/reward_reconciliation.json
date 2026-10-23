@@ -1,0 +1,32 @@
+{
+  "r0": {
+    "terminal_reward_per_trajectory_mean": 0.298125,
+    "length_weighted_per_update_mean": 0.28263914780126503,
+    "logged_critic_rewards_mean": 0.28264,
+    "logged_episode_reward_mean": 0.29814,
+    "logged_episode_success_rate": 0.29814,
+    "diff_length_weighted_vs_logged_critic": -8.521987349685567e-07,
+    "diff_per_trajectory_vs_logged_episode": -1.5000000000042757e-05,
+    "interpretation": "critic/rewards/mean is the unweighted mean of the 50 per-update length-weighted terminal rewards; each trajectory contributes its terminal reward once per active turn row. episode/reward/mean is the per-trajectory mean of the same terminal reward. For R0 the reward is binary, so 0.298125 vs 0.28264 is purely a weighting difference, not a reward inconsistency."
+  },
+  "r1": {
+    "terminal_reward_per_trajectory_mean": 0.305375,
+    "length_weighted_per_update_mean": 0.29525203912880604,
+    "logged_critic_rewards_mean": 0.29534,
+    "logged_episode_reward_mean": 0.30541999999999997,
+    "logged_episode_success_rate": 0.31132000000000004,
+    "diff_length_weighted_vs_logged_critic": -8.796087119394835e-05,
+    "diff_per_trajectory_vs_logged_episode": -4.499999999996174e-05,
+    "interpretation": "critic/rewards/mean is the unweighted mean of the 50 per-update length-weighted terminal rewards; each trajectory contributes its terminal reward once per active turn row. episode/reward/mean is the per-trajectory mean of the same terminal reward. For R0 the reward is binary, so 0.298125 vs 0.28264 is purely a weighting difference, not a reward inconsistency."
+  },
+  "r2": {
+    "terminal_reward_per_trajectory_mean": 0.2826870834464828,
+    "length_weighted_per_update_mean": 0.276174528550134,
+    "logged_critic_rewards_mean": 0.27608,
+    "logged_episode_reward_mean": 0.2826,
+    "logged_episode_success_rate": 0.2994,
+    "diff_length_weighted_vs_logged_critic": 9.452855013403205e-05,
+    "diff_per_trajectory_vs_logged_episode": 8.708344648278299e-05,
+    "interpretation": "critic/rewards/mean is the unweighted mean of the 50 per-update length-weighted terminal rewards; each trajectory contributes its terminal reward once per active turn row. episode/reward/mean is the per-trajectory mean of the same terminal reward. For R0 the reward is binary, so 0.298125 vs 0.28264 is purely a weighting difference, not a reward inconsistency."
+  }
+}

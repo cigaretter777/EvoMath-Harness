@@ -1,0 +1,35 @@
+{
+  "r0": {
+    "trajectories": 1600,
+    "rollout_dump_files": 50,
+    "rollout_dump_lines": 3487,
+    "expected_active_rows": 3487,
+    "update_score_mismatches": [],
+    "reward_formula_mismatches": 0,
+    "verifier_status_vs_correct_component_mismatches": 0,
+    "trajectories_without_done": 0,
+    "note": "Dump lines are ordered by (group slot, sample_index) and match terminal reward repeated once per active turn within 1e-6 for all updates. This verifies the trainer input rows and explains the turn-row weighting in critic/rewards/mean."
+  },
+  "r1": {
+    "trajectories": 1600,
+    "rollout_dump_files": 50,
+    "rollout_dump_lines": 3277,
+    "expected_active_rows": 3277,
+    "update_score_mismatches": [],
+    "reward_formula_mismatches": 0,
+    "verifier_status_vs_correct_component_mismatches": 0,
+    "trajectories_without_done": 0,
+    "note": "Dump lines are ordered by (group slot, sample_index) and match terminal reward repeated once per active turn within 1e-6 for all updates. This verifies the trainer input rows and explains the turn-row weighting in critic/rewards/mean."
+  },
+  "r2": {
+    "trajectories": 1600,
+    "rollout_dump_files": 50,
+    "rollout_dump_lines": 3245,
+    "expected_active_rows": 3245,
+    "update_score_mismatches": [],
+    "reward_formula_mismatches": 0,
+    "verifier_status_vs_correct_component_mismatches": 0,
+    "trajectories_without_done": 0,
+    "note": "Dump lines are ordered by (group slot, sample_index) and match terminal reward repeated once per active turn within 1e-6 for all updates. This verifies the trainer input rows and explains the turn-row weighting in critic/rewards/mean."
+  }
+}

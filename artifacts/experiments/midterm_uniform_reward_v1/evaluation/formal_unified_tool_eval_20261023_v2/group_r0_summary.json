@@ -1,0 +1,51 @@
+{
+  "action_attempts": 451,
+  "complete": true,
+  "context_overflow_count": 0,
+  "correct_count": 106,
+  "correct_rate": 0.53,
+  "generated_tokens_total": 67182,
+  "group": "r0",
+  "infrastructure_error_count": 0,
+  "invalid_action_denominator_zero": false,
+  "invalid_action_rate": 0.12416851441241686,
+  "invalid_actions": 56,
+  "length_truncation_count": 11,
+  "length_truncation_rate": 0.055,
+  "missing_task_ids": [],
+  "model_error_count": 0,
+  "observation_truncation_count": 0,
+  "python_seconds": 91.746026,
+  "reward_diagnostics_means": {
+    "r0": {
+      "mean_total": 0.53
+    },
+    "r1": {
+      "mean_total": 0.505
+    },
+    "r2": {
+      "mean_total": 0.4848853112240632
+    }
+  },
+  "sandbox_unavailable_count": 0,
+  "sympy_seconds": 0.0,
+  "task_count": 200,
+  "termination_reason_counts": {
+    "final": 197,
+    "max_steps": 3
+  },
+  "timing_missing_count": 0,
+  "tool_calls": 198,
+  "tool_calls_per_task": 0.99,
+  "tool_failure_count": 42,
+  "tool_seconds": 91.746026,
+  "tool_seconds_per_task": 0.4587301278114319,
+  "valid_task_count": 200,
+  "verifier_retry_count": 0,
+  "verifier_status_counts": {
+    "correct": 106,
+    "incorrect": 89,
+    "invalid_prediction": 5
+  },
+  "wall_seconds_total": 3373.478655
+}

@@ -1,0 +1,370 @@
+{
+  "schema": "midterm-unified-tool-eval-reward-recompute-v1",
+  "n_trajectories": 20,
+  "per_variant_checks": 60,
+  "mismatches": [],
+  "all_match": true,
+  "records": [
+    {
+      "group": "sft",
+      "task_id": "math:026b64ff61db3f9625d7",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.30739545822143555,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9619876742362976
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9619876742362976
+      }
+    },
+    {
+      "group": "sft",
+      "task_id": "math:045a84b20397b11ecc6a",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.3010232448577881,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9619982945919037
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9619982945919037
+      }
+    },
+    {
+      "group": "sft",
+      "task_id": "math:06c89c1a64063e665e76",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.24909472465515137,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620848421255748
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620848421255748
+      }
+    },
+    {
+      "group": "sft",
+      "task_id": "math:02badd287cbbb598a9cd",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.27361059188842773,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "sft",
+      "task_id": "math:02e1cce4311336f46f2e",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 25.96363115310669,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "r0",
+      "task_id": "math:026b64ff61db3f9625d7",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.2797706127166748,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620337156454722
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620337156454722
+      }
+    },
+    {
+      "group": "r0",
+      "task_id": "math:045a84b20397b11ecc6a",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.26148176193237305,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.962064197063446
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.962064197063446
+      }
+    },
+    {
+      "group": "r0",
+      "task_id": "math:06c89c1a64063e665e76",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.24468064308166504,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620921989281972
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620921989281972
+      }
+    },
+    {
+      "group": "r0",
+      "task_id": "math:02badd287cbbb598a9cd",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.27333784103393555,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "r0",
+      "task_id": "math:02e1cce4311336f46f2e",
+      "correct": false,
+      "invalid_actions": 1,
+      "tool_calls": 1,
+      "tool_seconds": 27.888821363449097,
+      "expected": {
+        "r0": 0.0,
+        "r1": -0.1,
+        "r2": -0.1
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": -0.1,
+        "r2": -0.1
+      }
+    },
+    {
+      "group": "r1",
+      "task_id": "math:026b64ff61db3f9625d7",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.27593255043029785,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620401124159496
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620401124159496
+      }
+    },
+    {
+      "group": "r1",
+      "task_id": "math:06c89c1a64063e665e76",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.24522805213928223,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620912865797678
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620912865797678
+      }
+    },
+    {
+      "group": "r1",
+      "task_id": "math:0a13d264c1acb744bd73",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.09439516067504883,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9623426747322082
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9623426747322082
+      }
+    },
+    {
+      "group": "r1",
+      "task_id": "math:02badd287cbbb598a9cd",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.2793745994567871,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "r1",
+      "task_id": "math:02e1cce4311336f46f2e",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 28.04300570487976,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "r2",
+      "task_id": "math:026b64ff61db3f9625d7",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.2768576145172119,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620385706424713
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620385706424713
+      }
+    },
+    {
+      "group": "r2",
+      "task_id": "math:06c89c1a64063e665e76",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.24625539779663086,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620895743370056
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.9620895743370056
+      }
+    },
+    {
+      "group": "r2",
+      "task_id": "math:0940ea16d9b72903d6f4",
+      "correct": true,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.2714841365814209,
+      "expected": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.962047526439031
+      },
+      "stored": {
+        "r0": 1.0,
+        "r1": 1.0,
+        "r2": 0.962047526439031
+      }
+    },
+    {
+      "group": "r2",
+      "task_id": "math:02badd287cbbb598a9cd",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 0.27490711212158203,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    },
+    {
+      "group": "r2",
+      "task_id": "math:02e1cce4311336f46f2e",
+      "correct": false,
+      "invalid_actions": 0,
+      "tool_calls": 1,
+      "tool_seconds": 28.108223915100098,
+      "expected": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "stored": {
+        "r0": 0.0,
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    }
+  ],
+  "note": "Independent arithmetic recomputation from usage counts and the frozen reward constants; comparison against the evaluator reward log."
+}

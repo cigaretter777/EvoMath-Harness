@@ -1,0 +1,54 @@
+schema_version: adaptive-math-grpo-v1
+# Midterm unified-tool-reward ablation, group R0 (answer-only reward).
+# Same SFT checkpoint, data, budget, sampling and 50-round schedule as R1/R2.
+# Frozen by 2026-10-22 design; do not tune after seeing results.
+task_pool_path: artifacts/task_pools/math_midterm_v1_rl_train.jsonl
+task_pool_sha256: 635f9571b056f395fd574b9fd1e4d6e1eb4b28efbf3d38f38c410aed19396d46
+budget_path: configs/agent/unified_tool_budget_v1.yaml
+reward_path: configs/reward/r0_unified.yaml
+output_dir: artifacts/experiments/midterm_uniform_reward_v1/training/r0
+upstream_config_name: hgpo_trainer
+upstream_overrides:
+  - actor_rollout_ref.model.path=/root/autodl-tmp/Adaptive-Solver-main-git/artifacts/models/qwen3_1_7b_sft_tir_merged
+  - actor_rollout_ref.model.enable_gradient_checkpointing=True
+  - actor_rollout_ref.model.lora_rank=16
+  - actor_rollout_ref.model.lora_alpha=32
+  - actor_rollout_ref.rollout.n=1
+  - actor_rollout_ref.rollout.tensor_model_parallel_size=1
+  - actor_rollout_ref.rollout.temperature=1.0
+  - actor_rollout_ref.rollout.top_p=0.95
+  - actor_rollout_ref.rollout.top_k=20
+  - +actor_rollout_ref.rollout.engine_kwargs.vllm.enable_prefix_caching=False
+  - actor_rollout_ref.actor.ppo_mini_batch_size=8
+  - actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1
+  - actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1
+  - actor_rollout_ref.actor.use_invalid_action_penalty=False
+  - env.rollout.n=4
+  - env.max_steps=6
+  - data.train_files=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+  - data.val_files=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/task_pools/math_midterm_v1_rl_schedule_50x8.parquet
+  - data.train_batch_size=8
+  - data.val_batch_size=8
+  - data.return_raw_chat=true
+  - data.max_prompt_length=4096
+  - data.max_response_length=2048
+  - data.shuffle=false
+  - +data.seed=20261022
+  - trainer.total_training_steps=50
+  - trainer.n_gpus_per_node=1
+  - trainer.nnodes=1
+  - ray_init.num_cpus=8
+  - trainer.ray_wait_register_center_timeout=120
+  - trainer.logger=["console"]
+  - trainer.project_name=adaptive_math_grpo
+  - trainer.experiment_name=midterm_unified_r0
+  - trainer.default_local_dir=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r0/checkpoints
+  - trainer.rollout_data_dir=/root/autodl-tmp/BudgetConstrainedReasoningMathAgent/artifacts/experiments/midterm_uniform_reward_v1/training/r0/rollout_dump
+  - trainer.save_freq=10
+  - trainer.max_actor_ckpt_to_keep=1
+  - trainer.test_freq=-1
+  - trainer.val_before_train=false
+  - trainer.resume_mode=disable
+  - algorithm.adv_estimator=grpo
+  - algorithm.use_kl_in_reward=false
+  - actor_rollout_ref.actor.use_kl_loss=false

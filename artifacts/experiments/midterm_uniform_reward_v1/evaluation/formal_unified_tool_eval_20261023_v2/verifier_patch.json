@@ -1,0 +1,13 @@
+{
+  "schema": "midterm-unified-tool-eval-verifier-patch-v1",
+  "created_at_utc": "2026-10-22T20:00:30Z",
+  "reason": "Original symbolic comparator raised TypeError on set-membership answers such as x \\in (0,36); evaluation paused at sft task 60. Fresh run uses the fixed comparator for all four groups.",
+  "original_symbolic_sha256": "f4f21ac39e66ee21ae8fea4625b9a9522a7e0f92747b6ac3bc1fef393a6b2194",
+  "fixed_symbolic_sha256": "1de775613d9cb3fe8a9e0c91eacb59b239ac3609ee7c15265f2b579f83088fd7",
+  "patch_sha256": "5a926f0f5b143fe8444405d9ad98ab072158d6e880bebe0b865e4315581c13b0",
+  "patch_path": "artifacts/experiments/midterm_uniform_reward_v1/audit/verifier_bug_20261023/symbolic_set_comparison.patch",
+  "evidence_dir": "artifacts/experiments/midterm_uniform_reward_v1/audit/verifier_bug_20261023",
+  "superseded_run_dir": "artifacts/experiments/midterm_uniform_reward_v1/evaluation/formal_unified_tool_eval_20261023",
+  "superseded_run_status": "paused after 59 valid SFT rows; retained as evidence, never resumed",
+  "groups_must_all_use_this_verifier": true
+}

@@ -1,0 +1,87 @@
+{
+  "evaluation": {
+    "sft": {
+      "tool_call_timing_counts": {
+        "('python', 'sandbox_execution_time', False, None)": 162,
+        "('python', 'sandbox_execution_time', False, 'execution_error')": 36
+      },
+      "timeouts": []
+    },
+    "r0": {
+      "tool_call_timing_counts": {
+        "('python', 'sandbox_execution_time', False, None)": 156,
+        "('python', 'sandbox_execution_time', False, 'execution_error')": 42
+      },
+      "timeouts": []
+    },
+    "r1": {
+      "tool_call_timing_counts": {
+        "('python', 'sandbox_execution_time', False, None)": 153,
+        "('python', 'sandbox_execution_time', False, 'execution_error')": 42,
+        "('python', 'client_round_trip', True, 'timeout')": 3
+      },
+      "timeouts": [
+        {
+          "task_id": "math:26fd91ac7be838ec3f8c",
+          "name": "python",
+          "tool_seconds": 31.033,
+          "latency_ms": 31033,
+          "timeout_limit": 30.0,
+          "timing_source": "client_round_trip",
+          "timing_missing": true,
+          "infrastructure_error": true,
+          "python_seconds": 0.0
+        },
+        {
+          "task_id": "math:2892076449fc22ef1afd",
+          "name": "python",
+          "tool_seconds": 31.009,
+          "latency_ms": 31009,
+          "timeout_limit": 30.0,
+          "timing_source": "client_round_trip",
+          "timing_missing": true,
+          "infrastructure_error": true,
+          "python_seconds": 0.0
+        },
+        {
+          "task_id": "math:2c584c5199712c434c39",
+          "name": "python",
+          "tool_seconds": 31.027,
+          "latency_ms": 31027,
+          "timeout_limit": 30.0,
+          "timing_source": "client_round_trip",
+          "timing_missing": true,
+          "infrastructure_error": true,
+          "python_seconds": 0.0
+        }
+      ]
+    },
+    "r2": {
+      "tool_call_timing_counts": {
+        "('python', 'sandbox_execution_time', False, None)": 157,
+        "('python', 'sandbox_execution_time', False, 'execution_error')": 42
+      },
+      "timeouts": []
+    }
+  },
+  "training_active_tool_names": {
+    "r0": {
+      "python": 1588,
+      "sympy": 10,
+      "unparsed": 10
+    },
+    "r1": {
+      "python": 1583,
+      "unparsed": 1
+    },
+    "r2": {
+      "python": 1567,
+      "sympy": 1
+    }
+  },
+  "notes": [
+    "All evaluation calls are python; normal calls use sandbox_execution_time with timing_missing=false.",
+    "The three R1 timeouts have timing_source=client_round_trip, timing_missing=true, python_seconds=0, and tool_seconds≈31.03 (requested timeout 30 s plus round-trip overhead). They are charged fallback values, not measured execution time.",
+    "Training is predominantly python; a small number of sympy calls use worker_process wall time. R2's time term therefore mixes sandbox execution time and worker-process wall time, not one uniform measurement boundary."
+  ]
+}
